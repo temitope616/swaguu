@@ -1,0 +1,1695 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Swaguu Admin — NSNV Console</title>
+<meta name="theme-color" content="#07090e" />
+
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('cloth_theme') || 'dark';
+      if (t === 'light') document.documentElement.classList.remove('dark');
+      else document.documentElement.classList.add('dark');
+    } catch (e) { document.documentElement.classList.add('dark'); }
+  })();
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        fontFamily: {
+          display: ['Sora','ui-sans-serif','system-ui','sans-serif'],
+          sans: ['"Plus Jakarta Sans"','ui-sans-serif','system-ui','sans-serif']
+        },
+        colors: { ink: { 950:'#07090e', 900:'#0b0e15', 800:'#12161f' } }
+      }
+    }
+  };
+</script>
+
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+
+<style>
+  *{ -webkit-tap-highlight-color: transparent; }
+  [x-cloak]{ display: none !important; }
+  html{ scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body{ font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif; overflow-x: hidden; }
+  .font-display{ font-family: 'Sora', ui-sans-serif, system-ui, sans-serif; }
+  .grid-bg{
+    background-image:
+      linear-gradient(to right, rgba(100,116,139,.10) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(100,116,139,.10) 1px, transparent 1px);
+    background-size: 46px 46px;
+  }
+  .glass{ backdrop-filter: blur(18px) saturate(180%); -webkit-backdrop-filter: blur(18px) saturate(180%); }
+  .no-sb::-webkit-scrollbar{ display: none; }
+  .no-sb{ -ms-overflow-style: none; scrollbar-width: none; }
+  .safe-b{ padding-bottom: env(safe-area-inset-bottom); }
+  .orb{ position: absolute; border-radius: 9999px; filter: blur(90px); opacity: .4; pointer-events: none; }
+  input, select, textarea{ font-size: 16px; }
+  @media (min-width: 768px){ input, select, textarea{ font-size: 14px; } }
+  .btn-pill{ transition: transform .3s cubic-bezier(.22,1,.36,1), box-shadow .3s ease, background-color .3s ease; }
+  .btn-pill:hover{ transform: scale(1.03) translateY(-1px); }
+  .btn-pill:active{ transform: scale(.97); }
+  .card-lift{ transition: transform .4s cubic-bezier(.22,1,.36,1), box-shadow .4s ease, border-color .3s ease; }
+  .card-lift:hover{ transform: translateY(-5px); }
+  @keyframes fadeUp{ from{ opacity: 0; transform: translateY(14px);} to{ opacity: 1; transform: translateY(0);} }
+  .fade-up{ animation: fadeUp .45s cubic-bezier(.22,1,.36,1) both; }
+  @keyframes bubbleIn{ from{ opacity: 0; transform: translateY(8px) scale(.97);} to{ opacity: 1; transform: translateY(0) scale(1);} }
+  .bubble{ animation: bubbleIn .25s cubic-bezier(.22,1,.36,1) both; }
+  details > summary { list-style: none; cursor: pointer; }
+  details > summary::-webkit-details-marker { display: none; }
+  details[open] > summary .chev { transform: rotate(180deg); }
+</style>
+</head>
+
+<body
+  class="font-sans antialiased bg-zinc-50 text-slate-900 dark:bg-[#07090e] dark:text-slate-100 selection:bg-red-500 selection:text-white"
+  x-data="admin()"
+  x-init="init()"
+  x-effect="lockScroll()"
+  @keydown.escape.window="closeTop()"
+>
+
+<!-- ============ LOGIN GATE ============ -->
+<div x-show="!authed" x-cloak class="fixed inset-0 z-[100] grid place-items-center bg-zinc-50 dark:bg-[#07090e] grid-bg p-4">
+  <div class="orb w-[400px] h-[400px] bg-red-600 -top-24 -left-16"></div>
+  <div class="orb w-[380px] h-[380px] bg-cyan-500 bottom-0 right-0"></div>
+
+  <div class="relative w-full max-w-md rounded-3xl border border-slate-200 dark:border-white/10 bg-white/95 dark:bg-[#12161f]/95 glass shadow-2xl p-7 fade-up">
+    <div class="flex items-center gap-2.5">
+      <span class="grid place-items-center w-11 h-11 rounded-2xl bg-gradient-to-br from-red-500 to-red-700 text-white font-display font-extrabold text-lg shadow-lg shadow-red-600/30">S</span>
+      <div>
+        <p class="font-display font-extrabold text-lg leading-tight text-red-600 dark:text-red-500">Swaguu Admin</p>
+        <p class="text-[11px] text-slate-500 dark:text-slate-400 font-semibold">NSNV Console · v1.0</p>
+      </div>
+    </div>
+
+    <h1 class="font-display font-extrabold text-2xl mt-6">Sign in to continue</h1>
+    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1.5">Enter the admin password to access the dashboard.</p>
+
+    <form @submit.prevent="login()" class="mt-6 space-y-3">
+      <div class="relative">
+        <i data-lucide="lock" class="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+        <input :type="showPass ? 'text' : 'password'" x-model="password" placeholder="Password"
+               class="w-full pl-11 pr-12 py-3.5 rounded-2xl bg-slate-100 dark:bg-[#07090e] border border-transparent focus:border-red-500 outline-none transition font-medium">
+        <button type="button" @click="showPass = !showPass" class="absolute right-3 top-1/2 -translate-y-1/2 grid place-items-center w-8 h-8 rounded-lg hover:bg-white/10 transition">
+          <i :data-lucide="showPass ? 'eye-off' : 'eye'" class="w-4 h-4 text-slate-400"></i>
+        </button>
+      </div>
+
+      <button type="submit"
+              class="btn-pill w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full font-extrabold text-white bg-gradient-to-r from-red-500 to-red-700 shadow-xl shadow-red-600/30">
+        <i data-lucide="log-in" class="w-4 h-4"></i> Sign in
+      </button>
+
+      <p x-show="loginError" x-cloak class="text-xs font-bold text-rose-500 text-center" x-text="loginError"></p>
+    </form>
+
+    <div class="mt-6 rounded-2xl bg-slate-100 dark:bg-white/5 p-3.5 text-center">
+      <p class="text-[11px] font-bold text-slate-500 dark:text-slate-400">Demo password</p>
+      <p class="font-mono font-extrabold text-sm mt-0.5">admin123</p>
+      <p class="text-[10px] text-slate-400 mt-1">Change inside the code: const ADMIN_PASSWORD</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============ HEADER ============ -->
+<header x-show="authed" x-cloak class="sticky top-0 z-40">
+  <div class="glass bg-white/85 dark:bg-[#07090e]/80 border-b border-slate-200/80 dark:border-white/10">
+    <div class="mx-auto max-w-7xl px-3 sm:px-5 h-14 md:h-16 flex items-center gap-2">
+
+      <div class="flex items-center gap-2 shrink-0">
+        <span class="grid place-items-center w-9 h-9 rounded-2xl bg-gradient-to-br from-red-500 to-red-700 text-white font-display font-extrabold text-lg shadow-lg shadow-red-600/30">S</span>
+        <div class="leading-tight">
+          <p class="font-display font-extrabold text-sm text-red-600 dark:text-red-500">Swaguu</p>
+          <p class="text-[10px] text-slate-500 dark:text-slate-400 font-bold">ADMIN CONSOLE</p>
+        </div>
+      </div>
+
+      <div class="flex-1"></div>
+
+      <a href="index.html" target="_blank" class="hidden md:inline-flex items-center gap-2 btn-pill px-3.5 py-2 rounded-full text-xs font-bold border border-slate-200 dark:border-white/10 hover:border-red-500 hover:text-red-500 transition">
+        <i data-lucide="external-link" class="w-3.5 h-3.5"></i> View store
+      </a>
+
+      <button @click="seedDemo()" class="hidden sm:inline-flex items-center gap-2 btn-pill px-3.5 py-2 rounded-full text-xs font-bold border border-slate-200 dark:border-white/10 hover:border-red-500 hover:text-red-500 transition">
+        <i data-lucide="database" class="w-3.5 h-3.5"></i> Seed Demo
+      </button>
+
+      <button @click="exportJSON()" class="hidden sm:inline-flex items-center gap-2 btn-pill px-3.5 py-2 rounded-full text-xs font-bold border border-slate-200 dark:border-white/10 hover:border-red-500 hover:text-red-500 transition">
+        <i data-lucide="download" class="w-3.5 h-3.5"></i> Export
+      </button>
+
+      <button @click="toggleTheme()" class="grid place-items-center w-10 h-10 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition" aria-label="Theme">
+        <i :data-lucide="theme === 'dark' ? 'sun' : 'moon'" class="w-5 h-5"></i>
+      </button>
+
+      <div class="flex items-center gap-2 pl-2 border-l border-slate-200 dark:border-white/10">
+        <span class="grid place-items-center w-9 h-9 rounded-full bg-gradient-to-br from-cyan-500 to-cyan-700 text-white font-display font-extrabold text-xs">SA</span>
+        <button @click="logout()" class="hidden sm:grid place-items-center w-9 h-9 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition" aria-label="Logout" title="Logout">
+          <i data-lucide="log-out" class="w-5 h-5"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main x-show="authed" x-cloak class="mx-auto max-w-7xl px-3 sm:px-5 py-6">
+
+  <!-- ============ STATS ============ -->
+  <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+    <div class="rounded-3xl border border-slate-200/80 dark:border-white/10 bg-white dark:bg-[#0b0e15] p-4">
+      <div class="flex items-center justify-between">
+        <p class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">Products</p>
+        <i data-lucide="shirt" class="w-4 h-4 text-red-500"></i>
+      </div>
+      <p class="font-display font-extrabold text-2xl mt-2" x-text="products.length"></p>
+    </div>
+
+    <div class="rounded-3xl border border-slate-200/80 dark:border-white/10 bg-white dark:bg-[#0b0e15] p-4">
+      <div class="flex items-center justify-between">
+        <p class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">Out of Stock</p>
+        <i data-lucide="alert-circle" class="w-4 h-4 text-rose-500"></i>
+      </div>
+      <p class="font-display font-extrabold text-2xl mt-2 text-rose-500" x-text="outOfStock"></p>
+    </div>
+
+    <div class="rounded-3xl border border-slate-200/80 dark:border-white/10 bg-white dark:bg-[#0b0e15] p-4">
+      <div class="flex items-center justify-between">
+        <p class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">Featured</p>
+        <i data-lucide="star" class="w-4 h-4 text-cyan-500"></i>
+      </div>
+      <p class="font-display font-extrabold text-2xl mt-2" x-text="featuredCount"></p>
+    </div>
+
+    <div class="rounded-3xl border border-slate-200/80 dark:border-white/10 bg-white dark:bg-[#0b0e15] p-4">
+      <div class="flex items-center justify-between">
+        <p class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">Catalogue Value</p>
+        <i data-lucide="banknote" class="w-4 h-4 text-emerald-500"></i>
+      </div>
+      <p class="font-display font-extrabold text-base mt-2 text-emerald-500" x-text="money(catalogueValue)"></p>
+    </div>
+
+    <div class="rounded-3xl border border-slate-200/80 dark:border-white/10 bg-white dark:bg-[#0b0e15] p-4">
+      <div class="flex items-center justify-between">
+        <p class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">Total Orders</p>
+        <i data-lucide="shopping-cart" class="w-4 h-4 text-cyan-500"></i>
+      </div>
+      <p class="font-display font-extrabold text-2xl mt-2" x-text="orders.length"></p>
+      <p class="text-[10px] font-bold text-slate-400 mt-0.5" x-text="pendingCount + ' pending'"></p>
+    </div>
+
+    <div class="rounded-3xl border-2 border-emerald-500/40 bg-emerald-500/5 p-4">
+      <div class="flex items-center justify-between">
+        <p class="text-[11px] font-extrabold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Confirmed ₦</p>
+        <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500"></i>
+      </div>
+      <p class="font-display font-extrabold text-base mt-2 text-emerald-500" x-text="money(confirmedRevenue)"></p>
+      <p class="text-[10px] font-bold text-slate-400 mt-0.5" x-text="confirmedCount + ' confirmed orders'"></p>
+    </div>
+  </div>
+
+  <!-- ============ TABS ============ -->
+  <div class="mt-6 flex gap-2 overflow-x-auto no-sb pb-2 border-b border-slate-200/80 dark:border-white/10">
+    <template x-for="tab in tabs" :key="tab.id">
+      <button @click="activeTab = tab.id"
+              :class="activeTab === tab.id ? 'text-red-500 border-red-500' : 'text-slate-500 dark:text-slate-400 border-transparent hover:text-red-500'"
+              class="shrink-0 inline-flex items-center gap-2 px-4 py-2.5 text-sm font-extrabold border-b-2 -mb-0.5 transition">
+        <i :data-lucide="tab.icon" class="w-4 h-4"></i>
+        <span x-text="tab.label"></span>
+        <span x-show="tab.id === 'orders' && pendingCount > 0" x-cloak
+              class="ml-0.5 px-1.5 py-0.5 rounded-full text-[10px] bg-red-500/15 text-red-500"
+              x-text="pendingCount"></span>
+      </button>
+    </template>
+  </div>
+
+  <!-- ============ TAB: PRODUCTS ============ -->
+  <section x-show="activeTab === 'products'" x-cloak class="mt-6">
+    <div class="flex items-center justify-between mb-4">
+      <div>
+        <h2 class="font-display font-extrabold text-xl">All Products</h2>
+        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Edit, feature, or delete any piece in the catalogue.</p>
+      </div>
+      <button @click="activeTab = 'add'; resetForm()"
+              class="btn-pill inline-flex items-center gap-2 px-4 py-2.5 rounded-full font-extrabold text-sm text-white bg-gradient-to-r from-red-500 to-red-700 shadow-lg shadow-red-600/25">
+        <i data-lucide="plus" class="w-4 h-4"></i> Add new
+      </button>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      <template x-for="p in products" :key="'prod-'+p.id">
+        <div class="card-lift rounded-3xl overflow-hidden border border-slate-200/80 dark:border-white/10 bg-white dark:bg-[#0b0e15]">
+          <div class="relative aspect-[4/3] overflow-hidden bg-slate-100 dark:bg-[#12161f]">
+            <img :src="p.images[0]" :alt="p.name" class="w-full h-full object-cover" @error="imgErr($event, p)">
+            <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wide"
+                  :class="Number(p.stock) <= 0 ? 'bg-rose-500 text-white' : (Number(p.stock) <= 5 ? 'bg-amber-500 text-white' : 'bg-emerald-500 text-white')"
+                  x-text="Number(p.stock) <= 0 ? 'Out of Stock' : (Number(p.stock) <= 5 ? 'Low Stock' : 'In Stock')"></span>
+            <button @click="toggleFeatured(p.id)"
+                    class="absolute top-2.5 right-2.5 grid place-items-center w-8 h-8 rounded-full bg-white/90 dark:bg-[#07090e]/80 glass border border-white/40 dark:border-white/10"
+                    :aria-label="p.featured ? 'Unfeature' : 'Feature'">
+              <i data-lucide="star" class="w-4 h-4" :class="p.featured ? 'fill-red-500 text-red-500' : 'text-slate-400'"></i>
+            </button>
+          </div>
+          <div class="p-4">
+            <p class="text-[10px] font-extrabold uppercase tracking-wider text-cyan-500" x-text="p.category"></p>
+            <p class="font-display font-bold text-sm leading-snug mt-1 line-clamp-2 min-h-[36px]" x-text="p.name"></p>
+            <div class="flex items-center justify-between mt-2">
+              <span class="font-extrabold text-red-500 text-sm" x-text="money(p.price)"></span>
+              <span class="text-[10px] font-bold text-slate-400" x-text="'Stock: ' + p.stock"></span>
+            </div>
+            <div class="flex gap-2 mt-3">
+              <button @click="editProduct(p)"
+                      class="flex-1 btn-pill inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-full text-xs font-extrabold border border-slate-200 dark:border-white/10 hover:border-red-500 hover:text-red-500 transition">
+                <i data-lucide="edit-3" class="w-3.5 h-3.5"></i> Edit
+              </button>
+              <button @click="askDelete(p)"
+                      class="grid place-items-center w-10 h-10 rounded-full border border-slate-200 dark:border-white/10 hover:border-rose-400 hover:text-rose-500 transition">
+                <i data-lucide="trash-2" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </template>
+    </div>
+
+    <div x-show="products.length === 0" x-cloak class="mt-6 rounded-3xl border border-dashed border-slate-300 dark:border-white/15 p-12 text-center">
+      <i data-lucide="package-open" class="w-8 h-8 mx-auto text-slate-400"></i>
+      <p class="font-display font-extrabold text-lg mt-3">No products yet</p>
+      <p class="text-sm text-slate-500 dark:text-slate-400 mt-1.5">Seed the demo catalogue or add your first product.</p>
+      <button @click="seedDemo()" class="btn-pill mt-5 inline-flex items-center gap-2 px-5 py-3 rounded-full font-extrabold text-white bg-gradient-to-r from-red-500 to-red-700">
+        <i data-lucide="database" class="w-4 h-4"></i> Seed demo catalogue
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ TAB: ADD / EDIT ============ -->
+  <section x-show="activeTab === 'add'" x-cloak class="mt-6">
+    <div class="rounded-3xl border border-slate-200/80 dark:border-white/10 bg-white dark:bg-[#0b0e15] p-5 sm:p-7">
+      <div class="flex items-center justify-between mb-5">
+        <div>
+          <h2 class="font-display font-extrabold text-xl" x-text="editingId ? 'Edit product' : 'Add new product'"></h2>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">All fields required unless marked optional. Images: 2 to 6.</p>
+        </div>
+        <button @click="resetForm()" class="text-xs font-bold text-slate-400 hover:text-red-500 transition">Clear form</button>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-5">
+        <div class="md:col-span-2">
+          <label class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">Product name *</label>
+          <input type="text" x-model="form.name" placeholder="e.g. NSNV Oversized Hoodie — Charcoal"
+                 class="mt-1.5 w-full px-4 py-3 rounded-2xl bg-slate-100 dark:bg-[#07090e] border border-transparent focus:border-red-500 outline-none transition font-medium">
+        </div>
+
+        <div>
+          <label class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">Category *</label>
+          <select x-model="form.category"
+                  class="mt-1.5 w-full px-4 py-3 rounded-2xl bg-slate-100 dark:bg-[#07090e] border border-transparent focus:border-red-500 outline-none transition font-medium">
+            <template x-for="c in categories" :key="'fcat-'+c.id">
+              <option :value="c.id" x-text="c.label"></option>
+            </template>
+          </select>
+        </div>
+
+        <div>
+          <label class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">Gender *</label>
+          <select x-model="form.gender"
+                  class="mt-1.5 w-full px-4 py-3 rounded-2xl bg-slate-100 dark:bg-[#07090e] border border-transparent focus:border-red-500 outline-none transition font-medium">
+            <option value="men">Men</option>
+            <option value="women">Women</option>
+            <option value="unisex">Unisex</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">Price (₦) *</label>
+          <input type="number" x-model.number="form.price" placeholder="45000"
+                 class="mt-1.5 w-full px-4 py-3 rounded-2xl bg-slate-100 dark:bg-[#07090e] border border-transparent focus:border-red-500 outline-none transition font-medium">
+        </div>
+
+        <div>
+          <label class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">Old Price (₦) — optional</label>
+          <input type="number" x-model.number="form.oldPrice" placeholder="55000 (leave 0 if none)"
+                 class="mt-1.5 w-full px-4 py-3 rounded-2xl bg-slate-100 dark:bg-[#07090e] border border-transparent focus:border-red-500 outline-none transition font-medium">
+        </div>
+
+        <div class="md:col-span-2">
+          <label class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">Description *</label>
+          <textarea x-model="form.description" rows="3" placeholder="Relaxed fit. Breathable 100% linen. Perfect for Lagos heat."
+                    class="mt-1.5 w-full px-4 py-3 rounded-2xl bg-slate-100 dark:bg-[#07090e] border border-transparent focus:border-red-500 outline-none transition font-medium resize-none"></textarea>
+        </div>
+
+        <div>
+          <label class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">Fabric</label>
+          <input type="text" x-model="form.fabric" placeholder="100% Linen"
+                 class="mt-1.5 w-full px-4 py-3 rounded-2xl bg-slate-100 dark:bg-[#07090e] border border-transparent focus:border-red-500 outline-none transition font-medium">
+        </div>
+
+        <div>
+          <label class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">Fit</label>
+          <select x-model="form.fit"
+                  class="mt-1.5 w-full px-4 py-3 rounded-2xl bg-slate-100 dark:bg-[#07090e] border border-transparent focus:border-red-500 outline-none transition font-medium">
+            <option value="Slim">Slim</option>
+            <option value="Regular">Regular</option>
+            <option value="Oversized">Oversized</option>
+            <option value="Relaxed">Relaxed</option>
+            <option value="Bodycon">Bodycon</option>
+          </select>
+        </div>
+
+        <div class="md:col-span-2">
+          <label class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">Care instructions</label>
+          <input type="text" x-model="form.careInstructions" placeholder="Machine wash cold. Do not bleach. Iron on low."
+                 class="mt-1.5 w-full px-4 py-3 rounded-2xl bg-slate-100 dark:bg-[#07090e] border border-transparent focus:border-red-500 outline-none transition font-medium">
+        </div>
+
+        <div class="md:col-span-2">
+          <label class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">Sizes *</label>
+          <div class="flex flex-wrap gap-2 mt-2">
+            <template x-for="s in ['S','M','L','XL','XXL','One Size']" :key="'fs-'+s">
+              <button type="button" @click="toggleSize(s)"
+                      :class="form.sizes.indexOf(s) !== -1 ? 'bg-gradient-to-r from-red-500 to-red-700 text-white border-transparent' : 'border-slate-200 dark:border-white/10 hover:border-red-500'"
+                      class="btn-pill px-4 py-2 rounded-full text-xs font-extrabold border transition" x-text="s"></button>
+            </template>
+          </div>
+        </div>
+
+        <div class="md:col-span-2">
+          <div class="flex items-center justify-between mb-2">
+            <label class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">Colours</label>
+            <button type="button" @click="addColor()" class="text-xs font-bold text-red-500 hover:text-red-400 transition inline-flex items-center gap-1">
+              <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add colour
+            </button>
+          </div>
+          <div class="space-y-2">
+            <template x-for="(c, i) in form.colors" :key="'fc-'+i">
+              <div class="flex items-center gap-2">
+                <input type="color" x-model="c.hex" class="w-12 h-11 rounded-2xl border border-slate-200 dark:border-white/10 bg-transparent cursor-pointer">
+                <input type="text" x-model="c.name" placeholder="Colour name"
+                       class="flex-1 px-4 py-3 rounded-2xl bg-slate-100 dark:bg-[#07090e] border border-transparent focus:border-red-500 outline-none transition font-medium">
+                <button type="button" @click="form.colors.splice(i,1)"
+                        class="grid place-items-center w-10 h-10 rounded-full border border-slate-200 dark:border-white/10 hover:border-rose-400 hover:text-rose-500 transition">
+                  <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+              </div>
+            </template>
+          </div>
+        </div>
+
+        <div>
+          <label class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">Stock quantity *</label>
+          <input type="number" x-model.number="form.stock" placeholder="12"
+                 class="mt-1.5 w-full px-4 py-3 rounded-2xl bg-slate-100 dark:bg-[#07090e] border border-transparent focus:border-red-500 outline-none transition font-medium">
+        </div>
+
+        <div>
+          <label class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">Badge</label>
+          <select x-model="form.badge"
+                  class="mt-1.5 w-full px-4 py-3 rounded-2xl bg-slate-100 dark:bg-[#07090e] border border-transparent focus:border-red-500 outline-none transition font-medium">
+            <option value="">— none —</option>
+            <option value="NSNV Drop">NSNV Drop</option>
+            <option value="New In">New In</option>
+            <option value="Best Seller">Best Seller</option>
+            <option value="Limited">Limited</option>
+            <option value="Sale">Sale</option>
+            <option value="Editor's Pick">Editor's Pick</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">Badge colour</label>
+          <input type="color" x-model="form.badgeColor"
+                 class="mt-1.5 w-full h-11 rounded-2xl border border-slate-200 dark:border-white/10 bg-transparent cursor-pointer">
+        </div>
+
+        <div>
+          <label class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">Rating (0–5)</label>
+          <input type="number" step="0.1" min="0" max="5" x-model.number="form.rating" placeholder="4.8"
+                 class="mt-1.5 w-full px-4 py-3 rounded-2xl bg-slate-100 dark:bg-[#07090e] border border-transparent focus:border-red-500 outline-none transition font-medium">
+        </div>
+
+        <div>
+          <label class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">Reviews count</label>
+          <input type="number" x-model.number="form.reviews" placeholder="24"
+                 class="mt-1.5 w-full px-4 py-3 rounded-2xl bg-slate-100 dark:bg-[#07090e] border border-transparent focus:border-red-500 outline-none transition font-medium">
+        </div>
+
+        <div class="md:col-span-2 flex items-center gap-3">
+          <button type="button" @click="form.featured = !form.featured"
+                  :class="form.featured ? 'bg-gradient-to-r from-red-500 to-red-700 text-white border-transparent' : 'border-slate-200 dark:border-white/10'"
+                  class="btn-pill inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-extrabold border transition">
+            <i data-lucide="star" class="w-4 h-4" :class="form.featured ? 'fill-white text-white' : 'text-slate-400'"></i>
+            <span x-text="form.featured ? 'Featured (New This Week)' : 'Not featured'"></span>
+          </button>
+        </div>
+
+        <div class="md:col-span-2">
+          <label class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">Images * (2–6 required)</label>
+          <div class="mt-2 rounded-2xl border-2 border-dashed border-slate-300 dark:border-white/15 hover:border-red-500 transition p-5 text-center cursor-pointer"
+               @dragover.prevent @drop.prevent="handleDrop($event)">
+            <input type="file" accept="image/*" multiple class="hidden" id="imgInput" @change="handleFiles($event)">
+            <label for="imgInput" class="cursor-pointer block">
+              <span class="grid place-items-center w-14 h-14 mx-auto rounded-2xl bg-red-500/10">
+                <i data-lucide="upload" class="w-6 h-6 text-red-500"></i>
+              </span>
+              <p class="font-extrabold mt-3">Drag & drop, or browse files</p>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Auto-compressed to 1200px · 72% JPEG quality</p>
+            </label>
+          </div>
+
+          <div x-show="form.images.length" x-cloak class="mt-3 flex items-center justify-between text-xs font-bold">
+            <span class="text-slate-500 dark:text-slate-400">
+              <span x-text="form.images.length"></span> / 6 images ·
+              <span :class="storageKB > 4500 ? 'text-rose-500' : (storageKB > 3500 ? 'text-amber-500' : 'text-emerald-500')"
+                    x-text="'storage used: ' + storageKB + ' KB / ~5000 KB'"></span>
+            </span>
+            <button type="button" @click="form.images = []" class="text-slate-400 hover:text-rose-500 transition">Clear all</button>
+          </div>
+
+          <div class="grid grid-cols-3 sm:grid-cols-4 gap-2 mt-3">
+            <template x-for="(img, i) in form.images" :key="'fi-'+i">
+              <div class="relative rounded-2xl overflow-hidden border border-slate-200 dark:border-white/10 aspect-square">
+                <img :src="img" class="w-full h-full object-cover">
+                <span x-show="i === 0" x-cloak class="absolute bottom-1.5 left-1.5 px-1.5 py-0.5 rounded text-[9px] font-extrabold bg-red-500 text-white">COVER</span>
+                <button type="button" @click="form.images.splice(i,1)"
+                        class="absolute top-1.5 right-1.5 grid place-items-center w-6 h-6 rounded-full bg-slate-950/70 text-white hover:bg-rose-500 transition">
+                  <i data-lucide="x" class="w-3 h-3"></i>
+                </button>
+                <button type="button" x-show="i > 0" x-cloak @click="moveImageUp(i)"
+                        class="absolute bottom-1.5 right-1.5 grid place-items-center w-6 h-6 rounded-full bg-slate-950/70 text-white hover:bg-red-500 transition" title="Move up">
+                  <i data-lucide="arrow-up" class="w-3 h-3"></i>
+                </button>
+              </div>
+            </template>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-3 mt-6 pt-5 border-t border-slate-200/80 dark:border-white/10">
+        <button @click="saveProduct()"
+                class="btn-pill flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full font-extrabold text-white bg-gradient-to-r from-red-500 to-red-700 shadow-xl shadow-red-600/25">
+          <i data-lucide="save" class="w-4 h-4"></i>
+          <span x-text="editingId ? 'Save changes' : 'Add product'"></span>
+        </button>
+        <button @click="resetForm()"
+                class="btn-pill inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full font-bold border border-slate-200 dark:border-white/10 hover:border-red-500 transition">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TAB: FEATURED ============ -->
+  <section x-show="activeTab === 'featured'" x-cloak class="mt-6">
+    <div class="mb-4">
+      <h2 class="font-display font-extrabold text-xl">Featured products</h2>
+      <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Toggle which pieces appear in "NSNV New This Week" on the storefront.</p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <template x-for="p in products" :key="'feat-'+p.id">
+        <button @click="toggleFeatured(p.id)"
+                class="card-lift text-left rounded-3xl overflow-hidden border transition flex items-center gap-3 p-3"
+                :class="p.featured ? 'border-red-500/60 bg-red-500/5' : 'border-slate-200/80 dark:border-white/10 bg-white dark:bg-[#0b0e15] hover:border-red-500/40'">
+          <div class="w-16 h-20 rounded-2xl overflow-hidden bg-slate-100 dark:bg-white/5 shrink-0">
+            <img :src="p.images[0]" :alt="p.name" class="w-full h-full object-cover" @error="imgErr($event, p)">
+          </div>
+          <div class="min-w-0 flex-1">
+            <p class="font-display font-bold text-sm leading-snug line-clamp-2" x-text="p.name"></p>
+            <p class="text-xs font-extrabold text-red-500 mt-1" x-text="money(p.price)"></p>
+          </div>
+          <span class="grid place-items-center w-9 h-9 rounded-full shrink-0"
+                :class="p.featured ? 'bg-red-500 text-white' : 'bg-slate-100 dark:bg-white/5 text-slate-400'">
+            <i data-lucide="star" class="w-4 h-4" :class="p.featured ? 'fill-white' : ''"></i>
+          </span>
+        </button>
+      </template>
+    </div>
+  </section>
+
+  <!-- ============ TAB: CATEGORIES ============ -->
+  <section x-show="activeTab === 'categories'" x-cloak class="mt-6">
+    <div class="rounded-3xl border border-slate-200/80 dark:border-white/10 bg-white dark:bg-[#0b0e15] p-5 sm:p-7">
+      <h2 class="font-display font-extrabold text-xl">Categories</h2>
+      <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Add, rename, or delete clothing categories. Changes reflect on the storefront instantly.</p>
+
+      <div class="mt-5 flex gap-2">
+        <input type="text" x-model="newCatLabel" placeholder="New category name"
+               class="flex-1 px-4 py-3 rounded-2xl bg-slate-100 dark:bg-[#07090e] border border-transparent focus:border-red-500 outline-none transition font-medium">
+        <button @click="addCategory()"
+                class="btn-pill inline-flex items-center gap-2 px-5 py-3 rounded-full font-extrabold text-sm text-white bg-gradient-to-r from-red-500 to-red-700">
+          <i data-lucide="plus" class="w-4 h-4"></i> Add
+        </button>
+      </div>
+
+      <div class="mt-5 space-y-2">
+        <template x-for="(c, i) in categories" :key="'cat-'+c.id">
+          <div class="flex items-center gap-2 p-3 rounded-2xl border border-slate-200/80 dark:border-white/10">
+            <span class="px-3 py-1.5 rounded-full text-xs font-extrabold bg-red-500/15 text-red-500" x-text="c.id"></span>
+            <input type="text" x-model="c.label"
+                   class="flex-1 px-3 py-2 rounded-xl bg-slate-100 dark:bg-[#07090e] border border-transparent focus:border-red-500 outline-none transition font-semibold text-sm">
+            <button @click="saveCategories()"
+                    class="grid place-items-center w-9 h-9 rounded-full bg-emerald-500/15 text-emerald-500 hover:bg-emerald-500 hover:text-white transition" title="Save">
+              <i data-lucide="check" class="w-4 h-4"></i>
+            </button>
+            <button @click="deleteCategory(i)"
+                    class="grid place-items-center w-9 h-9 rounded-full border border-slate-200 dark:border-white/10 hover:border-rose-400 hover:text-rose-500 transition">
+              <i data-lucide="trash-2" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </template>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TAB: ORDERS ============ -->
+  <section x-show="activeTab === 'orders'" x-cloak class="mt-6">
+
+    <!-- Calendar -->
+    <div class="rounded-3xl border border-slate-200/80 dark:border-white/10 bg-white dark:bg-[#0b0e15] p-5 sm:p-7">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <h2 class="font-display font-extrabold text-xl">Orders calendar</h2>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Click any day to filter orders placed that day.</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button @click="shiftMonth(-1)" class="grid place-items-center w-9 h-9 rounded-xl border border-slate-200 dark:border-white/10 hover:border-red-500 transition">
+            <i data-lucide="chevron-left" class="w-4 h-4"></i>
+          </button>
+          <p class="font-display font-extrabold text-sm min-w-[120px] text-center" x-text="monthLabel"></p>
+          <button @click="shiftMonth(1)" class="grid place-items-center w-9 h-9 rounded-xl border border-slate-200 dark:border-white/10 hover:border-red-500 transition">
+            <i data-lucide="chevron-right" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-7 gap-1 text-center text-[10px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">
+        <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+      </div>
+      <div class="grid grid-cols-7 gap-1">
+        <template x-for="(d, i) in calendarDays" :key="'cd-'+i">
+          <button @click="d.date ? (selectedDay = selectedDay === d.date ? '' : d.date) : null"
+                  :disabled="!d.date"
+                  :class="!d.date ? 'opacity-0 cursor-default' : (selectedDay === d.date ? 'bg-gradient-to-br from-red-500 to-red-700 text-white border-transparent' : (d.count > 0 ? 'border-red-500/40 bg-red-500/5 hover:border-red-500' : 'border-slate-200/80 dark:border-white/10 hover:border-red-500/40'))"
+                  class="relative aspect-square rounded-2xl border transition flex flex-col items-center justify-center gap-0.5">
+            <span class="text-sm font-extrabold" x-text="d.day"></span>
+            <span x-show="d.count > 0" x-cloak
+                  class="text-[10px] font-extrabold"
+                  :class="selectedDay === d.date ? 'text-white' : 'text-red-500'"
+                  x-text="d.count + (d.count > 1 ? ' orders' : ' order')"></span>
+          </button>
+        </template>
+      </div>
+
+      <div x-show="selectedDay" x-cloak class="mt-4 flex items-center justify-between gap-3 rounded-2xl bg-red-500/10 border border-red-500/30 px-4 py-3">
+        <p class="text-sm font-bold">Showing orders from <span class="text-red-500" x-text="formatDateLong(selectedDay)"></span></p>
+        <button @click="selectedDay = ''" class="text-xs font-extrabold text-red-500 hover:text-red-400 transition">Clear filter</button>
+      </div>
+    </div>
+
+    <!-- Orders list -->
+    <div class="mt-6">
+      <div class="flex items-center justify-between mb-4 flex-wrap gap-3">
+        <div>
+          <h2 class="font-display font-extrabold text-xl">All orders</h2>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+            <span x-text="visibleOrders.length"></span> order(s)
+            <span x-show="selectedDay" x-cloak> — filtered</span>
+          </p>
+        </div>
+        <div class="flex items-center gap-2">
+          <select x-model="orderFilter"
+                  class="px-3.5 py-2.5 rounded-2xl bg-slate-100 dark:bg-[#07090e] border border-transparent focus:border-red-500 outline-none text-xs font-bold">
+            <option value="all">All statuses</option>
+            <option value="pending">Pending</option>
+            <option value="paid">Receipt uploaded</option>
+            <option value="confirmed">Confirmed</option>
+            <option value="rejected">Rejected</option>
+          </select>
+          <button @click="clearOrders()" class="text-xs font-extrabold text-slate-400 hover:text-rose-500 transition px-3 py-2">Clear all</button>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <template x-for="o in visibleOrders" :key="o.id">
+          <details class="group rounded-3xl border border-slate-200/80 dark:border-white/10 bg-white dark:bg-[#0b0e15] overflow-hidden">
+            <summary class="flex items-center gap-3 p-4 hover:bg-slate-50 dark:hover:bg-white/5 transition">
+              <span class="grid place-items-center w-11 h-11 rounded-2xl shrink-0"
+                    :class="o.status === 'confirmed' ? 'bg-emerald-500/15 text-emerald-500' : (o.status === 'paid' ? 'bg-cyan-500/15 text-cyan-500' : (o.status === 'rejected' ? 'bg-rose-500/15 text-rose-500' : 'bg-red-500/15 text-red-500'))">
+                <i :data-lucide="o.status === 'confirmed' ? 'check-circle-2' : (o.status === 'paid' ? 'receipt' : (o.status === 'rejected' ? 'x-circle' : 'clock'))" class="w-5 h-5"></i>
+              </span>
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <p class="font-display font-extrabold text-sm" x-text="o.id"></p>
+                  <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wide"
+                        :class="o.status === 'confirmed' ? 'bg-emerald-500/15 text-emerald-500' : (o.status === 'paid' ? 'bg-cyan-500/15 text-cyan-500' : (o.status === 'rejected' ? 'bg-rose-500/15 text-rose-500' : 'bg-red-500/15 text-red-500'))"
+                        x-text="statusLabel(o.status)"></span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 truncate">
+                  <span class="font-bold" x-text="o.customer.name"></span>
+                  <span> · </span>
+                  <span x-text="o.customer.whatsapp"></span>
+                  <span> · </span>
+                  <span x-text="formatDate(o.createdAt)"></span>
+                </p>
+              </div>
+              <div class="text-right shrink-0">
+                <p class="font-display font-extrabold text-red-500" x-text="money(o.total)"></p>
+                <p class="text-[10px] text-slate-400 font-bold" x-text="o.items.length + ' item(s)'"></p>
+              </div>
+              <i data-lucide="chevron-down" class="chev w-4 h-4 text-slate-400 transition-transform shrink-0"></i>
+            </summary>
+
+            <div class="border-t border-slate-200 dark:border-white/10 p-4 grid lg:grid-cols-2 gap-5">
+              <div>
+                <p class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">Customer</p>
+                <div class="mt-2 rounded-2xl bg-slate-100 dark:bg-white/5 p-4 text-sm space-y-1.5">
+                  <div class="flex justify-between gap-3"><span class="text-slate-500 dark:text-slate-400">Name</span><span class="font-extrabold text-right" x-text="o.customer.name"></span></div>
+                  <div class="flex justify-between gap-3"><span class="text-slate-500 dark:text-slate-400">Email</span><span class="font-extrabold text-right break-all" x-text="o.customer.email"></span></div>
+                  <div class="flex justify-between gap-3"><span class="text-slate-500 dark:text-slate-400">WhatsApp</span>
+                    <a :href="'https://wa.me/' + cleanPhone(o.customer.whatsapp)" target="_blank" rel="noopener" class="font-extrabold text-emerald-500 hover:text-emerald-400 text-right" x-text="o.customer.whatsapp"></a>
+                  </div>
+                  <div class="flex justify-between gap-3"><span class="text-slate-500 dark:text-slate-400">Calling</span>
+                    <a :href="'tel:' + o.customer.calling" class="font-extrabold text-cyan-500 hover:text-cyan-400 text-right" x-text="o.customer.calling"></a>
+                  </div>
+                  <div class="flex justify-between gap-3"><span class="text-slate-500 dark:text-slate-400">State</span><span class="font-extrabold text-right" x-text="o.customer.state"></span></div>
+                  <div class="flex justify-between gap-3"><span class="text-slate-500 dark:text-slate-400">City</span><span class="font-extrabold text-right" x-text="o.customer.city"></span></div>
+                  <div class="pt-2 border-t border-slate-200 dark:border-white/10">
+                    <p class="text-slate-500 dark:text-slate-400 text-xs mb-1">Delivery address</p>
+                    <p class="font-semibold text-xs leading-relaxed" x-text="o.customer.address"></p>
+                  </div>
+                  <div x-show="o.customer.notes" x-cloak class="pt-2 border-t border-slate-200 dark:border-white/10">
+                    <p class="text-slate-500 dark:text-slate-400 text-xs mb-1">Notes</p>
+                    <p class="font-semibold text-xs leading-relaxed whitespace-pre-line" x-text="o.customer.notes"></p>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <p class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">Items</p>
+                <div class="mt-2 rounded-2xl border border-slate-200 dark:border-white/10 divide-y divide-slate-200 dark:divide-white/10 overflow-hidden">
+                  <template x-for="(it, ix) in o.items" :key="'it-'+o.id+'-'+ix">
+                    <div class="flex items-center gap-3 p-3">
+                      <div class="w-12 h-14 rounded-xl overflow-hidden bg-slate-100 dark:bg-white/5 shrink-0">
+                        <img :src="it.image" :alt="it.name" class="w-full h-full object-cover" @error="imgErr($event, it)">
+                      </div>
+                      <div class="min-w-0 flex-1">
+                        <p class="font-bold text-xs leading-snug line-clamp-2" x-text="it.name"></p>
+                        <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">
+                          Size <span class="font-extrabold" x-text="it.size"></span>
+                          <span x-show="it.color"> · <span x-text="it.color"></span></span>
+                          · Qty <span class="font-extrabold" x-text="it.qty"></span>
+                        </p>
+                      </div>
+                      <p class="font-extrabold text-red-500 text-xs shrink-0" x-text="money(it.price * it.qty)"></p>
+                    </div>
+                  </template>
+                  <div class="p-3 bg-slate-50 dark:bg-white/5 text-xs space-y-1">
+                    <div class="flex justify-between"><span class="text-slate-500 dark:text-slate-400">Subtotal</span><span class="font-bold" x-text="money(o.subtotal)"></span></div>
+                    <div class="flex justify-between"><span class="text-slate-500 dark:text-slate-400">Delivery</span><span class="font-bold" x-text="o.delivery === 0 ? 'FREE' : money(o.delivery)"></span></div>
+                    <div class="flex justify-between text-sm pt-1 border-t border-dashed border-slate-300 dark:border-white/10">
+                      <span class="font-display font-extrabold">Total</span>
+                      <span class="font-display font-extrabold text-red-500" x-text="money(o.total)"></span>
+                    </div>
+                  </div>
+                </div>
+
+                <p class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-4">Receipt</p>
+                <div class="mt-2 rounded-2xl border border-slate-200 dark:border-white/10 p-3">
+                  <template x-if="o.receipt">
+                    <img :src="o.receipt" alt="Receipt" class="w-full max-h-56 object-contain bg-slate-50 dark:bg-white/5 rounded-xl cursor-pointer" @click="viewReceipt(o)">
+                  </template>
+                  <template x-if="!o.receipt">
+                    <p class="text-xs text-slate-500 dark:text-slate-400 text-center py-4">No receipt uploaded yet.</p>
+                  </template>
+                </div>
+
+                <div class="mt-4 flex flex-wrap gap-2">
+                  <button x-show="o.status !== 'confirmed'" x-cloak @click="confirmOrder(o.id)"
+                          class="btn-pill inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-xs font-extrabold text-white bg-gradient-to-r from-emerald-500 to-emerald-600">
+                    <i data-lucide="check" class="w-3.5 h-3.5"></i> Confirm order
+                  </button>
+                  <button x-show="o.status !== 'rejected'" x-cloak @click="rejectOrder(o.id)"
+                          class="btn-pill inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-xs font-extrabold text-white bg-gradient-to-r from-rose-500 to-rose-600">
+                    <i data-lucide="x" class="w-3.5 h-3.5"></i> Reject
+                  </button>
+                  <a :href="'https://wa.me/' + cleanPhone(o.customer.whatsapp) + '?text=' + encodeURIComponent('Hello ' + o.customer.name + ', this is Swaguu regarding your order ' + o.id + '.')"
+                     target="_blank" rel="noopener"
+                     class="btn-pill inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-xs font-extrabold text-white bg-gradient-to-r from-emerald-500 to-emerald-600">
+                    <i data-lucide="message-circle" class="w-3.5 h-3.5"></i> Message customer
+                  </a>
+                  <button @click="deleteOrder(o.id)"
+                          class="btn-pill inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-xs font-extrabold border border-slate-200 dark:border-white/10 hover:border-rose-400 hover:text-rose-500 transition">
+                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Delete
+                  </button>
+                </div>
+
+                <div class="mt-3 text-[11px] text-slate-500 dark:text-slate-400 font-semibold">
+                  <span x-show="o.paidAt" x-cloak>Receipt received: <span x-text="formatDate(o.paidAt)"></span></span>
+                  <span x-show="o.confirmedAt" x-cloak> · Confirmed: <span x-text="formatDate(o.confirmedAt)"></span></span>
+                </div>
+              </div>
+            </div>
+          </details>
+        </template>
+
+        <div x-show="visibleOrders.length === 0" x-cloak class="rounded-3xl border border-dashed border-slate-300 dark:border-white/15 p-12 text-center">
+          <i data-lucide="inbox" class="w-8 h-8 mx-auto text-slate-400"></i>
+          <p class="font-display font-extrabold text-lg mt-3">No orders to show</p>
+          <p class="text-sm text-slate-500 dark:text-slate-400 mt-1.5">Orders placed on the storefront will appear here.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TAB: PAYMENT SETTINGS ============ -->
+  <section x-show="activeTab === 'settings'" x-cloak class="mt-6">
+    <div class="rounded-3xl border border-slate-200/80 dark:border-white/10 bg-white dark:bg-[#0b0e15] p-5 sm:p-7 max-w-3xl">
+      <h2 class="font-display font-extrabold text-xl">Payment settings</h2>
+      <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">These details are shown to every customer at checkout. Update them any time — the storefront reflects changes instantly.</p>
+
+      <div class="grid sm:grid-cols-2 gap-4 mt-6">
+        <div>
+          <label class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">Bank name</label>
+          <input type="text" x-model="settings.bankName" placeholder="e.g. GTBank"
+                 class="mt-1.5 w-full px-4 py-3 rounded-2xl bg-slate-100 dark:bg-[#07090e] border border-transparent focus:border-red-500 outline-none transition font-medium">
+        </div>
+        <div>
+          <label class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">Account name</label>
+          <input type="text" x-model="settings.accountName" placeholder="e.g. Swaguu Apparel Ltd"
+                 class="mt-1.5 w-full px-4 py-3 rounded-2xl bg-slate-100 dark:bg-[#07090e] border border-transparent focus:border-red-500 outline-none transition font-medium">
+        </div>
+        <div class="sm:col-span-2">
+          <label class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">Account number</label>
+          <input type="text" x-model="settings.accountNumber" placeholder="0123456789"
+                 class="mt-1.5 w-full px-4 py-3 rounded-2xl bg-slate-100 dark:bg-[#07090e] border border-transparent focus:border-red-500 outline-none transition font-medium">
+        </div>
+        <div class="sm:col-span-2">
+          <label class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">Payment instructions shown to customer</label>
+          <textarea x-model="settings.instructions" rows="4"
+                    class="mt-1.5 w-full px-4 py-3 rounded-2xl bg-slate-100 dark:bg-[#07090e] border border-transparent focus:border-red-500 outline-none transition font-medium resize-none"></textarea>
+        </div>
+        <div>
+          <label class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">Delivery fee (₦)</label>
+          <input type="number" x-model.number="settings.deliveryFee" placeholder="3500"
+                 class="mt-1.5 w-full px-4 py-3 rounded-2xl bg-slate-100 dark:bg-[#07090e] border border-transparent focus:border-red-500 outline-none transition font-medium">
+        </div>
+        <div>
+          <label class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">Free delivery threshold (₦)</label>
+          <input type="number" x-model.number="settings.freeDeliveryThreshold" placeholder="100000"
+                 class="mt-1.5 w-full px-4 py-3 rounded-2xl bg-slate-100 dark:bg-[#07090e] border border-transparent focus:border-red-500 outline-none transition font-medium">
+        </div>
+      </div>
+
+      <button @click="saveSettings()"
+              class="btn-pill mt-6 inline-flex items-center gap-2 px-6 py-3.5 rounded-full font-extrabold text-white bg-gradient-to-r from-red-500 to-red-700 shadow-xl shadow-red-600/25">
+        <i data-lucide="save" class="w-4 h-4"></i> Save payment settings
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ TAB: ACTIVITY ============ -->
+  <section x-show="activeTab === 'activity'" x-cloak class="mt-6">
+    <div class="rounded-3xl border border-slate-200/80 dark:border-white/10 bg-white dark:bg-[#0b0e15] p-5 sm:p-7">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="font-display font-extrabold text-xl">Activity log</h2>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Every admin action, timestamped.</p>
+        </div>
+        <button @click="clearActivity()" class="text-xs font-extrabold text-slate-400 hover:text-rose-500 transition">Clear log</button>
+      </div>
+
+      <div class="mt-5 space-y-2">
+        <template x-for="(a, i) in activity" :key="'act-'+i">
+          <div class="flex items-start gap-3 p-3 rounded-2xl border border-slate-200/80 dark:border-white/10">
+            <span class="grid place-items-center w-8 h-8 rounded-lg shrink-0"
+                  :class="a.type === 'delete' ? 'bg-rose-500/15 text-rose-500' : (a.type === 'add' ? 'bg-emerald-500/15 text-emerald-500' : 'bg-red-500/15 text-red-500')">
+              <i :data-lucide="a.type === 'delete' ? 'trash-2' : (a.type === 'add' ? 'plus' : 'edit-3')" class="w-3.5 h-3.5"></i>
+            </span>
+            <div class="min-w-0 flex-1">
+              <p class="text-sm font-semibold" x-text="a.text"></p>
+              <p class="text-[10px] text-slate-400 font-bold mt-0.5" x-text="formatDate(a.at)"></p>
+            </div>
+          </div>
+        </template>
+        <div x-show="activity.length === 0" x-cloak class="text-center py-12 text-slate-500 dark:text-slate-400 text-sm">
+          No activity yet.
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ DELETE CONFIRM ============ -->
+<div x-show="deleteTarget" x-cloak class="fixed inset-0 z-[95] grid place-items-center p-4">
+  <div class="absolute inset-0 bg-slate-950/70 backdrop-blur-sm" @click="deleteTarget = null"></div>
+  <div class="relative w-full max-w-sm rounded-3xl border border-slate-200 dark:border-white/10 bg-white dark:bg-[#0b0e15] shadow-2xl p-6 text-center"
+       x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100">
+    <span class="inline-grid place-items-center w-14 h-14 rounded-2xl bg-rose-500/15 text-rose-500">
+      <i data-lucide="trash-2" class="w-6 h-6"></i>
+    </span>
+    <h3 class="font-display font-extrabold text-lg mt-4">Delete this product?</h3>
+    <p class="text-sm text-slate-500 dark:text-slate-400 mt-2">
+      <span class="font-extrabold text-red-500" x-text="deleteTarget && deleteTarget.name"></span>
+      will be permanently removed from the storefront. This cannot be undone.
+    </p>
+    <div class="flex gap-3 mt-6">
+      <button @click="deleteTarget = null"
+              class="flex-1 px-5 py-3 rounded-full font-bold border border-slate-200 dark:border-white/10 hover:border-red-500 transition">Cancel</button>
+      <button @click="confirmDelete()"
+              class="flex-1 px-5 py-3 rounded-full font-extrabold text-white bg-gradient-to-r from-rose-500 to-rose-600">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ RECEIPT VIEWER ============ -->
+<div x-show="receiptTarget" x-cloak class="fixed inset-0 z-[96] grid place-items-center p-4">
+  <div class="absolute inset-0 bg-slate-950/80 backdrop-blur-sm" @click="receiptTarget = null"></div>
+  <div class="relative w-full max-w-2xl max-h-[90vh] rounded-3xl border border-slate-200 dark:border-white/10 bg-white dark:bg-[#0b0e15] shadow-2xl overflow-hidden">
+    <div class="flex items-center justify-between px-5 h-14 border-b border-slate-200 dark:border-white/10">
+      <p class="font-display font-extrabold text-sm">Receipt — <span class="text-red-500" x-text="receiptTarget && receiptTarget.id"></span></p>
+      <button @click="receiptTarget = null" class="grid place-items-center w-9 h-9 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+    <div class="p-4 bg-slate-50 dark:bg-white/5">
+      <img :src="receiptTarget && receiptTarget.receipt" alt="Receipt" class="w-full max-h-[75vh] object-contain mx-auto">
+    </div>
+  </div>
+</div>
+
+<!-- ============ TOASTS ============ -->
+<div class="fixed top-20 left-1/2 -translate-x-1/2 z-[100] w-[calc(100%-2rem)] max-w-sm space-y-2 pointer-events-none">
+  <template x-for="t in toasts" :key="t.id">
+    <div class="bubble pointer-events-auto flex items-start gap-3 px-4 py-3 rounded-2xl border shadow-2xl glass bg-white/95 dark:bg-[#12161f]/95"
+         :class="t.type === 'error' ? 'border-rose-400/50' : (t.type === 'success' ? 'border-emerald-400/50' : 'border-red-500/50')">
+      <i :data-lucide="t.type === 'error' ? 'alert-circle' : (t.type === 'success' ? 'check-circle-2' : 'info')"
+         class="w-4 h-4 mt-0.5 shrink-0"
+         :class="t.type === 'error' ? 'text-rose-500' : (t.type === 'success' ? 'text-emerald-500' : 'text-red-500')"></i>
+      <p class="text-sm font-semibold leading-snug" x-text="t.text"></p>
+    </div>
+  </template>
+</div>
+
+<script>
+/* ================================================================
+   SWAGUU ADMIN CONSOLE
+   ================================================================ */
+const ADMIN_PASSWORD = 'admin123';
+
+const K = {
+  products:  'cloth_products',
+  cats:      'cloth_categories',
+  theme:     'cloth_theme',
+  activity:  'cloth_activity',
+  orders:    'cloth_orders',
+  settings:  'cloth_settings',
+  auth:      'cloth_admin_auth'
+};
+
+const DEFAULT_SETTINGS = {
+  bankName: 'GTBank',
+  accountName: 'Swaguu Apparel Ltd',
+  accountNumber: '0123456789',
+  instructions: 'Transfer the exact total to the account above.\nUse your order reference as the transfer narration.\nThen upload your receipt so we can confirm quickly.',
+  deliveryFee: 3500,
+  freeDeliveryThreshold: 100000
+};
+
+const DEFAULT_CATS = [
+  { id:'shirts', label:'Shirts' }, { id:'tshirts', label:'T-Shirts' },
+  { id:'hoodies', label:'Hoodies' }, { id:'pants', label:'Pants' },
+  { id:'dresses', label:'Dresses' }, { id:'skirts', label:'Skirts' },
+  { id:'jackets', label:'Jackets' }, { id:'accessories', label:'Accessories' }
+];
+
+const U = (id) => 'https://images.unsplash.com/photo-' + id + '?auto=format&fit=crop&w=900&q=70';
+
+const DEMO_PRODUCTS = [
+  {
+    id:'swg-001', name:'NSNV Oversized Linen Shirt — Ivory', category:'shirts', gender:'unisex',
+    price:45000, oldPrice:55000, currency:'₦',
+    description:'Relaxed, breathable and built for Lagos heat. Cut to match the NSNV energy.',
+    fabric:'100% European Linen', fit:'Oversized',
+    careInstructions:'Machine wash cold. Do not bleach. Iron on low heat.',
+    sizes:['S','M','L','XL','XXL'],
+    colors:[{name:'Ivory',hex:'#f5f5dc'},{name:'Black',hex:'#0a0a0a'},{name:'Sage',hex:'#9caf88'}],
+    stock:12, badge:'NSNV Drop', badgeColor:'#dc2626', featured:true,
+    images:[U('1596755094514-f87e34085b2c'), U('1602810318383-e386cc2a3ccf')],
+    rating:4.8, reviews:24,
+    createdAt:'2025-01-15T09:00:00.000Z', updatedAt:'2025-01-15T09:00:00.000Z'
+  },
+  {
+    id:'swg-002', name:'Seyi Vibez Heavyweight Tee — Onyx', category:'tshirts', gender:'unisex',
+    price:18500, oldPrice:0, currency:'₦',
+    description:'240gsm cotton tee with a structured boxy cut and the NSNV emblem on the chest.',
+    fabric:'240gsm 100% Combed Cotton', fit:'Oversized',
+    careInstructions:'Machine wash cold, inside out. Tumble dry low.',
+    sizes:['S','M','L','XL','XXL'],
+    colors:[{name:'Onyx',hex:'#0a0a0a'},{name:'Bone',hex:'#efe9dd'},{name:'Blood',hex:'#8a0f1a'}],
+    stock:40, badge:'Best Seller', badgeColor:'#22d3ee', featured:true,
+    images:[U('1521572163474-6864f9cf17ab'), U('1576566588028-4147f3842f27')],
+    rating:4.9, reviews:61,
+    createdAt:'2025-01-12T09:00:00.000Z', updatedAt:'2025-01-12T09:00:00.000Z'
+  },
+  {
+    id:'swg-003', name:'Lagos Nights Hoodie — Charcoal', category:'hoodies', gender:'unisex',
+    price:52000, oldPrice:62000, currency:'₦',
+    description:'Brushed-back fleece with a double-lined hood and NSNV embroidery.',
+    fabric:'80% Cotton / 20% Poly Fleece', fit:'Relaxed',
+    careInstructions:'Machine wash cold. Do not iron print. Do not bleach.',
+    sizes:['S','M','L','XL','XXL'],
+    colors:[{name:'Charcoal',hex:'#2b2b2b'},{name:'Sand',hex:'#d8cbb6'},{name:'Deep Red',hex:'#7a0a12'}],
+    stock:8, badge:'Sale', badgeColor:'#f43f5e', featured:true,
+    images:[U('1620799140408-edc6dcb6d633'), U('1556821840-3a63f95609a7')],
+    rating:4.7, reviews:33,
+    createdAt:'2025-01-10T09:00:00.000Z', updatedAt:'2025-01-10T09:00:00.000Z'
+  },
+  {
+    id:'swg-004', name:'Wide-Leg Tailored Pants — Sand', category:'pants', gender:'women',
+    price:39000, oldPrice:0, currency:'₦',
+    description:'Fluid wide-leg trousers with a clean front crease and hidden hook closure.',
+    fabric:'Poly-Viscose Twill', fit:'Relaxed',
+    careInstructions:'Dry clean recommended. Cool iron on reverse.',
+    sizes:['S','M','L','XL'],
+    colors:[{name:'Sand',hex:'#d8cbb6'},{name:'Black',hex:'#0a0a0a'}],
+    stock:15, badge:"Editor's Pick", badgeColor:'#22d3ee', featured:false,
+    images:[U('1473966968600-fa801b869a1a'), U('1542272604-787c3835535d')],
+    rating:4.6, reviews:18,
+    createdAt:'2025-01-09T09:00:00.000Z', updatedAt:'2025-01-09T09:00:00.000Z'
+  },
+  {
+    id:'swg-005', name:'Utility Cargo Pants — Olive', category:'pants', gender:'men',
+    price:42000, oldPrice:0, currency:'₦',
+    description:'Six-pocket ripstop cargos with adjustable ankle tabs.',
+    fabric:'Cotton Ripstop', fit:'Regular',
+    careInstructions:'Machine wash warm. Tumble dry low.',
+    sizes:['M','L','XL','XXL'],
+    colors:[{name:'Olive',hex:'#556b2f'},{name:'Black',hex:'#0a0a0a'}],
+    stock:0, badge:'NSNV Drop', badgeColor:'#dc2626', featured:false,
+    images:[U('1542272604-787c3835535d'), U('1473966968600-fa801b869a1a')],
+    rating:4.5, reviews:12,
+    createdAt:'2025-01-08T09:00:00.000Z', updatedAt:'2025-01-08T09:00:00.000Z'
+  },
+  {
+    id:'swg-006', name:'Satin Slip Dress — Wine', category:'dresses', gender:'women',
+    price:58000, oldPrice:70000, currency:'₦',
+    description:'Bias-cut satin with adjustable straps and a soft cowl drape.',
+    fabric:'Matte Satin', fit:'Bodycon',
+    careInstructions:'Hand wash cold or dry clean. Do not tumble dry.',
+    sizes:['S','M','L','XL'],
+    colors:[{name:'Wine',hex:'#5b1e2d'},{name:'Champagne',hex:'#e6d2b5'},{name:'Black',hex:'#0a0a0a'}],
+    stock:6, badge:'Limited', badgeColor:'#f43f5e', featured:true,
+    images:[U('1595777457583-95e059d581b8'), U('1594633312681-425c7b97ccd1')],
+    rating:4.9, reviews:27,
+    createdAt:'2025-01-07T09:00:00.000Z', updatedAt:'2025-01-07T09:00:00.000Z'
+  },
+  {
+    id:'swg-007', name:'Pleated Midi Skirt — Black', category:'skirts', gender:'women',
+    price:34000, oldPrice:0, currency:'₦',
+    description:'Knife-pleated midi with an elasticated waistband that keeps its shape all day.',
+    fabric:'Recycled Poly Crepe', fit:'Regular',
+    careInstructions:'Machine wash cold on gentle. Hang dry.',
+    sizes:['S','M','L','XL'],
+    colors:[{name:'Black',hex:'#0a0a0a'},{name:'Sage',hex:'#9caf88'}],
+    stock:19, badge:'New In', badgeColor:'#dc2626', featured:false,
+    images:[U('1583496661160-fb5886a0aaaa'), U('1594633312681-425c7b97ccd1')],
+    rating:4.6, reviews:14,
+    createdAt:'2025-01-06T09:00:00.000Z', updatedAt:'2025-01-06T09:00:00.000Z'
+  },
+  {
+    id:'swg-008', name:'NSNV Bomber Jacket — Cobalt', category:'jackets', gender:'unisex',
+    price:76000, oldPrice:0, currency:'₦',
+    description:'Water-resistant shell, ribbed cuffs and quilted lining.',
+    fabric:'Poly Shell / Quilted Lining', fit:'Regular',
+    careInstructions:'Wipe clean. Do not machine wash. Do not bleach.',
+    sizes:['S','M','L','XL','XXL'],
+    colors:[{name:'Cobalt',hex:'#1e40af'},{name:'Black',hex:'#0a0a0a'}],
+    stock:9, badge:'Best Seller', badgeColor:'#22d3ee', featured:false,
+    images:[U('1551028719-00167b16eac5'), U('1591047139829-d91aecb6caea')],
+    rating:4.8, reviews:21,
+    createdAt:'2025-01-05T09:00:00.000Z', updatedAt:'2025-01-05T09:00:00.000Z'
+  },
+  {
+    id:'swg-009', name:'Cropped Denim Jacket — Indigo', category:'jackets', gender:'women',
+    price:64000, oldPrice:79000, currency:'₦',
+    description:'Rigid indigo denim, cropped at the waist, with antique brass hardware.',
+    fabric:'100% Cotton Denim', fit:'Slim',
+    careInstructions:'Machine wash cold, inside out. Wash with like colours.',
+    sizes:['S','M','L','XL'],
+    colors:[{name:'Indigo',hex:'#2f4f6f'},{name:'Washed Blue',hex:'#7aa0c4'}],
+    stock:7, badge:'Sale', badgeColor:'#f43f5e', featured:false,
+    images:[U('1591047139829-d91aecb6caea'), U('1551028719-00167b16eac5')],
+    rating:4.7, reviews:16,
+    createdAt:'2025-01-04T09:00:00.000Z', updatedAt:'2025-01-04T09:00:00.000Z'
+  },
+  {
+    id:'swg-010', name:'Ribbed Knit Top — Cream', category:'tshirts', gender:'women',
+    price:26000, oldPrice:0, currency:'₦',
+    description:'Soft ribbed knit with a square neckline and a body-skimming fit.',
+    fabric:'Cotton-Elastane Rib', fit:'Slim',
+    careInstructions:'Hand wash cold. Dry flat. Do not wring.',
+    sizes:['S','M','L'],
+    colors:[{name:'Cream',hex:'#f2e8d5'},{name:'Black',hex:'#0a0a0a'},{name:'Rust',hex:'#a3542c'}],
+    stock:22, badge:'New In', badgeColor:'#dc2626', featured:false,
+    images:[U('1483985988355-763728e1935b'), U('1521572163474-6864f9cf17ab')],
+    rating:4.6, reviews:19,
+    createdAt:'2025-01-03T09:00:00.000Z', updatedAt:'2025-01-03T09:00:00.000Z'
+  },
+  {
+    id:'swg-011', name:'NSNV Canvas Tote — Ecru', category:'accessories', gender:'unisex',
+    price:15000, oldPrice:0, currency:'₦',
+    description:'16oz heavyweight canvas tote with an internal zip pocket and reinforced handles. NSNV print on the front.',
+    fabric:'16oz Cotton Canvas', fit:'Regular',
+    careInstructions:'Spot clean only. Do not machine wash.',
+    sizes:['One Size'],
+    colors:[{name:'Ecru',hex:'#e8dfc9'},{name:'Black',hex:'#0a0a0a'}],
+    stock:35, badge:'Best Seller', badgeColor:'#22d3ee', featured:false,
+    images:[U('1553062407-98eeb64c6a62'), U('1523170335258-f5ed11844a49')],
+    rating:4.8, reviews:42,
+    createdAt:'2025-01-02T09:00:00.000Z', updatedAt:'2025-01-02T09:00:00.000Z'
+  },
+  {
+    id:'swg-012', name:'Suede Cap — Camel', category:'accessories', gender:'unisex',
+    price:12000, oldPrice:16000, currency:'₦',
+    description:'Six-panel suede cap with a brass buckle strap and tonal NSNV embroidery.',
+    fabric:'Faux Suede', fit:'Regular',
+    careInstructions:'Spot clean with a soft brush. Keep away from water.',
+    sizes:['One Size'],
+    colors:[{name:'Camel',hex:'#c19a6b'},{name:'Black',hex:'#0a0a0a'}],
+    stock:28, badge:'Sale', badgeColor:'#f43f5e', featured:false,
+    images:[U('1588850561407-ed78c282e89b'), U('1523170335258-f5ed11844a49')],
+    rating:4.5, reviews:11,
+    createdAt:'2025-01-01T09:00:00.000Z', updatedAt:'2025-01-01T09:00:00.000Z'
+  }
+];
+
+/* Lucide auto-refresh */
+(function () {
+  let t = null;
+  const obs = new MutationObserver(() => {
+    clearTimeout(t);
+    t = setTimeout(() => {
+      obs.disconnect();
+      try { if (window.lucide && window.lucide.createIcons) window.lucide.createIcons(); } catch (e) {}
+      obs.observe(document.body, { childList: true, subtree: true });
+    }, 55);
+  });
+  document.addEventListener('DOMContentLoaded', () => {
+    try { if (window.lucide && window.lucide.createIcons) window.lucide.createIcons(); } catch (e) {}
+    obs.observe(document.body, { childList: true, subtree: true });
+  });
+})();
+
+function admin() {
+  return {
+    /* auth */
+    authed: false, password: '', showPass: false, loginError: '',
+
+    /* data */
+    products: [],
+    categories: [],
+    orders: [],
+    settings: Object.assign({}, DEFAULT_SETTINGS),
+    activity: [],
+    theme: 'dark',
+
+    /* ui */
+    activeTab: 'products',
+    tabs: [
+      { id:'products',   label:'All Products',    icon:'package' },
+      { id:'add',        label:'Add New',         icon:'plus-circle' },
+      { id:'featured',   label:'Featured',        icon:'star' },
+      { id:'categories', label:'Categories',      icon:'layers' },
+      { id:'orders',     label:'Orders',          icon:'shopping-cart' },
+      { id:'settings',   label:'Payment Settings',icon:'settings' },
+      { id:'activity',   label:'Activity',        icon:'activity' }
+    ],
+
+    /* form */
+    editingId: null,
+    form: {
+      name:'', category:'shirts', gender:'unisex', price:'', oldPrice:'',
+      description:'', fabric:'', fit:'Regular', careInstructions:'',
+      sizes:['S','M','L'], colors:[{name:'Black',hex:'#0a0a0a'}],
+      stock:'', badge:'', badgeColor:'#dc2626', featured:false,
+      images:[], rating:4.8, reviews:0
+    },
+
+    /* modals */
+    deleteTarget: null,
+    receiptTarget: null,
+
+    /* calendar */
+    calMonth: new Date(),
+    selectedDay: '',
+    orderFilter: 'all',
+
+    /* categories */
+    newCatLabel: '',
+
+    /* toasts */
+    toasts: [],
+    toastId: 0,
+
+    /* ================= LIFECYCLE ================= */
+    init() {
+      this.theme = localStorage.getItem(K.theme) || 'dark';
+      document.documentElement.classList.toggle('dark', this.theme === 'dark');
+
+      try { this.authed = sessionStorage.getItem(K.auth) === '1'; } catch (e) {}
+
+      this.products = this.loadJSON(K.products, null);
+      if (!Array.isArray(this.products) || !this.products.length) {
+        this.products = JSON.parse(JSON.stringify(DEMO_PRODUCTS));
+        this.saveJSON(K.products, this.products);
+      }
+
+      this.categories = this.loadJSON(K.cats, null);
+      if (!Array.isArray(this.categories) || !this.categories.length) {
+        this.categories = DEFAULT_CATS.slice();
+        this.saveJSON(K.cats, this.categories);
+      }
+
+      this.orders = this.loadJSON(K.orders, []);
+      if (!Array.isArray(this.orders)) this.orders = [];
+
+      this.settings = Object.assign({}, DEFAULT_SETTINGS, this.loadJSON(K.settings, {}));
+
+      this.activity = this.loadJSON(K.activity, []);
+      if (!Array.isArray(this.activity)) this.activity = [];
+
+      this.refreshIcons();
+      window.addEventListener('storage', (e) => this.onStorage(e));
+    },
+
+    refreshIcons() {
+      setTimeout(() => {
+        try { if (window.lucide && window.lucide.createIcons) window.lucide.createIcons(); } catch (e) {}
+      }, 60);
+    },
+
+    loadJSON(key, fallback) {
+      try {
+        const raw = localStorage.getItem(key);
+        if (!raw) return fallback;
+        const parsed = JSON.parse(raw);
+        return parsed == null ? fallback : parsed;
+      } catch (e) { return fallback; }
+    },
+
+    saveJSON(key, value) {
+      try { localStorage.setItem(key, JSON.stringify(value)); } catch (e) {}
+    },
+
+    onStorage(e) {
+      if (e.key === K.orders) {
+        this.orders = this.loadJSON(K.orders, []);
+        if (!Array.isArray(this.orders)) this.orders = [];
+      }
+      if (e.key === K.products) {
+        this.products = this.loadJSON(K.products, []);
+        if (!Array.isArray(this.products)) this.products = [];
+      }
+      if (e.key === K.cats) {
+        this.categories = this.loadJSON(K.cats, DEFAULT_CATS.slice());
+        if (!Array.isArray(this.categories)) this.categories = DEFAULT_CATS.slice();
+      }
+    },
+
+    /* ================= AUTH ================= */
+    login() {
+      if (this.password === ADMIN_PASSWORD) {
+        this.authed = true;
+        this.loginError = '';
+        try { sessionStorage.setItem(K.auth, '1'); } catch (e) {}
+        this.toast('Welcome back, Admin', 'success');
+      } else {
+        this.loginError = 'Incorrect password. Try again.';
+        this.toast('Wrong password', 'error');
+      }
+    },
+    logout() {
+      this.authed = false;
+      this.password = '';
+      try { sessionStorage.removeItem(K.auth); } catch (e) {}
+      this.toast('Signed out');
+    },
+
+    /* ================= THEME ================= */
+    toggleTheme() {
+      this.theme = this.theme === 'dark' ? 'light' : 'dark';
+      try { localStorage.setItem(K.theme, this.theme); } catch (e) {}
+      document.documentElement.classList.toggle('dark', this.theme === 'dark');
+    },
+
+    /* ================= HELPERS ================= */
+    money(n) {
+      const num = Number(n) || 0;
+      return '₦' + num.toLocaleString('en-NG', { maximumFractionDigits: 0 });
+    },
+    cleanPhone(p) {
+      return String(p || '').replace(/[^0-9]/g, '').replace(/^0/, '234');
+    },
+    placeholder(name) {
+      const initials = String(name || 'S').replace(/[^A-Za-z ]/g, '').split(' ')
+        .filter(Boolean).slice(0, 2).map(w => w[0].toUpperCase()).join('') || 'S';
+      const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000">' +
+        '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">' +
+        '<stop offset="0" stop-color="#12161f"/><stop offset="1" stop-color="#07090e"/></linearGradient></defs>' +
+        '<rect width="800" height="1000" fill="url(#g)"/>' +
+        '<text x="400" y="470" font-family="Sora,Arial,sans-serif" font-size="130" font-weight="800" fill="#dc2626" text-anchor="middle">' + initials + '</text>' +
+        '<text x="400" y="560" font-family="Arial,sans-serif" font-size="30" letter-spacing="8" fill="#64748b" text-anchor="middle">SWAGUU × NSNV</text></svg>';
+      return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+    },
+    imgErr(e, p) {
+      e.target.onerror = null;
+      e.target.src = this.placeholder(p && p.name ? p.name : 'Swaguu');
+    },
+    toast(text, type) {
+      const id = ++this.toastId;
+      this.toasts.push({ id: id, text: text, type: type || 'info' });
+      this.refreshIcons();
+      setTimeout(() => { this.toasts = this.toasts.filter(t => t.id !== id); }, 4200);
+    },
+    lockScroll() {
+      const open = !this.authed || this.deleteTarget || this.receiptTarget;
+      document.body.style.overflow = open ? 'hidden' : '';
+    },
+    closeTop() {
+      if (this.receiptTarget) this.receiptTarget = null;
+      else if (this.deleteTarget) this.deleteTarget = null;
+    },
+
+    /* ================= STATS ================= */
+    get outOfStock() { return this.products.filter(p => Number(p.stock) <= 0).length; },
+    get featuredCount() { return this.products.filter(p => p.featured).length; },
+    get catalogueValue() { return this.products.reduce((s, p) => s + Number(p.price) * Number(p.stock || 0), 0); },
+    get pendingCount() { return this.orders.filter(o => o.status === 'pending').length; },
+    get confirmedCount() { return this.orders.filter(o => o.status === 'confirmed').length; },
+    get confirmedRevenue() {
+      return this.orders.filter(o => o.status === 'confirmed').reduce((s, o) => s + Number(o.total), 0);
+    },
+
+    /* ================= ACTIVITY ================= */
+    log(type, text) {
+      this.activity.unshift({ type: type, text: text, at: new Date().toISOString() });
+      if (this.activity.length > 300) this.activity = this.activity.slice(0, 300);
+      this.saveJSON(K.activity, this.activity);
+    },
+    clearActivity() {
+      if (!confirm('Clear the entire activity log?')) return;
+      this.activity = [];
+      this.saveJSON(K.activity, this.activity);
+      this.toast('Activity log cleared');
+    },
+
+    /* ================= PRODUCTS ================= */
+    resetForm() {
+      this.editingId = null;
+      this.form = {
+        name: '', category: this.categories[0] ? this.categories[0].id : 'shirts',
+        gender: 'unisex', price: '', oldPrice: '',
+        description: '', fabric: '', fit: 'Regular', careInstructions: '',
+        sizes: ['S','M','L'], colors: [{ name:'Black', hex:'#0a0a0a' }],
+        stock: '', badge: '', badgeColor: '#dc2626', featured: false,
+        images: [], rating: 4.8, reviews: 0
+      };
+    },
+
+    toggleSize(s) {
+      const i = this.form.sizes.indexOf(s);
+      if (i === -1) this.form.sizes.push(s);
+      else this.form.sizes.splice(i, 1);
+    },
+
+    addColor() { this.form.colors.push({ name: '', hex: '#dc2626' }); },
+
+    handleDrop(ev) {
+      const files = Array.from(ev.dataTransfer.files || []);
+      this.processFiles(files);
+    },
+    handleFiles(ev) {
+      const files = Array.from(ev.target.files || []);
+      this.processFiles(files);
+      ev.target.value = '';
+    },
+    processFiles(files) {
+      const self = this;
+      const remaining = 6 - self.form.images.length;
+      if (remaining <= 0) { self.toast('Maximum 6 images', 'error'); return; }
+      const take = files.slice(0, remaining);
+      if (files.length > remaining) self.toast('Only ' + remaining + ' more image(s) allowed', 'error');
+
+      take.forEach(function (file) {
+        if (!/^image\//.test(file.type)) return;
+        self.compressImage(file, 1200, 0.72).then(function (dataUrl) {
+          if (self.form.images.length < 6) {
+            self.form.images.push(dataUrl);
+            self.refreshIcons();
+          }
+        }).catch(function () { self.toast('Could not read one image', 'error'); });
+      });
+    },
+    compressImage(file, maxWidth, quality) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const img = new Image();
+          img.onload = function () {
+            let w = img.width, h = img.height;
+            if (w > maxWidth) { h = Math.round(h * maxWidth / w); w = maxWidth; }
+            const c = document.createElement('canvas');
+            c.width = w; c.height = h;
+            const ctx = c.getContext('2d');
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, w, h);
+            ctx.drawImage(img, 0, 0, w, h);
+            try { resolve(c.toDataURL('image/jpeg', quality)); } catch (err) { reject(err); }
+          };
+          img.onerror = reject;
+          img.src = e.target.result;
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    },
+
+    moveImageUp(i) {
+      if (i <= 0) return;
+      const arr = this.form.images;
+      const tmp = arr[i-1];
+      arr[i-1] = arr[i];
+      arr[i] = tmp;
+    },
+
+    get storageKB() {
+      const total = this.form.images.reduce((s, img) => s + (img.length * 0.75), 0);
+      return Math.round(total / 1024);
+    },
+
+    saveProduct() {
+      if (!this.form.name.trim())   { this.toast('Product name is required', 'error'); return; }
+      if (!this.form.price)         { this.toast('Price is required', 'error'); return; }
+      if (!this.form.description.trim()) { this.toast('Description is required', 'error'); return; }
+      if (this.form.stock === '' || this.form.stock === null) { this.toast('Stock is required', 'error'); return; }
+      if (!this.form.sizes.length)  { this.toast('Pick at least one size', 'error'); return; }
+      if (this.form.images.length < 2) { this.toast('Add at least 2 images', 'error'); return; }
+      if (this.form.images.length > 6) { this.toast('Maximum 6 images', 'error'); return; }
+
+      const now = new Date().toISOString();
+      const cleanColors = this.form.colors.filter(c => c.name && c.name.trim()).map(c => ({ name: c.name.trim(), hex: c.hex }));
+
+      if (this.editingId) {
+        const idx = this.products.findIndex(p => p.id === this.editingId);
+        if (idx !== -1) {
+          const prev = this.products[idx];
+          this.products[idx] = Object.assign({}, prev, {
+            name: this.form.name.trim(),
+            category: this.form.category,
+            gender: this.form.gender,
+            price: Number(this.form.price) || 0,
+            oldPrice: Number(this.form.oldPrice) || 0,
+            description: this.form.description.trim(),
+            fabric: this.form.fabric.trim(),
+            fit: this.form.fit,
+            careInstructions: this.form.careInstructions.trim(),
+            sizes: this.form.sizes.slice(),
+            colors: cleanColors,
+            stock: Number(this.form.stock) || 0,
+            badge: this.form.badge,
+            badgeColor: this.form.badgeColor,
+            featured: !!this.form.featured,
+            images: this.form.images.slice(),
+            rating: Number(this.form.rating) || 4.8,
+            reviews: Number(this.form.reviews) || 0,
+            updatedAt: now
+          });
+          this.log('edit', 'Edited ' + this.form.name.trim());
+          this.toast('Product updated', 'success');
+        }
+      } else {
+        const id = 'swg-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+        this.products.unshift({
+          id: id,
+          name: this.form.name.trim(),
+          category: this.form.category,
+          gender: this.form.gender,
+          price: Number(this.form.price) || 0,
+          oldPrice: Number(this.form.oldPrice) || 0,
+          currency: '₦',
+          description: this.form.description.trim(),
+          fabric: this.form.fabric.trim(),
+          fit: this.form.fit,
+          careInstructions: this.form.careInstructions.trim(),
+          sizes: this.form.sizes.slice(),
+          colors: cleanColors,
+          stock: Number(this.form.stock) || 0,
+          badge: this.form.badge,
+          badgeColor: this.form.badgeColor,
+          featured: !!this.form.featured,
+          images: this.form.images.slice(),
+          rating: Number(this.form.rating) || 4.8,
+          reviews: Number(this.form.reviews) || 0,
+          createdAt: now,
+          updatedAt: now
+        });
+        this.log('add', 'Added ' + this.form.name.trim());
+        this.toast('Product added', 'success');
+      }
+
+      this.saveJSON(K.products, this.products);
+      this.resetForm();
+      this.activeTab = 'products';
+      this.refreshIcons();
+    },
+
+    editProduct(p) {
+      this.editingId = p.id;
+      this.form = {
+        name: p.name || '',
+        category: p.category || 'shirts',
+        gender: p.gender || 'unisex',
+        price: p.price || '',
+        oldPrice: p.oldPrice || '',
+        description: p.description || '',
+        fabric: p.fabric || '',
+        fit: p.fit || 'Regular',
+        careInstructions: p.careInstructions || '',
+        sizes: Array.isArray(p.sizes) ? p.sizes.slice() : ['S','M','L'],
+        colors: Array.isArray(p.colors) && p.colors.length ? p.colors.map(c => ({ name: c.name, hex: c.hex })) : [{ name: 'Black', hex: '#0a0a0a' }],
+        stock: p.stock || 0,
+        badge: p.badge || '',
+        badgeColor: p.badgeColor || '#dc2626',
+        featured: !!p.featured,
+        images: Array.isArray(p.images) ? p.images.slice() : [],
+        rating: p.rating || 4.8,
+        reviews: p.reviews || 0
+      };
+      this.activeTab = 'add';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      this.refreshIcons();
+    },
+
+    askDelete(p) { this.deleteTarget = p; },
+
+    confirmDelete() {
+      if (!this.deleteTarget) return;
+      const id = this.deleteTarget.id;
+      const name = this.deleteTarget.name;
+      this.products = this.products.filter(p => p.id !== id);
+      this.saveJSON(K.products, this.products);
+      this.log('delete', 'Deleted ' + name);
+      this.toast('Product deleted', 'success');
+      this.deleteTarget = null;
+    },
+
+    toggleFeatured(id) {
+      const p = this.products.find(x => x.id === id);
+      if (!p) return;
+      p.featured = !p.featured;
+      p.updatedAt = new Date().toISOString();
+      this.saveJSON(K.products, this.products);
+      this.log('edit', (p.featured ? 'Featured ' : 'Unfeatured ') + p.name);
+      this.toast(p.featured ? 'Added to featured' : 'Removed from featured', 'success');
+    },
+
+    /* ================= CATEGORIES ================= */
+    saveCategories() {
+      this.saveJSON(K.cats, this.categories);
+      this.toast('Categories saved', 'success');
+    },
+    addCategory() {
+      const label = this.newCatLabel.trim();
+      if (!label) { this.toast('Enter a category name', 'error'); return; }
+      const id = label.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      if (!id) { this.toast('Invalid name', 'error'); return; }
+      if (this.categories.find(c => c.id === id)) { this.toast('Category already exists', 'error'); return; }
+      this.categories.push({ id: id, label: label });
+      this.saveCategories();
+      this.newCatLabel = '';
+      this.toast('Category added', 'success');
+    },
+    deleteCategory(i) {
+      const c = this.categories[i];
+      if (!c) return;
+      const count = this.products.filter(p => p.category === c.id).length;
+      if (count > 0) { this.toast(count + ' product(s) use this category. Reassign them first.', 'error'); return; }
+      if (!confirm('Delete "' + c.label + '"?')) return;
+      this.categories.splice(i, 1);
+      this.saveCategories();
+      this.toast('Category deleted', 'success');
+    },
+
+    /* ================= ORDERS ================= */
+    get visibleOrders() {
+      let out = this.orders.slice();
+      if (this.selectedDay) {
+        out = out.filter(o => (o.createdAt || '').slice(0, 10) === this.selectedDay);
+      }
+      if (this.orderFilter !== 'all') out = out.filter(o => o.status === this.orderFilter);
+      return out;
+    },
+
+    statusLabel(s) {
+      return { pending:'Pending payment', paid:'Receipt uploaded', confirmed:'Confirmed', rejected:'Rejected' }[s] || s;
+    },
+
+    confirmOrder(id) {
+      const o = this.orders.find(x => x.id === id);
+      if (!o) return;
+      o.status = 'confirmed';
+      o.confirmedAt = new Date().toISOString();
+      this.saveJSON(K.orders, this.orders);
+      this.log('edit', 'Confirmed order ' + id);
+      this.toast('Order confirmed ✓', 'success');
+    },
+    rejectOrder(id) {
+      const o = this.orders.find(x => x.id === id);
+      if (!o) return;
+      if (!confirm('Reject order ' + id + '?')) return;
+      o.status = 'rejected';
+      this.saveJSON(K.orders, this.orders);
+      this.log('edit', 'Rejected order ' + id);
+      this.toast('Order rejected');
+    },
+    deleteOrder(id) {
+      if (!confirm('Delete order ' + id + '? This cannot be undone.')) return;
+      this.orders = this.orders.filter(o => o.id !== id);
+      this.saveJSON(K.orders, this.orders);
+      this.toast('Order deleted');
+    },
+    clearOrders() {
+      if (!this.orders.length) { this.toast('No orders to clear'); return; }
+      if (!confirm('Delete ALL orders? This cannot be undone.')) return;
+      this.orders = [];
+      this.saveJSON(K.orders, this.orders);
+      this.toast('All orders cleared');
+    },
+    viewReceipt(o) { this.receiptTarget = o; },
+
+    /* ================= CALENDAR ================= */
+    get monthLabel() {
+      return this.calMonth.toLocaleDateString('en-NG', { month: 'long', year: 'numeric' });
+    },
+    shiftMonth(delta) {
+      const d = new Date(this.calMonth);
+      d.setMonth(d.getMonth() + delta);
+      this.calMonth = d;
+    },
+    get calendarDays() {
+      const y = this.calMonth.getFullYear();
+      const m = this.calMonth.getMonth();
+      const first = new Date(y, m, 1);
+      const startDow = first.getDay();
+      const daysInMonth = new Date(y, m + 1, 0).getDate();
+
+      const cells = [];
+      for (let i = 0; i < startDow; i++) cells.push({ date: '', day: '', count: 0 });
+
+      const counts = {};
+      this.orders.forEach(o => {
+        const k = (o.createdAt || '').slice(0, 10);
+        if (!k) return;
+        counts[k] = (counts[k] || 0) + 1;
+      });
+
+      for (let d = 1; d <= daysInMonth; d++) {
+        const iso = y + '-' + String(m + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+        cells.push({ date: iso, day: d, count: counts[iso] || 0 });
+      }
+      return cells;
+    },
+
+    /* ================= SETTINGS ================= */
+    saveSettings() {
+      this.saveJSON(K.settings, this.settings);
+      this.log('edit', 'Updated payment settings');
+      this.toast('Payment settings saved', 'success');
+    },
+
+    /* ================= UTIL ================= */
+    formatDate(iso) {
+      if (!iso) return '';
+      const d = new Date(iso);
+      const dd = String(d.getDate()).padStart(2, '0');
+      const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      const mm = months[d.getMonth()];
+      const yyyy = d.getFullYear();
+      const hh = String(d.getHours()).padStart(2, '0');
+      const mi = String(d.getMinutes()).padStart(2, '0');
+      return dd + ' ' + mm + ' ' + yyyy + ' · ' + hh + ':' + mi;
+    },
+    formatDateLong(iso) {
+      if (!iso) return '';
+      const d = new Date(iso + 'T12:00:00');
+      return d.toLocaleDateString('en-NG', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+    },
+
+    /* ================= DATA OPS ================= */
+    seedDemo() {
+      if (!confirm('Replace all products with the demo NSNV catalogue?')) return;
+      this.products = JSON.parse(JSON.stringify(DEMO_PRODUCTS));
+      this.categories = DEFAULT_CATS.slice();
+      this.saveJSON(K.products, this.products);
+      this.saveJSON(K.cats, this.categories);
+      this.log('add', 'Seeded demo catalogue (12 items)');
+      this.toast('Demo catalogue loaded', 'success');
+    },
+    exportJSON() {
+      const payload = {
+        products: this.products,
+        categories: this.categories,
+        orders: this.orders,
+        settings: this.settings,
+        activity: this.activity,
+        exportedAt: new Date().toISOString()
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'swaguu-backup-' + new Date().toISOString().slice(0, 10) + '.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      this.toast('Backup exported', 'success');
+    }
+  };
+}
+</script>
+</body>
+</html>

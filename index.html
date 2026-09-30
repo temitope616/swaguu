@@ -1,0 +1,2320 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Swaguu × Seyi Vibez — NSNV Official Collection</title>
+<meta name="description" content="Official Swaguu × Seyi Vibez NSNV collection. Wear the story. Own the moment." />
+<meta name="theme-color" content="#07090e" />
+
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('cloth_theme') || 'dark';
+      if (t === 'light') document.documentElement.classList.remove('dark');
+      else document.documentElement.classList.add('dark');
+    } catch (e) { document.documentElement.classList.add('dark'); }
+  })();
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        fontFamily: {
+          display: ['Sora','ui-sans-serif','system-ui','sans-serif'],
+          sans: ['"Plus Jakarta Sans"','ui-sans-serif','system-ui','sans-serif']
+        },
+        colors: { ink: { 950:'#07090e', 900:'#0b0e15', 800:'#12161f' } }
+      }
+    }
+  };
+</script>
+
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+
+<style>
+  *{ -webkit-tap-highlight-color: transparent; }
+  [x-cloak]{ display: none !important; }
+  html{ scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body{ font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif; overflow-x: hidden; }
+  .font-display{ font-family: 'Sora', ui-sans-serif, system-ui, sans-serif; }
+
+  .grid-bg{
+    background-image:
+      linear-gradient(to right, rgba(100,116,139,.10) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(100,116,139,.10) 1px, transparent 1px);
+    background-size: 46px 46px;
+  }
+  .glass{ backdrop-filter: blur(18px) saturate(180%); -webkit-backdrop-filter: blur(18px) saturate(180%); }
+  .no-sb::-webkit-scrollbar{ display: none; }
+  .no-sb{ -ms-overflow-style: none; scrollbar-width: none; }
+  .safe-b{ padding-bottom: env(safe-area-inset-bottom); }
+
+  .shine{ position: relative; overflow: hidden; }
+  .shine::after{
+    content:""; position:absolute; top:0; left:-140%; width:55%; height:100%;
+    background: linear-gradient(100deg, transparent, rgba(255,255,255,.35), transparent);
+    transform: skewX(-18deg);
+    transition: left .85s cubic-bezier(.22,1,.36,1);
+    pointer-events:none; z-index:4;
+  }
+  .group:hover .shine::after{ left: 150%; }
+
+  .orb{ position:absolute; border-radius:9999px; filter: blur(90px); opacity:.45; pointer-events:none; }
+
+  input, select, textarea{ font-size: 16px; }
+  @media (min-width: 768px){ input, select, textarea{ font-size: 14px; } }
+
+  .btn-pill{ transition: transform .3s cubic-bezier(.22,1,.36,1), box-shadow .3s ease, background-color .3s ease; }
+  .btn-pill:hover{ transform: scale(1.04) translateY(-2px); }
+  .btn-pill:active{ transform: scale(.97); }
+
+  .card-lift{ transition: transform .5s cubic-bezier(.22,1,.36,1), box-shadow .5s ease, border-color .4s ease; }
+  .card-lift:hover{ transform: translateY(-7px); }
+
+  input[type=range]{
+    -webkit-appearance:none; appearance:none; height:6px; border-radius:9999px;
+    background: linear-gradient(90deg,#dc2626,#22d3ee); outline:none; width:100%;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none; width:20px; height:20px; border-radius:50%;
+    background:#fff; border:3px solid #dc2626; box-shadow:0 2px 10px rgba(220,38,38,.5); cursor:pointer;
+  }
+  input[type=range]::-moz-range-thumb{
+    width:20px; height:20px; border-radius:50%; background:#fff; border:3px solid #dc2626; cursor:pointer;
+  }
+
+  @keyframes pr{ 0%{ box-shadow:0 0 0 0 rgba(16,185,129,.55);} 70%{ box-shadow:0 0 0 16px rgba(16,185,129,0);} 100%{ box-shadow:0 0 0 0 rgba(16,185,129,0);} }
+  .pulse-ring{ animation: pr 2.4s infinite; }
+
+  @keyframes floaty{ 0%,100%{ transform: translateY(0);} 50%{ transform: translateY(-12px);} }
+  .floaty{ animation: floaty 6s ease-in-out infinite; }
+
+  @keyframes fadeUp{ from{ opacity:0; transform: translateY(14px);} to{ opacity:1; transform: translateY(0);} }
+  .fade-up{ animation: fadeUp .5s cubic-bezier(.22,1,.36,1) both; }
+
+  @keyframes bubbleIn{ from{ opacity:0; transform: translateY(8px) scale(.97);} to{ opacity:1; transform: translateY(0) scale(1);} }
+  .bubble{ animation: bubbleIn .28s cubic-bezier(.22,1,.36,1) both; }
+</style>
+</head>
+
+<body
+  id="top"
+  class="font-sans antialiased bg-zinc-50 text-slate-900 dark:bg-[#07090e] dark:text-slate-100 selection:bg-red-500 selection:text-white"
+  x-data="app()"
+  x-init="init()"
+  x-effect="lockScroll()"
+  @keydown.escape.window="closeAll()"
+>
+
+<!-- ============ HEADER ============ -->
+<header class="sticky top-0 z-40">
+  <div class="glass bg-white/85 dark:bg-[#07090e]/80 border-b border-slate-200/80 dark:border-white/10">
+    <div class="mx-auto max-w-7xl px-3 sm:px-5 h-14 md:h-16 flex items-center gap-1.5 sm:gap-3">
+
+      <button class="lg:hidden grid place-items-center w-10 h-10 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition"
+              @click="showMenu = !showMenu" aria-label="Toggle menu">
+        <i :data-lucide="showMenu ? 'x' : 'menu'" class="w-5 h-5"></i>
+      </button>
+
+      <a href="#top" class="flex items-center gap-2 shrink-0 group">
+        <span class="grid place-items-center w-9 h-9 rounded-2xl bg-gradient-to-br from-red-500 to-red-700 text-white font-display font-extrabold text-lg shadow-lg shadow-red-600/30 group-hover:scale-105 transition duration-300">S</span>
+        <span class="font-display text-lg sm:text-xl font-extrabold tracking-tight text-red-600 dark:text-red-500">Swaguu</span>
+      </a>
+
+      <nav class="hidden lg:flex items-center gap-1 ml-5 text-sm font-semibold">
+        <a href="#top" class="px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition">Home</a>
+        <a href="#shop" class="px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition">Shop</a>
+        <a href="#new" class="px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition">New In</a>
+        <a href="#shop" @click.prevent="showSale()" class="px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition">Sale</a>
+        <a href="#about" class="px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition">About</a>
+        <a href="#contact" class="px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition">Contact</a>
+      </nav>
+
+      <div class="flex-1"></div>
+
+      <a :href="waGeneral()" target="_blank" rel="noopener"
+         class="hidden md:inline-flex items-center gap-2 btn-pill px-4 py-2 rounded-full text-sm font-bold text-white bg-gradient-to-r from-emerald-500 to-emerald-600 shadow-lg shadow-emerald-500/25">
+        <i data-lucide="message-circle" class="w-4 h-4"></i> Chat
+      </a>
+
+      <button @click="toggleTheme()" class="grid place-items-center w-10 h-10 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition" aria-label="Toggle theme">
+        <i :data-lucide="theme === 'dark' ? 'sun' : 'moon'" class="w-5 h-5"></i>
+      </button>
+
+      <button @click="showWish = true" class="relative grid place-items-center w-10 h-10 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition" aria-label="Wishlist">
+        <i data-lucide="heart" class="w-5 h-5"></i>
+        <span x-show="wishlist.length" x-cloak x-text="wishlist.length"
+              class="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] px-1 grid place-items-center rounded-full bg-rose-500 text-white text-[10px] font-extrabold"></span>
+      </button>
+
+      <button @click="showCart = true" class="relative grid place-items-center w-10 h-10 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition" aria-label="Cart">
+        <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+        <span x-show="cartCount" x-cloak x-text="cartCount"
+              class="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] px-1 grid place-items-center rounded-full bg-red-600 text-white text-[10px] font-extrabold"></span>
+      </button>
+    </div>
+
+    <div x-show="showMenu" x-cloak
+         x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 -translate-y-3" x-transition:enter-end="opacity-100 translate-y-0"
+         x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-3"
+         class="lg:hidden border-t border-slate-200/80 dark:border-white/10 bg-white/95 dark:bg-[#0b0e15]/95 glass">
+      <nav class="px-4 py-3 grid gap-1 text-sm font-semibold">
+        <a href="#top" @click="showMenu=false" class="px-3 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition">Home</a>
+        <a href="#shop" @click="showMenu=false" class="px-3 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition">Shop</a>
+        <a href="#new" @click="showMenu=false" class="px-3 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition">New In</a>
+        <a href="#shop" @click.prevent="showSale(); showMenu=false" class="px-3 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition">Sale</a>
+        <a href="#about" @click="showMenu=false" class="px-3 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition">About</a>
+        <a href="#contact" @click="showMenu=false" class="px-3 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition">Contact</a>
+        <a :href="waGeneral()" target="_blank" rel="noopener"
+           class="mt-2 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-bold text-white bg-gradient-to-r from-emerald-500 to-emerald-600">
+          <i data-lucide="message-circle" class="w-4 h-4"></i> Chat on WhatsApp
+        </a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<!-- ============ WELCOME MESSAGE ============ -->
+<div x-show="showWelcome" x-cloak
+     x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 -translate-y-6 scale-95" x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+     x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 translate-y-0 scale-100" x-transition:leave-end="opacity-0 -translate-y-6 scale-95"
+     class="fixed top-[68px] md:top-[84px] left-1/2 -translate-x-1/2 z-[60] w-[calc(100%-1.5rem)] max-w-md">
+  <div class="rounded-2xl border border-red-500/40 bg-white/95 dark:bg-[#12161f]/95 glass shadow-2xl shadow-red-600/20 p-4 flex items-start gap-3">
+    <span class="grid place-items-center w-10 h-10 shrink-0 rounded-xl bg-gradient-to-br from-red-500 to-red-700 text-white">
+      <i data-lucide="sparkles" class="w-5 h-5"></i>
+    </span>
+    <div class="min-w-0">
+      <p class="font-display font-extrabold text-[15px] leading-tight">
+        Welcome to <span class="text-red-600 dark:text-red-500">Swaguu</span> 👋
+      </p>
+      <p class="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
+        Official NSNV merch with <strong>Seyi Vibez</strong>. Free delivery on orders from ₦100,000.
+      </p>
+    </div>
+    <button @click="showWelcome = false" class="shrink-0 grid place-items-center w-7 h-7 rounded-lg hover:bg-slate-100 dark:hover:bg-white/10 transition" aria-label="Close welcome">
+      <i data-lucide="x" class="w-4 h-4"></i>
+    </button>
+  </div>
+</div>
+
+<!-- ============ HERO ============ -->
+<section class="relative overflow-hidden grid-bg">
+  <div class="orb w-[420px] h-[420px] bg-red-600 -top-32 -left-24"></div>
+  <div class="orb w-[380px] h-[380px] bg-cyan-500 top-24 right-0"></div>
+
+  <div class="relative mx-auto max-w-7xl px-4 sm:px-6 pt-12 pb-14 md:pt-20 md:pb-24 grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
+    <div class="fade-up">
+      <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-[11px] sm:text-xs font-extrabold tracking-wide uppercase bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/30">
+        <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
+        NSNV Album Drop · Official Seyi Vibez Merch
+      </span>
+
+      <h1 class="font-display font-extrabold tracking-tight text-[38px] leading-[1.05] sm:text-5xl lg:text-6xl mt-5">
+        Wear the story.<br>
+        <span class="bg-gradient-to-r from-red-500 via-red-600 to-red-700 bg-clip-text text-transparent">Own the moment.</span>
+      </h1>
+
+      <p class="mt-5 text-[15px] sm:text-base text-slate-600 dark:text-slate-400 max-w-lg leading-relaxed">
+        The official <strong class="text-red-600 dark:text-red-500">Swaguu × Seyi Vibez</strong> NSNV collection.
+        Limited streetwear pieces celebrating the new album — cut for the culture, made in Lagos.
+      </p>
+
+      <div class="mt-7 flex flex-wrap gap-3">
+        <a href="#shop" class="btn-pill inline-flex items-center gap-2 px-6 py-3.5 rounded-full font-bold text-white bg-gradient-to-r from-red-500 to-red-700 shadow-xl shadow-red-600/30">
+          <i data-lucide="shopping-bag" class="w-4 h-4"></i> Shop Collection
+        </a>
+        <a href="#new" class="btn-pill inline-flex items-center gap-2 px-6 py-3.5 rounded-full font-bold border-2 border-slate-300 dark:border-white/15 hover:border-red-500 dark:hover:border-red-500 transition">
+          <i data-lucide="sparkles" class="w-4 h-4"></i> New Arrivals
+        </a>
+      </div>
+
+      <div class="mt-9 grid grid-cols-3 gap-3 sm:gap-5 max-w-lg">
+        <div>
+          <p class="font-display font-extrabold text-xl sm:text-2xl text-red-500">10,000+</p>
+          <p class="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 mt-0.5 font-semibold">Fans Rocking It</p>
+        </div>
+        <div class="border-l border-slate-200 dark:border-white/10 pl-3 sm:pl-5">
+          <p class="font-display font-extrabold text-xl sm:text-2xl text-red-500">4.9★</p>
+          <p class="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 mt-0.5 font-semibold">Rated</p>
+        </div>
+        <div class="border-l border-slate-200 dark:border-white/10 pl-3 sm:pl-5">
+          <p class="font-display font-extrabold text-xl sm:text-2xl text-red-500">48h</p>
+          <p class="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 mt-0.5 font-semibold">Lagos Delivery</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="relative fade-up">
+      <div class="absolute inset-6 rounded-[2rem] bg-gradient-to-tr from-red-500/30 to-cyan-400/20 blur-2xl"></div>
+      <div class="relative rounded-3xl overflow-hidden border border-white/60 dark:border-white/10 shadow-2xl shadow-red-600/25 bg-white dark:bg-[#12161f] floaty">
+        <template x-if="heroProduct">
+          <div class="cursor-pointer group" @click="openProduct(heroProduct)">
+            <div class="shine aspect-[4/5] sm:aspect-[5/5] overflow-hidden">
+              <img :src="heroProduct.images[0]" :alt="heroProduct.name" @error="imgErr($event, heroProduct)"
+                   class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.06]">
+            </div>
+            <div class="p-5 flex items-center justify-between gap-3">
+              <div class="min-w-0">
+                <p class="text-[11px] font-extrabold uppercase tracking-wider text-cyan-500">NSNV Featured</p>
+                <p class="font-display font-bold truncate" x-text="heroProduct.name"></p>
+                <p class="text-red-500 font-extrabold mt-0.5" x-text="money(heroProduct.price)"></p>
+              </div>
+              <span class="grid place-items-center w-11 h-11 shrink-0 rounded-full bg-gradient-to-br from-red-500 to-red-700 text-white group-hover:scale-110 transition duration-300">
+                <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
+              </span>
+            </div>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CATEGORY STRIP ============ -->
+<section class="relative border-y border-slate-200/80 dark:border-white/10 bg-white/60 dark:bg-[#0b0e15]/60">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 py-4">
+    <div class="flex gap-2.5 overflow-x-auto no-sb pb-1">
+      <button @click="activeCategory='all'; scrollTo('shop')"
+              :class="activeCategory==='all' ? 'bg-gradient-to-r from-red-500 to-red-700 text-white border-transparent shadow-lg shadow-red-600/30' : 'border-slate-200 dark:border-white/10 hover:border-red-500'"
+              class="btn-pill shrink-0 inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-bold border transition">
+        All
+        <span class="text-[11px] px-1.5 py-0.5 rounded-full bg-black/10 dark:bg-white/10" x-text="products.length"></span>
+      </button>
+      <template x-for="c in categories" :key="c.id">
+        <button @click="activeCategory = c.id; scrollTo('shop')"
+                :class="activeCategory===c.id ? 'bg-gradient-to-r from-red-500 to-red-700 text-white border-transparent shadow-lg shadow-red-600/30' : 'border-slate-200 dark:border-white/10 hover:border-red-500'"
+                class="btn-pill shrink-0 inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-bold border transition">
+          <span x-text="c.label"></span>
+          <span class="text-[11px] px-1.5 py-0.5 rounded-full bg-black/10 dark:bg-white/10" x-text="countFor(c.id)"></span>
+        </button>
+      </template>
+    </div>
+  </div>
+</section>
+
+<!-- ============ NEW THIS WEEK ============ -->
+<section id="new" class="relative py-14 md:py-20">
+  <div class="orb w-[360px] h-[360px] bg-red-600/70 -top-10 left-1/3"></div>
+  <div class="relative mx-auto max-w-7xl px-4 sm:px-6">
+    <div class="flex items-end justify-between gap-4 mb-8">
+      <div>
+        <p class="text-[11px] font-extrabold uppercase tracking-[0.18em] text-cyan-500">Fresh drop</p>
+        <h2 class="font-display font-extrabold text-2xl sm:text-3xl lg:text-4xl mt-1.5">NSNV New This Week</h2>
+      </div>
+      <a href="#shop" class="hidden sm:inline-flex items-center gap-1.5 text-sm font-bold text-red-500 hover:text-red-400 transition">
+        View all <i data-lucide="arrow-right" class="w-4 h-4"></i>
+      </a>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
+      <template x-for="p in featured" :key="'f-'+p.id">
+        <article @click="openProduct(p)"
+                 class="group card-lift cursor-pointer rounded-3xl overflow-hidden bg-white dark:bg-[#0b0e15] border border-slate-200/80 dark:border-white/10 hover:border-red-500/60 hover:shadow-2xl hover:shadow-red-600/20">
+          <div class="relative">
+            <div class="shine aspect-[4/5] overflow-hidden bg-slate-100 dark:bg-[#12161f]">
+              <img :src="p.images[0]" :alt="p.name" @error="imgErr($event, p)"
+                   class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.09]">
+            </div>
+            <span x-show="p.badge" x-cloak
+                  class="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wide shadow-lg"
+                  :style="'background:' + (p.badgeColor || '#dc2626') + ';color:#fff'"
+                  x-text="p.badge"></span>
+            <button @click.stop="toggleWish(p.id)"
+                    class="absolute top-2.5 right-2.5 grid place-items-center w-9 h-9 rounded-full bg-white/90 dark:bg-[#07090e]/80 glass border border-white/40 dark:border-white/10 hover:scale-110 transition duration-300"
+                    :aria-label="isWished(p.id) ? 'Remove from wishlist' : 'Add to wishlist'">
+              <i data-lucide="heart" class="w-4 h-4"
+                 :class="isWished(p.id) ? 'fill-rose-500 text-rose-500' : 'text-slate-500 dark:text-slate-300'"></i>
+            </button>
+            <span x-show="Number(p.stock) <= 0" x-cloak
+                  class="absolute inset-0 grid place-items-center bg-slate-950/65 text-white font-display font-extrabold tracking-wide text-sm">
+              SOLD OUT
+            </span>
+          </div>
+
+          <div class="p-3 sm:p-4">
+            <p class="text-[10px] font-extrabold uppercase tracking-wider text-cyan-500" x-text="p.category"></p>
+            <h3 class="font-display font-bold text-[13px] sm:text-[15px] leading-snug mt-1 line-clamp-2 min-h-[36px]" x-text="p.name"></h3>
+
+            <div class="flex items-center gap-1.5 mt-2">
+              <span class="font-extrabold text-red-500 text-sm sm:text-base" x-text="money(p.price)"></span>
+              <span x-show="p.oldPrice" x-cloak class="text-[11px] line-through text-slate-400" x-text="money(p.oldPrice)"></span>
+            </div>
+
+            <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-1.5 truncate" x-text="(p.sizes||[]).join(' · ')"></p>
+
+            <div class="flex gap-1.5 mt-3">
+              <button @click.stop="quickAdd(p)"
+                      class="flex-1 btn-pill inline-flex items-center justify-center gap-1.5 px-2 py-2.5 rounded-full text-[11px] sm:text-xs font-extrabold text-white bg-gradient-to-r from-red-500 to-red-700">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add
+              </button>
+              <a :href="waProductLink(p)" target="_blank" rel="noopener" @click.stop
+                 class="grid place-items-center w-10 h-10 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500 hover:text-white transition duration-300"
+                 aria-label="Order on WhatsApp">
+                <i data-lucide="message-circle" class="w-4 h-4"></i>
+              </a>
+            </div>
+          </div>
+        </article>
+      </template>
+    </div>
+
+    <div x-show="featured.length === 0" x-cloak class="text-center py-12 text-slate-500 dark:text-slate-400">
+      <i data-lucide="sparkles" class="w-8 h-8 mx-auto mb-3 opacity-60"></i>
+      <p class="font-semibold">No featured pieces yet — check back soon.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SHOP ============ -->
+<section id="shop" class="relative py-14 md:py-20 bg-white/70 dark:bg-[#0b0e15]/50 border-y border-slate-200/80 dark:border-white/10 grid-bg">
+  <div class="relative mx-auto max-w-7xl px-4 sm:px-6">
+    <div class="mb-7">
+      <p class="text-[11px] font-extrabold uppercase tracking-[0.18em] text-cyan-500">The full catalogue</p>
+      <h2 class="font-display font-extrabold text-2xl sm:text-3xl lg:text-4xl mt-1.5">Shop Swaguu × NSNV</h2>
+      <p class="text-sm text-slate-600 dark:text-slate-400 mt-2">Search, filter and sort — everything updates live.</p>
+    </div>
+
+    <div class="rounded-3xl border border-slate-200/80 dark:border-white/10 bg-white/80 dark:bg-[#12161f]/70 glass p-4 sm:p-5 shadow-xl shadow-slate-900/5">
+      <div class="grid md:grid-cols-[1fr_220px] gap-3">
+        <div class="relative">
+          <i data-lucide="search" class="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+          <input type="text" x-model="search" placeholder="Search shirts, hoodies, NSNV pieces…"
+                 class="w-full pl-11 pr-4 py-3 rounded-2xl bg-slate-100 dark:bg-[#07090e] border border-transparent focus:border-red-500 outline-none transition font-medium placeholder:text-slate-400">
+        </div>
+        <select x-model="sort"
+                class="w-full px-4 py-3 rounded-2xl bg-slate-100 dark:bg-[#07090e] border border-transparent focus:border-red-500 outline-none transition font-semibold">
+          <option value="newest">Newest</option>
+          <option value="price-asc">Price: Low → High</option>
+          <option value="price-desc">Price: High → Low</option>
+          <option value="rating">Top Rated</option>
+          <option value="name">Name A–Z</option>
+        </select>
+      </div>
+
+      <div class="mt-5 grid sm:grid-cols-2 gap-5">
+        <div>
+          <div class="flex items-center justify-between text-xs font-bold mb-2">
+            <span class="text-slate-500 dark:text-slate-400 uppercase tracking-wide">Min price</span>
+            <span class="text-red-500" x-text="money(priceMin)"></span>
+          </div>
+          <input type="range" :min="0" :max="priceCeiling" step="1000" x-model.number="priceMin">
+        </div>
+        <div>
+          <div class="flex items-center justify-between text-xs font-bold mb-2">
+            <span class="text-slate-500 dark:text-slate-400 uppercase tracking-wide">Max price</span>
+            <span class="text-red-500" x-text="money(priceMax)"></span>
+          </div>
+          <input type="range" :min="0" :max="priceCeiling" step="1000" x-model.number="priceMax">
+        </div>
+      </div>
+
+      <div class="mt-5 flex flex-wrap items-center gap-2">
+        <span class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400 mr-1">Gender</span>
+        <template x-for="g in ['all','men','women','unisex']" :key="'g-'+g">
+          <button @click="gender = g"
+                  :class="gender===g ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 border-transparent' : 'border-slate-200 dark:border-white/10 hover:border-red-500'"
+                  class="btn-pill px-4 py-2 rounded-full text-xs font-bold border capitalize transition"
+                  x-text="g === 'all' ? 'All' : g"></button>
+        </template>
+      </div>
+
+      <div class="mt-4 flex flex-wrap items-center gap-2">
+        <span class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400 mr-1">Size</span>
+        <button @click="sizeFilter='all'"
+                :class="sizeFilter==='all' ? 'bg-cyan-500 text-white border-transparent' : 'border-slate-200 dark:border-white/10 hover:border-cyan-400'"
+                class="btn-pill px-4 py-2 rounded-full text-xs font-bold border transition">All</button>
+        <template x-for="s in ['S','M','L','XL','XXL']" :key="'s-'+s">
+          <button @click="sizeFilter = (sizeFilter === s ? 'all' : s)"
+                  :class="sizeFilter===s ? 'bg-cyan-500 text-white border-transparent' : 'border-slate-200 dark:border-white/10 hover:border-cyan-400'"
+                  class="btn-pill w-11 py-2 rounded-full text-xs font-extrabold border transition" x-text="s"></button>
+        </template>
+      </div>
+
+      <div class="mt-4 flex flex-wrap items-center gap-2">
+        <span class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400 mr-1">Category</span>
+        <button @click="activeCategory='all'"
+                :class="activeCategory==='all' ? 'bg-gradient-to-r from-red-500 to-red-700 text-white border-transparent' : 'border-slate-200 dark:border-white/10 hover:border-red-500'"
+                class="btn-pill px-4 py-2 rounded-full text-xs font-bold border transition">All</button>
+        <template x-for="c in categories" :key="'sc-'+c.id">
+          <button @click="activeCategory = c.id"
+                  :class="activeCategory===c.id ? 'bg-gradient-to-r from-red-500 to-red-700 text-white border-transparent' : 'border-slate-200 dark:border-white/10 hover:border-red-500'"
+                  class="btn-pill px-4 py-2 rounded-full text-xs font-bold border transition" x-text="c.label"></button>
+        </template>
+      </div>
+
+      <div class="mt-5 flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-slate-200/80 dark:border-white/10">
+        <p class="text-xs font-bold text-slate-500 dark:text-slate-400">
+          <span class="text-red-500" x-text="filtered.length"></span> item(s) found
+          <span x-show="saleOnly" x-cloak class="ml-2 px-2 py-0.5 rounded-full bg-rose-500/15 text-rose-500 text-[10px] font-extrabold uppercase">Sale only</span>
+        </p>
+        <button @click="resetFilters()" class="btn-pill inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold border border-slate-200 dark:border-white/10 hover:border-rose-400 hover:text-rose-500 transition">
+          <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Reset filters
+        </button>
+      </div>
+    </div>
+
+    <div class="mt-7 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
+      <template x-for="p in filtered" :key="p.id">
+        <article @click="openProduct(p)"
+                 class="group card-lift cursor-pointer rounded-3xl overflow-hidden bg-white dark:bg-[#0b0e15] border border-slate-200/80 dark:border-white/10 hover:border-red-500/60 hover:shadow-2xl hover:shadow-red-600/20">
+          <div class="relative">
+            <div class="shine aspect-[4/5] overflow-hidden bg-slate-100 dark:bg-[#12161f]">
+              <img :src="p.images[0]" :alt="p.name" @error="imgErr($event, p)"
+                   class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.09]">
+            </div>
+            <span x-show="p.badge" x-cloak
+                  class="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wide shadow-lg"
+                  :style="'background:' + (p.badgeColor || '#dc2626') + ';color:#fff'"
+                  x-text="p.badge"></span>
+            <button @click.stop="toggleWish(p.id)"
+                    class="absolute top-2.5 right-2.5 grid place-items-center w-9 h-9 rounded-full bg-white/90 dark:bg-[#07090e]/80 glass border border-white/40 dark:border-white/10 hover:scale-110 transition duration-300">
+              <i data-lucide="heart" class="w-4 h-4"
+                 :class="isWished(p.id) ? 'fill-rose-500 text-rose-500' : 'text-slate-500 dark:text-slate-300'"></i>
+            </button>
+            <span x-show="Number(p.stock) <= 0" x-cloak
+                  class="absolute inset-0 grid place-items-center bg-slate-950/65 text-white font-display font-extrabold tracking-wide text-sm">
+              SOLD OUT
+            </span>
+          </div>
+
+          <div class="p-3 sm:p-4">
+            <p class="text-[10px] font-extrabold uppercase tracking-wider text-cyan-500" x-text="p.category"></p>
+            <h3 class="font-display font-bold text-[13px] sm:text-[15px] leading-snug mt-1 line-clamp-2 min-h-[36px]" x-text="p.name"></h3>
+            <div class="flex items-center gap-1.5 mt-2">
+              <span class="font-extrabold text-red-500 text-sm sm:text-base" x-text="money(p.price)"></span>
+              <span x-show="p.oldPrice" x-cloak class="text-[11px] line-through text-slate-400" x-text="money(p.oldPrice)"></span>
+            </div>
+            <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-1.5 truncate" x-text="(p.sizes||[]).join(' · ')"></p>
+            <div class="flex gap-1.5 mt-3">
+              <button @click.stop="quickAdd(p)"
+                      class="flex-1 btn-pill inline-flex items-center justify-center gap-1.5 px-2 py-2.5 rounded-full text-[11px] sm:text-xs font-extrabold text-white bg-gradient-to-r from-red-500 to-red-700">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add
+              </button>
+              <a :href="waProductLink(p)" target="_blank" rel="noopener" @click.stop
+                 class="grid place-items-center w-10 h-10 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500 hover:text-white transition duration-300">
+                <i data-lucide="message-circle" class="w-4 h-4"></i>
+              </a>
+            </div>
+          </div>
+        </article>
+      </template>
+    </div>
+
+    <div x-show="filtered.length === 0" x-cloak class="mt-4 rounded-3xl border border-dashed border-slate-300 dark:border-white/15 bg-white/70 dark:bg-[#12161f]/60 py-16 px-6 text-center">
+      <span class="grid place-items-center w-16 h-16 mx-auto rounded-2xl bg-slate-100 dark:bg-white/5">
+        <i data-lucide="search-x" class="w-8 h-8 text-slate-400"></i>
+      </span>
+      <h3 class="font-display font-extrabold text-lg mt-4">Nothing matches that</h3>
+      <p class="text-sm text-slate-500 dark:text-slate-400 mt-1.5 max-w-sm mx-auto">
+        Try a different keyword, widen your price range, or reset the filters.
+      </p>
+      <button @click="resetFilters()" class="btn-pill mt-5 inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold text-white bg-gradient-to-r from-red-500 to-red-700 shadow-lg shadow-red-600/30">
+        <i data-lucide="rotate-ccw" class="w-4 h-4"></i> Reset filters
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section id="about" class="relative py-14 md:py-20 overflow-hidden">
+  <div class="orb w-[380px] h-[380px] bg-cyan-500/50 -bottom-24 right-10"></div>
+  <div class="relative mx-auto max-w-7xl px-4 sm:px-6 grid lg:grid-cols-2 gap-10 items-center">
+    <div>
+      <p class="text-[11px] font-extrabold uppercase tracking-[0.18em] text-cyan-500">The collab</p>
+      <h2 class="font-display font-extrabold text-2xl sm:text-3xl lg:text-4xl mt-2">
+        <span class="text-red-600 dark:text-red-500">Swaguu</span> × Seyi Vibez —
+        <span class="bg-gradient-to-r from-red-500 to-cyan-400 bg-clip-text text-transparent">NSNV.</span>
+      </h2>
+      <p class="mt-4 text-[15px] text-slate-600 dark:text-slate-400 leading-relaxed">
+        Every piece in this drop is cut to match the energy of NSNV — bold, unapologetic, made for Lagos nights
+        and everywhere the sound travels. Breathable fabrics. Honest prices. No middlemen.
+      </p>
+      <p class="mt-3 text-[15px] text-slate-600 dark:text-slate-400 leading-relaxed">
+        This is more than merch. It is a piece of the album you can wear.
+      </p>
+      <div class="mt-6 flex flex-wrap gap-2">
+        <span class="px-3.5 py-2 rounded-full text-xs font-bold bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/25">Official NSNV merch</span>
+        <span class="px-3.5 py-2 rounded-full text-xs font-bold bg-cyan-500/15 text-cyan-600 dark:text-cyan-300 border border-cyan-500/25">Breathable fabrics</span>
+        <span class="px-3.5 py-2 rounded-full text-xs font-bold bg-emerald-500/15 text-emerald-600 dark:text-emerald-300 border border-emerald-500/25">Nationwide delivery</span>
+      </div>
+    </div>
+    <div class="grid grid-cols-2 gap-4">
+      <div class="rounded-3xl border border-slate-200/80 dark:border-white/10 bg-white dark:bg-[#12161f] p-5 shadow-xl">
+        <i data-lucide="truck" class="w-6 h-6 text-red-500"></i>
+        <p class="font-display font-extrabold mt-3">48h Delivery</p>
+        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Lagos metro, same-week nationwide.</p>
+      </div>
+      <div class="rounded-3xl border border-slate-200/80 dark:border-white/10 bg-white dark:bg-[#12161f] p-5 shadow-xl mt-6">
+        <i data-lucide="shield-check" class="w-6 h-6 text-cyan-500"></i>
+        <p class="font-display font-extrabold mt-3">Verified Payment</p>
+        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Bank transfer with receipt upload.</p>
+      </div>
+      <div class="rounded-3xl border border-slate-200/80 dark:border-white/10 bg-white dark:bg-[#12161f] p-5 shadow-xl">
+        <i data-lucide="refresh-ccw" class="w-6 h-6 text-emerald-500"></i>
+        <p class="font-display font-extrabold mt-3">7-Day Returns</p>
+        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Unworn, tags on — we will swap it.</p>
+      </div>
+      <div class="rounded-3xl border border-slate-200/80 dark:border-white/10 bg-white dark:bg-[#12161f] p-5 shadow-xl mt-6">
+        <i data-lucide="headphones" class="w-6 h-6 text-rose-500"></i>
+        <p class="font-display font-extrabold mt-3">Real Support</p>
+        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Chat with our bot or a human on WhatsApp.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ NEWSLETTER ============ -->
+<section class="relative py-14 md:py-20">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6">
+    <div class="relative overflow-hidden rounded-3xl border border-red-500/30 bg-gradient-to-br from-red-500/15 via-white to-cyan-400/10 dark:from-red-600/15 dark:via-[#12161f] dark:to-cyan-500/10 p-7 sm:p-10 text-center">
+      <div class="orb w-[300px] h-[300px] bg-red-500 -top-24 left-1/4"></div>
+      <div class="relative">
+        <span class="inline-grid place-items-center w-12 h-12 rounded-2xl bg-gradient-to-br from-red-500 to-red-700 text-white mx-auto">
+          <i data-lucide="mail" class="w-6 h-6"></i>
+        </span>
+        <h2 class="font-display font-extrabold text-2xl sm:text-3xl mt-4">Get first access to NSNV drops</h2>
+        <p class="text-sm text-slate-600 dark:text-slate-400 mt-2 max-w-md mx-auto">
+          Join the list for early access, restock alerts and subscriber-only discounts on the collab.
+        </p>
+        <form @submit.prevent="subscribe()" class="mt-6 flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+          <input type="email" x-model="newsletterEmail" required placeholder="you@email.com"
+                 class="flex-1 px-5 py-3.5 rounded-full bg-white dark:bg-[#07090e] border border-slate-200 dark:border-white/10 focus:border-red-500 outline-none transition font-medium">
+          <button type="submit" class="btn-pill px-7 py-3.5 rounded-full font-extrabold text-white bg-gradient-to-r from-red-500 to-red-700 shadow-lg shadow-red-600/30">
+            Subscribe
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer id="contact" class="relative border-t border-slate-200/80 dark:border-white/10 bg-white/70 dark:bg-[#0b0e15] grid-bg">
+  <div class="relative mx-auto max-w-7xl px-4 sm:px-6 py-12 md:py-16">
+    <div class="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
+
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="grid place-items-center w-9 h-9 rounded-2xl bg-gradient-to-br from-red-500 to-red-700 text-white font-display font-extrabold text-lg">S</span>
+          <span class="font-display text-xl font-extrabold tracking-tight text-red-600 dark:text-red-500">Swaguu</span>
+        </div>
+        <p class="text-sm text-slate-600 dark:text-slate-400 mt-3 leading-relaxed max-w-xs">
+          Official NSNV merch with Seyi Vibez. Wear the story. Own the moment.
+        </p>
+        <div class="flex items-center gap-2 mt-5">
+          <a :href="'https://instagram.com/' + INSTAGRAM.replace('@','')" target="_blank" rel="noopener"
+             class="grid place-items-center w-10 h-10 rounded-xl border border-slate-200 dark:border-white/10 hover:border-red-500 hover:text-red-500 transition duration-300" aria-label="Instagram">
+            <i data-lucide="instagram" class="w-4 h-4"></i>
+          </a>
+          <a :href="waGeneral()" target="_blank" rel="noopener"
+             class="grid place-items-center w-10 h-10 rounded-xl border border-slate-200 dark:border-white/10 hover:border-emerald-400 hover:text-emerald-500 transition duration-300" aria-label="WhatsApp">
+            <i data-lucide="message-circle" class="w-4 h-4"></i>
+          </a>
+          <a href="mailto:hello@swaguu.com"
+             class="grid place-items-center w-10 h-10 rounded-xl border border-slate-200 dark:border-white/10 hover:border-cyan-400 hover:text-cyan-500 transition duration-300" aria-label="Email">
+            <i data-lucide="mail" class="w-4 h-4"></i>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="font-display font-extrabold text-sm uppercase tracking-wider">Shop</h4>
+        <ul class="mt-4 space-y-2.5 text-sm">
+          <template x-for="c in categories" :key="'fc-'+c.id">
+            <li>
+              <a href="#shop" @click.prevent="activeCategory = c.id; scrollTo('shop')"
+                 class="text-slate-600 dark:text-slate-400 hover:text-red-500 transition font-medium" x-text="c.label"></a>
+            </li>
+          </template>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="font-display font-extrabold text-sm uppercase tracking-wider">Support</h4>
+        <ul class="mt-4 space-y-2.5 text-sm">
+          <li><button @click="showSizeGuide = true" class="text-slate-600 dark:text-slate-400 hover:text-red-500 transition font-medium">Size Guide</button></li>
+          <li><button @click="toast('Returns: 7 days from delivery, unworn with tags. Message us on WhatsApp to start.')" class="text-slate-600 dark:text-slate-400 hover:text-red-500 transition font-medium">Returns & Exchanges</button></li>
+          <li><button @click="toast('Lagos: 24–48h · Nationwide: 2–4 working days · Free over ₦100,000')" class="text-slate-600 dark:text-slate-400 hover:text-red-500 transition font-medium">Shipping Info</button></li>
+          <li><button @click="openChat()" class="text-slate-600 dark:text-slate-400 hover:text-red-500 transition font-medium">Customer Care</button></li>
+          <li><a :href="waGeneral()" target="_blank" rel="noopener" class="text-slate-600 dark:text-slate-400 hover:text-red-500 transition font-medium">Contact Us</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="font-display font-extrabold text-sm uppercase tracking-wider">Contact</h4>
+        <ul class="mt-4 space-y-3 text-sm text-slate-600 dark:text-slate-400">
+          <li class="flex gap-2.5"><i data-lucide="map-pin" class="w-4 h-4 mt-0.5 text-red-500 shrink-0"></i><span>12 Adeola Odeku Street, Victoria Island, Lagos, Nigeria</span></li>
+          <li class="flex gap-2.5"><i data-lucide="message-circle" class="w-4 h-4 mt-0.5 text-emerald-500 shrink-0"></i><a :href="waGeneral()" target="_blank" rel="noopener" class="hover:text-red-500 transition">+234 801 234 5678</a></li>
+          <li class="flex gap-2.5"><i data-lucide="mail" class="w-4 h-4 mt-0.5 text-cyan-500 shrink-0"></i><a href="mailto:hello@swaguu.com" class="hover:text-red-500 transition">hello@swaguu.com</a></li>
+          <li class="flex gap-2.5"><i data-lucide="clock" class="w-4 h-4 mt-0.5 text-red-500 shrink-0"></i><span>Mon–Sat · 9:00am – 7:00pm WAT</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-10 pt-6 border-t border-slate-200/80 dark:border-white/10 flex flex-col sm:flex-row items-center justify-between gap-5">
+      <div class="flex flex-wrap items-center justify-center gap-2">
+        <span class="px-3 py-1.5 rounded-lg text-[11px] font-extrabold bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10">Bank Transfer</span>
+        <span class="px-3 py-1.5 rounded-lg text-[11px] font-extrabold bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10">Visa</span>
+        <span class="px-3 py-1.5 rounded-lg text-[11px] font-extrabold bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10">Mastercard</span>
+        <span class="px-3 py-1.5 rounded-lg text-[11px] font-extrabold bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10">Verve</span>
+      </div>
+      <p class="text-xs text-slate-500 dark:text-slate-400 text-center sm:text-right">
+        © <span x-text="year"></span> Swaguu. All rights reserved. RC 1847392.
+      </p>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ FLOATING BUTTONS ============ -->
+<div class="fixed bottom-5 right-4 sm:right-6 z-50 flex items-center gap-3 safe-b">
+  <button @click="openChat()"
+          class="relative btn-pill grid place-items-center w-14 h-14 rounded-full bg-gradient-to-br from-slate-900 to-slate-700 dark:from-white dark:to-slate-200 text-white dark:text-slate-900 shadow-2xl"
+          aria-label="Customer care chat">
+    <i data-lucide="headset" class="w-6 h-6"></i>
+    <span x-show="!chatSeen" x-cloak class="absolute -top-1 -right-1 min-w-[20px] h-5 px-1 grid place-items-center rounded-full bg-cyan-400 text-slate-900 text-[10px] font-extrabold">1</span>
+  </button>
+
+  <a :href="waGeneral()" target="_blank" rel="noopener" @click="waBadge = false"
+     class="relative pulse-ring grid place-items-center w-14 h-14 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-600 text-white shadow-2xl shadow-emerald-500/40 btn-pill"
+     aria-label="Chat on WhatsApp">
+    <i data-lucide="message-circle" class="w-6 h-6"></i>
+    <span x-show="waBadge" x-cloak class="absolute -top-1 -right-1 min-w-[20px] h-5 px-1 grid place-items-center rounded-full bg-red-500 text-white text-[10px] font-extrabold">1</span>
+  </a>
+</div>
+
+<!-- ============ CART DRAWER ============ -->
+<div x-show="showCart" x-cloak class="fixed inset-0 z-[70]">
+  <div class="absolute inset-0 bg-slate-950/60 backdrop-blur-sm"
+       x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+       x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+       @click="showCart = false"></div>
+
+  <aside class="absolute top-0 right-0 h-full w-full sm:w-[420px] bg-white dark:bg-[#0b0e15] border-l border-slate-200 dark:border-white/10 flex flex-col shadow-2xl"
+         x-transition:enter="transition ease-out duration-400" x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0"
+         x-transition:leave="transition ease-in duration-300" x-transition:leave-start="translate-x-0" x-transition:leave-end="translate-x-full"
+         role="dialog" aria-label="Shopping cart">
+
+    <div class="flex items-center justify-between px-5 h-16 border-b border-slate-200 dark:border-white/10 shrink-0">
+      <h3 class="font-display font-extrabold text-lg">Your Bag <span class="text-red-500" x-text="'(' + cartCount + ')'"></span></h3>
+      <button @click="showCart = false" class="grid place-items-center w-9 h-9 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition" aria-label="Close cart">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <div class="flex-1 overflow-y-auto px-5 py-4">
+      <div x-show="cart.length" x-cloak class="mb-5 rounded-2xl bg-slate-100 dark:bg-white/5 p-3.5">
+        <div class="flex items-center justify-between text-xs font-bold mb-2">
+          <span x-text="subtotal >= freeThreshold ? '🎉 Free delivery unlocked!' : 'Add ' + money(freeThreshold - subtotal) + ' for free delivery'"></span>
+          <span class="text-red-500" x-text="Math.round(shippingProgress) + '%'"></span>
+        </div>
+        <div class="h-2 rounded-full bg-slate-200 dark:bg-white/10 overflow-hidden">
+          <div class="h-full rounded-full bg-gradient-to-r from-red-500 to-emerald-400 transition-all duration-500"
+               :style="'width:' + shippingProgress + '%'"></div>
+        </div>
+      </div>
+
+      <template x-for="item in cart" :key="item.key">
+        <div class="flex gap-3 py-3.5 border-b border-slate-100 dark:border-white/5 last:border-0">
+          <div class="w-20 h-24 rounded-2xl overflow-hidden bg-slate-100 dark:bg-white/5 shrink-0">
+            <img :src="item.image" :alt="item.name" class="w-full h-full object-cover" @error="imgErr($event, item)">
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-start justify-between gap-2">
+              <p class="font-bold text-sm leading-snug line-clamp-2" x-text="item.name"></p>
+              <button @click="removeItem(item.key)" class="shrink-0 text-slate-400 hover:text-rose-500 transition" aria-label="Remove item">
+                <i data-lucide="trash-2" class="w-4 h-4"></i>
+              </button>
+            </div>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
+              Size <span class="font-bold" x-text="item.size"></span>
+              <span x-show="item.color"> · <span x-text="item.color"></span></span>
+            </p>
+            <div class="flex items-center justify-between mt-2.5">
+              <div class="flex items-center gap-1 border border-slate-200 dark:border-white/10 rounded-full p-0.5">
+                <button @click="decQty(item)" class="grid place-items-center w-7 h-7 rounded-full hover:bg-slate-100 dark:hover:bg-white/10 transition" aria-label="Decrease">
+                  <i data-lucide="minus" class="w-3.5 h-3.5"></i>
+                </button>
+                <span class="w-6 text-center text-sm font-extrabold" x-text="item.qty"></span>
+                <button @click="incQty(item)" class="grid place-items-center w-7 h-7 rounded-full hover:bg-slate-100 dark:hover:bg-white/10 transition" aria-label="Increase">
+                  <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                </button>
+              </div>
+              <p class="font-extrabold text-red-500 text-sm" x-text="money(item.price * item.qty)"></p>
+            </div>
+          </div>
+        </div>
+      </template>
+
+      <div x-show="cart.length === 0" x-cloak class="py-16 text-center">
+        <span class="grid place-items-center w-16 h-16 mx-auto rounded-2xl bg-slate-100 dark:bg-white/5">
+          <i data-lucide="shopping-bag" class="w-8 h-8 text-slate-400"></i>
+        </span>
+        <h4 class="font-display font-extrabold text-lg mt-4">Your bag is empty</h4>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1.5">Add something you will actually wear.</p>
+        <button @click="showCart = false; scrollTo('shop')"
+                class="btn-pill mt-5 inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold text-white bg-gradient-to-r from-red-500 to-red-700">
+          <i data-lucide="shopping-bag" class="w-4 h-4"></i> Start shopping
+        </button>
+      </div>
+    </div>
+
+    <div x-show="cart.length" x-cloak class="border-t border-slate-200 dark:border-white/10 p-5 space-y-2.5 shrink-0">
+      <div class="flex justify-between text-sm">
+        <span class="text-slate-500 dark:text-slate-400 font-semibold">Subtotal</span>
+        <span class="font-bold" x-text="money(subtotal)"></span>
+      </div>
+      <div class="flex justify-between text-sm">
+        <span class="text-slate-500 dark:text-slate-400 font-semibold">Delivery</span>
+        <span class="font-bold" :class="delivery === 0 ? 'text-emerald-500' : ''" x-text="delivery === 0 ? 'FREE' : money(delivery)"></span>
+      </div>
+      <div class="flex justify-between text-base pt-2.5 border-t border-dashed border-slate-200 dark:border-white/10">
+        <span class="font-display font-extrabold">Total</span>
+        <span class="font-display font-extrabold text-red-500" x-text="money(total)"></span>
+      </div>
+
+      <button @click="startCheckout()"
+              class="btn-pill w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full font-extrabold text-white bg-gradient-to-r from-red-500 to-red-700 shadow-lg shadow-red-600/30 mt-2">
+        <i data-lucide="credit-card" class="w-4 h-4"></i> Checkout & Pay
+      </button>
+      <a :href="waOrderLink()" target="_blank" rel="noopener"
+         class="btn-pill w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full font-extrabold text-white bg-gradient-to-r from-emerald-500 to-emerald-600 shadow-lg shadow-emerald-500/25">
+        <i data-lucide="message-circle" class="w-4 h-4"></i> Order via WhatsApp
+      </a>
+      <button @click="clearCart()" class="w-full text-xs font-bold text-slate-400 hover:text-rose-500 transition py-1">Clear bag</button>
+    </div>
+  </aside>
+</div>
+
+<!-- ============ WISHLIST DRAWER ============ -->
+<div x-show="showWish" x-cloak class="fixed inset-0 z-[70]">
+  <div class="absolute inset-0 bg-slate-950/60 backdrop-blur-sm"
+       x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+       x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+       @click="showWish = false"></div>
+
+  <aside class="absolute top-0 right-0 h-full w-full sm:w-[400px] bg-white dark:bg-[#0b0e15] border-l border-slate-200 dark:border-white/10 flex flex-col shadow-2xl"
+         x-transition:enter="transition ease-out duration-400" x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0"
+         x-transition:leave="transition ease-in duration-300" x-transition:leave-start="translate-x-0" x-transition:leave-end="translate-x-full"
+         role="dialog" aria-label="Wishlist">
+
+    <div class="flex items-center justify-between px-5 h-16 border-b border-slate-200 dark:border-white/10 shrink-0">
+      <h3 class="font-display font-extrabold text-lg">Wishlist <span class="text-rose-500" x-text="'(' + wishlist.length + ')'"></span></h3>
+      <button @click="showWish = false" class="grid place-items-center w-9 h-9 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition" aria-label="Close wishlist">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <div class="flex-1 overflow-y-auto px-5 py-4">
+      <template x-for="p in wishProducts" :key="'w-'+p.id">
+        <div class="flex gap-3 py-3.5 border-b border-slate-100 dark:border-white/5 last:border-0">
+          <div class="w-20 h-24 rounded-2xl overflow-hidden bg-slate-100 dark:bg-white/5 shrink-0 cursor-pointer" @click="showWish = false; openProduct(p)">
+            <img :src="p.images[0]" :alt="p.name" class="w-full h-full object-cover" @error="imgErr($event, p)">
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="font-bold text-sm leading-snug line-clamp-2" x-text="p.name"></p>
+            <p class="font-extrabold text-red-500 text-sm mt-1" x-text="money(p.price)"></p>
+            <div class="flex gap-2 mt-2.5">
+              <button @click="showWish = false; openProduct(p)"
+                      class="btn-pill px-4 py-2 rounded-full text-[11px] font-extrabold text-white bg-gradient-to-r from-red-500 to-red-700">View</button>
+              <button @click="toggleWish(p.id)" class="btn-pill px-4 py-2 rounded-full text-[11px] font-extrabold border border-slate-200 dark:border-white/10 hover:border-rose-400 hover:text-rose-500 transition">Remove</button>
+            </div>
+          </div>
+        </div>
+      </template>
+
+      <div x-show="wishlist.length === 0" x-cloak class="py-16 text-center">
+        <span class="grid place-items-center w-16 h-16 mx-auto rounded-2xl bg-slate-100 dark:bg-white/5">
+          <i data-lucide="heart" class="w-8 h-8 text-slate-400"></i>
+        </span>
+        <h4 class="font-display font-extrabold text-lg mt-4">Nothing saved yet</h4>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1.5">Tap the heart on any piece to save it here.</p>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<!-- ============ PRODUCT MODAL ============ -->
+<div x-show="showProduct" x-cloak class="fixed inset-0 z-[80] flex items-end sm:items-center justify-center p-0 sm:p-6"
+     role="dialog" aria-modal="true" aria-label="Product details">
+  <div class="absolute inset-0 bg-slate-950/70 backdrop-blur-sm"
+       x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+       x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+       @click="showProduct = false"></div>
+
+  <div class="relative w-full sm:max-w-5xl max-h-[93vh] overflow-y-auto bg-white dark:bg-[#0b0e15] rounded-t-3xl sm:rounded-3xl border border-slate-200 dark:border-white/10 shadow-2xl"
+       x-transition:enter="transition ease-out duration-400" x-transition:enter-start="opacity-0 translate-y-8 sm:scale-95" x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+       x-transition:leave="transition ease-in duration-250" x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" x-transition:leave-end="opacity-0 translate-y-8 sm:scale-95">
+
+    <template x-if="currentProduct">
+      <div>
+        <button @click="showProduct = false"
+                class="sticky top-3 ml-auto mr-3 z-20 grid place-items-center w-10 h-10 rounded-full bg-white/90 dark:bg-[#12161f]/90 glass border border-slate-200 dark:border-white/10 hover:scale-110 transition"
+                aria-label="Close product">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+
+        <div class="grid lg:grid-cols-2 gap-6 lg:gap-9 px-5 sm:px-8 pb-8 -mt-8">
+
+          <div>
+            <div class="rounded-3xl overflow-hidden bg-slate-100 dark:bg-[#12161f] aspect-[4/5]">
+              <img :src="currentProduct.images[galleryIndex] || currentProduct.images[0]"
+                   :alt="currentProduct.name" @error="imgErr($event, currentProduct)"
+                   class="w-full h-full object-cover">
+            </div>
+            <div class="flex gap-2.5 mt-3 overflow-x-auto no-sb pb-1">
+              <template x-for="(img, i) in currentProduct.images" :key="'th-'+i">
+                <button @click="galleryIndex = i"
+                        :class="galleryIndex === i ? 'border-red-500 ring-2 ring-red-500/40' : 'border-slate-200 dark:border-white/10'"
+                        class="shrink-0 w-16 h-20 rounded-2xl overflow-hidden border-2 transition duration-300">
+                  <img :src="img" :alt="currentProduct.name + ' view ' + (i+1)" class="w-full h-full object-cover" @error="imgErr($event, currentProduct)">
+                </button>
+              </template>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wide bg-cyan-500/15 text-cyan-600 dark:text-cyan-300" x-text="currentProduct.category"></span>
+              <span class="px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wide bg-slate-100 dark:bg-white/5 text-slate-500 dark:text-slate-400" x-text="currentProduct.gender"></span>
+              <span x-show="currentProduct.badge" x-cloak
+                    class="px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wide"
+                    :style="'background:' + (currentProduct.badgeColor || '#dc2626') + ';color:#fff'"
+                    x-text="currentProduct.badge"></span>
+            </div>
+
+            <h2 class="font-display font-extrabold text-2xl sm:text-3xl leading-tight mt-3" x-text="currentProduct.name"></h2>
+
+            <div class="flex items-center gap-2 mt-2.5">
+              <div class="flex items-center gap-0.5 text-red-500">
+                <template x-for="n in 5" :key="'st-'+n">
+                  <i data-lucide="star" class="w-4 h-4" :class="n <= Math.round(currentProduct.rating || 5) ? 'fill-red-500 text-red-500' : 'text-slate-300 dark:text-slate-600'"></i>
+                </template>
+              </div>
+              <span class="text-xs font-bold text-slate-500 dark:text-slate-400">
+                <span x-text="currentProduct.rating || 5"></span> · <span x-text="(currentProduct.reviews || 0)"></span> reviews
+              </span>
+            </div>
+
+            <div class="flex items-end gap-3 mt-4">
+              <span class="font-display font-extrabold text-3xl text-red-500" x-text="money(currentProduct.price)"></span>
+              <span x-show="currentProduct.oldPrice" x-cloak class="text-base line-through text-slate-400 mb-1" x-text="money(currentProduct.oldPrice)"></span>
+              <span x-show="currentProduct.oldPrice" x-cloak
+                    class="mb-1.5 px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-rose-500/15 text-rose-500"
+                    x-text="'-' + Math.round((1 - currentProduct.price / currentProduct.oldPrice) * 100) + '%'"></span>
+            </div>
+
+            <p class="text-sm text-slate-600 dark:text-slate-400 mt-4 leading-relaxed" x-text="currentProduct.description"></p>
+
+            <div class="mt-6">
+              <div class="flex items-center justify-between">
+                <p class="text-xs font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">Select size</p>
+                <button @click="showSizeGuide = true" class="text-xs font-bold text-red-500 hover:text-red-400 transition inline-flex items-center gap-1">
+                  <i data-lucide="ruler" class="w-3.5 h-3.5"></i> Size guide
+                </button>
+              </div>
+              <div class="flex flex-wrap gap-2 mt-2.5">
+                <template x-for="s in (currentProduct.sizes || [])" :key="'ps-'+s">
+                  <button @click="selectedSize = s"
+                          :class="selectedSize === s ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 border-transparent' : 'border-slate-200 dark:border-white/15 hover:border-red-500'"
+                          class="btn-pill min-w-[52px] px-4 py-2.5 rounded-full text-sm font-extrabold border transition" x-text="s"></button>
+                </template>
+              </div>
+            </div>
+
+            <div class="mt-5" x-show="(currentProduct.colors || []).length">
+              <p class="text-xs font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                Colour: <span class="text-slate-900 dark:text-white" x-text="selectedColor ? selectedColor.name : '—'"></span>
+              </p>
+              <div class="flex flex-wrap gap-2.5 mt-2.5">
+                <template x-for="c in (currentProduct.colors || [])" :key="'pc-'+c.name">
+                  <button @click="selectedColor = c"
+                          :class="selectedColor && selectedColor.name === c.name ? 'ring-2 ring-red-500 ring-offset-2 ring-offset-white dark:ring-offset-[#0b0e15]' : ''"
+                          class="w-9 h-9 rounded-full border border-black/10 dark:border-white/20 transition duration-300 hover:scale-110"
+                          :style="'background:' + c.hex"
+                          :title="c.name"></button>
+                </template>
+              </div>
+            </div>
+
+            <div class="mt-5 flex items-center gap-4">
+              <p class="text-xs font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">Qty</p>
+              <div class="flex items-center gap-1 border border-slate-200 dark:border-white/10 rounded-full p-1">
+                <button @click="qty = Math.max(1, qty - 1)" class="grid place-items-center w-9 h-9 rounded-full hover:bg-slate-100 dark:hover:bg-white/10 transition" aria-label="Decrease quantity">
+                  <i data-lucide="minus" class="w-4 h-4"></i>
+                </button>
+                <span class="w-8 text-center font-extrabold" x-text="qty"></span>
+                <button @click="qty = Math.min(Number(currentProduct.stock) || 99, qty + 1)" class="grid place-items-center w-9 h-9 rounded-full hover:bg-slate-100 dark:hover:bg-white/10 transition" aria-label="Increase quantity">
+                  <i data-lucide="plus" class="w-4 h-4"></i>
+                </button>
+              </div>
+              <span class="text-xs font-bold" :class="Number(currentProduct.stock) > 0 ? 'text-emerald-500' : 'text-rose-500'"
+                    x-text="Number(currentProduct.stock) > 0 ? (currentProduct.stock + ' in stock') : 'Out of stock'"></span>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-3 mt-6">
+              <button @click="addFromModal()"
+                      class="btn-pill flex-1 inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full font-extrabold text-white bg-gradient-to-r from-red-500 to-red-700 shadow-xl shadow-red-600/30">
+                <i data-lucide="shopping-bag" class="w-4 h-4"></i> Add to Cart
+              </button>
+              <a :href="waProductLink(currentProduct, selectedSize, selectedColor ? selectedColor.name : '', qty)"
+                 target="_blank" rel="noopener"
+                 class="btn-pill flex-1 inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full font-extrabold text-white bg-gradient-to-r from-emerald-500 to-emerald-600 shadow-xl shadow-emerald-500/25">
+                <i data-lucide="message-circle" class="w-4 h-4"></i> Order on WhatsApp
+              </a>
+            </div>
+
+            <div class="mt-7 rounded-2xl border border-slate-200 dark:border-white/10 divide-y divide-slate-200 dark:divide-white/10 overflow-hidden">
+              <div class="flex justify-between gap-4 px-4 py-3 text-sm">
+                <span class="text-slate-500 dark:text-slate-400 font-semibold">Fabric</span>
+                <span class="font-bold text-right" x-text="currentProduct.fabric || '—'"></span>
+              </div>
+              <div class="flex justify-between gap-4 px-4 py-3 text-sm">
+                <span class="text-slate-500 dark:text-slate-400 font-semibold">Fit</span>
+                <span class="font-bold text-right" x-text="currentProduct.fit || '—'"></span>
+              </div>
+              <div class="flex justify-between gap-4 px-4 py-3 text-sm">
+                <span class="text-slate-500 dark:text-slate-400 font-semibold">Care</span>
+                <span class="font-bold text-right max-w-[60%]" x-text="currentProduct.careInstructions || '—'"></span>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-3 gap-2.5 mt-5">
+              <div class="rounded-2xl bg-slate-100 dark:bg-white/5 p-3 text-center">
+                <i data-lucide="refresh-ccw" class="w-5 h-5 text-emerald-500 mx-auto"></i>
+                <p class="text-[10px] font-extrabold mt-1.5 leading-tight">Free returns<br>7 days</p>
+              </div>
+              <div class="rounded-2xl bg-slate-100 dark:bg-white/5 p-3 text-center">
+                <i data-lucide="shield-check" class="w-5 h-5 text-cyan-500 mx-auto"></i>
+                <p class="text-[10px] font-extrabold mt-1.5 leading-tight">Receipt<br>verified</p>
+              </div>
+              <div class="rounded-2xl bg-slate-100 dark:bg-white/5 p-3 text-center">
+                <i data-lucide="truck" class="w-5 h-5 text-red-500 mx-auto"></i>
+                <p class="text-[10px] font-extrabold mt-1.5 leading-tight">Nationwide<br>delivery</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </template>
+  </div>
+</div>
+
+<!-- ============ CHECKOUT MODAL (multi-step manual payment) ============ -->
+<div x-show="showCheckout" x-cloak class="fixed inset-0 z-[85] flex items-end sm:items-center justify-center p-0 sm:p-6"
+     role="dialog" aria-modal="true" aria-label="Checkout">
+  <div class="absolute inset-0 bg-slate-950/70 backdrop-blur-sm"
+       x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+       x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+       @click="closeCheckout()"></div>
+
+  <div class="relative w-full sm:max-w-2xl max-h-[93vh] overflow-y-auto bg-white dark:bg-[#0b0e15] rounded-t-3xl sm:rounded-3xl border border-slate-200 dark:border-white/10 shadow-2xl p-5 sm:p-7"
+       x-transition:enter="transition ease-out duration-400" x-transition:enter-start="opacity-0 translate-y-8 sm:scale-95" x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+       x-transition:leave="transition ease-in duration-250" x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" x-transition:leave-end="opacity-0 translate-y-8 sm:scale-95">
+
+    <div class="flex items-center justify-between">
+      <h3 class="font-display font-extrabold text-xl">Checkout</h3>
+      <button @click="closeCheckout()" class="grid place-items-center w-9 h-9 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition" aria-label="Close checkout">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <!-- step bar -->
+    <div class="flex items-center gap-2 mt-4 text-[11px] sm:text-xs font-extrabold">
+      <span :class="checkoutStep >= 1 ? 'text-red-500' : 'text-slate-400'">1 · Your details</span>
+      <span class="text-slate-300 dark:text-slate-600">›</span>
+      <span :class="checkoutStep >= 2 ? 'text-red-500' : 'text-slate-400'">2 · Pay</span>
+      <span class="text-slate-300 dark:text-slate-600">›</span>
+      <span :class="checkoutStep >= 3 ? 'text-red-500' : 'text-slate-400'">3 · Receipt</span>
+    </div>
+
+    <!-- ============ STEP 1 — details ============ -->
+    <div x-show="checkoutStep === 1" class="mt-5">
+      <div class="rounded-2xl border border-slate-200 dark:border-white/10 divide-y divide-slate-200 dark:divide-white/10 overflow-hidden">
+        <template x-for="i in cart" :key="'ck-'+i.key">
+          <div class="flex items-center justify-between gap-3 px-4 py-3 text-sm">
+            <span class="min-w-0 truncate">
+              <span class="font-bold" x-text="i.name"></span>
+              <span class="text-slate-500 dark:text-slate-400"> · <span x-text="i.size"></span> × <span x-text="i.qty"></span></span>
+            </span>
+            <span class="font-bold shrink-0" x-text="money(i.price * i.qty)"></span>
+          </div>
+        </template>
+        <div class="px-4 py-3 text-sm space-y-1.5 bg-slate-50 dark:bg-white/5">
+          <div class="flex justify-between"><span class="text-slate-500 dark:text-slate-400 font-semibold">Subtotal</span><span class="font-bold" x-text="money(subtotal)"></span></div>
+          <div class="flex justify-between"><span class="text-slate-500 dark:text-slate-400 font-semibold">Delivery</span><span class="font-bold" x-text="delivery === 0 ? 'FREE' : money(delivery)"></span></div>
+          <div class="flex justify-between text-base pt-2 border-t border-dashed border-slate-300 dark:border-white/10">
+            <span class="font-display font-extrabold">Total</span>
+            <span class="font-display font-extrabold text-red-500" x-text="money(total)"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-5 grid sm:grid-cols-2 gap-3">
+        <div class="sm:col-span-2">
+          <label class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">Full name *</label>
+          <input type="text" x-model="form.name" placeholder="e.g. Adebayo Johnson"
+                 class="mt-1.5 w-full px-4 py-3 rounded-2xl bg-slate-100 dark:bg-[#07090e] border border-transparent focus:border-red-500 outline-none transition font-medium">
+        </div>
+        <div>
+          <label class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">Gmail / Email *</label>
+          <input type="email" x-model="form.email" placeholder="you@gmail.com"
+                 class="mt-1.5 w-full px-4 py-3 rounded-2xl bg-slate-100 dark:bg-[#07090e] border border-transparent focus:border-red-500 outline-none transition font-medium">
+        </div>
+        <div>
+          <label class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">WhatsApp number *</label>
+          <input type="tel" x-model="form.whatsapp" placeholder="0801 234 5678"
+                 class="mt-1.5 w-full px-4 py-3 rounded-2xl bg-slate-100 dark:bg-[#07090e] border border-transparent focus:border-red-500 outline-none transition font-medium">
+        </div>
+        <div>
+          <label class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">Calling number</label>
+          <input type="tel" x-model="form.calling" placeholder="Same as WhatsApp if blank"
+                 class="mt-1.5 w-full px-4 py-3 rounded-2xl bg-slate-100 dark:bg-[#07090e] border border-transparent focus:border-red-500 outline-none transition font-medium">
+        </div>
+        <div>
+          <label class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">State *</label>
+          <select x-model="form.state"
+                  class="mt-1.5 w-full px-4 py-3 rounded-2xl bg-slate-100 dark:bg-[#07090e] border border-transparent focus:border-red-500 outline-none transition font-medium">
+            <option value="">Select your state</option>
+            <template x-for="st in nigeriaStates" :key="st">
+              <option :value="st" x-text="st"></option>
+            </template>
+          </select>
+        </div>
+        <div class="sm:col-span-2">
+          <label class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">City / Area *</label>
+          <input type="text" x-model="form.city" placeholder="e.g. Lekki Phase 1"
+                 class="mt-1.5 w-full px-4 py-3 rounded-2xl bg-slate-100 dark:bg-[#07090e] border border-transparent focus:border-red-500 outline-none transition font-medium">
+        </div>
+        <div class="sm:col-span-2">
+          <label class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">Delivery address *</label>
+          <textarea x-model="form.address" rows="2" placeholder="Street, building, landmark…"
+                    class="mt-1.5 w-full px-4 py-3 rounded-2xl bg-slate-100 dark:bg-[#07090e] border border-transparent focus:border-red-500 outline-none transition font-medium resize-none"></textarea>
+        </div>
+        <div class="sm:col-span-2">
+          <label class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">Additional notes</label>
+          <textarea x-model="form.notes" rows="2" placeholder="Colour preference, delivery timing, etc."
+                    class="mt-1.5 w-full px-4 py-3 rounded-2xl bg-slate-100 dark:bg-[#07090e] border border-transparent focus:border-red-500 outline-none transition font-medium resize-none"></textarea>
+        </div>
+      </div>
+
+      <button @click="placeOrder()"
+              class="btn-pill w-full mt-5 inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full font-extrabold text-white bg-gradient-to-r from-red-500 to-red-700 shadow-xl shadow-red-600/30">
+        <i data-lucide="arrow-right" class="w-4 h-4"></i> Place Order & Continue to Payment
+      </button>
+    </div>
+
+    <!-- ============ STEP 2 — bank details ============ -->
+    <div x-show="checkoutStep === 2" x-cloak class="mt-5">
+      <div class="rounded-2xl border-2 border-red-500/40 bg-red-500/5 p-5 text-center">
+        <p class="text-[11px] font-extrabold uppercase tracking-widest text-red-500">Amount to pay</p>
+        <p class="font-display font-extrabold text-3xl sm:text-4xl mt-1 text-red-500" x-text="currentOrder ? money(currentOrder.total) : money(total)"></p>
+        <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">
+          Order ref: <span class="font-extrabold text-slate-900 dark:text-white" x-text="currentOrder ? currentOrder.id : ''"></span>
+        </p>
+      </div>
+
+      <div class="mt-4 rounded-2xl border border-slate-200 dark:border-white/10 divide-y divide-slate-200 dark:divide-white/10 overflow-hidden">
+        <div class="flex justify-between gap-4 px-4 py-3.5 text-sm">
+          <span class="text-slate-500 dark:text-slate-400 font-semibold">Bank</span>
+          <span class="font-extrabold text-right" x-text="settings.bankName || '—'"></span>
+        </div>
+        <div class="flex justify-between gap-4 px-4 py-3.5 text-sm">
+          <span class="text-slate-500 dark:text-slate-400 font-semibold">Account Name</span>
+          <span class="font-extrabold text-right" x-text="settings.accountName || '—'"></span>
+        </div>
+        <div class="flex justify-between items-center gap-4 px-4 py-3.5 text-sm">
+          <span class="text-slate-500 dark:text-slate-400 font-semibold">Account Number</span>
+          <div class="flex items-center gap-2">
+            <span class="font-extrabold tracking-wider text-red-500 text-base" x-text="settings.accountNumber || '—'"></span>
+            <button @click="copyAccount()" class="grid place-items-center w-7 h-7 rounded-lg hover:bg-slate-100 dark:hover:bg-white/10 transition" aria-label="Copy account number">
+              <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 p-4 text-sm leading-relaxed">
+        <p class="font-extrabold flex items-center gap-2 text-amber-600 dark:text-amber-400">
+          <i data-lucide="info" class="w-4 h-4"></i> Important
+        </p>
+        <p class="text-slate-700 dark:text-slate-300 mt-2 whitespace-pre-line"
+           x-text="settings.instructions || 'Transfer the exact total to the account above. Use your order reference as the transfer narration.'"></p>
+      </div>
+
+      <button @click="checkoutStep = 3"
+              class="btn-pill w-full mt-5 inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full font-extrabold text-white bg-gradient-to-r from-emerald-500 to-emerald-600 shadow-xl shadow-emerald-500/30">
+        <i data-lucide="check" class="w-5 h-5"></i> I have paid — Upload Receipt
+      </button>
+      <button @click="checkoutStep = 1"
+              class="btn-pill w-full mt-2 inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-bold border border-slate-200 dark:border-white/10 hover:border-red-500 transition text-sm">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to details
+      </button>
+    </div>
+
+    <!-- ============ STEP 3 — receipt upload ============ -->
+    <div x-show="checkoutStep === 3" x-cloak class="mt-5">
+      <p class="text-sm text-slate-600 dark:text-slate-400">
+        Upload a clear photo or screenshot of your bank transfer receipt. Our team verifies it and confirms your order.
+      </p>
+
+      <label class="mt-4 block cursor-pointer">
+        <input type="file" accept="image/*" class="hidden" @change="handleReceiptUpload($event)">
+        <div class="rounded-2xl border-2 border-dashed border-slate-300 dark:border-white/15 hover:border-red-500 transition p-8 text-center">
+          <span class="grid place-items-center w-14 h-14 mx-auto rounded-2xl bg-red-500/10">
+            <i data-lucide="upload" class="w-6 h-6 text-red-500"></i>
+          </span>
+          <p class="font-extrabold mt-3">Click to upload receipt</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">JPG, PNG · up to 5MB</p>
+        </div>
+      </label>
+
+      <div x-show="receiptPreview" x-cloak class="mt-4 rounded-2xl overflow-hidden border border-slate-200 dark:border-white/10">
+        <img :src="receiptPreview" alt="Receipt preview" class="w-full max-h-64 object-contain bg-slate-50 dark:bg-white/5">
+      </div>
+
+      <button x-show="receiptPreview" x-cloak @click="submitReceipt()"
+              :disabled="receiptUploading"
+              class="btn-pill w-full mt-5 inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full font-extrabold text-white bg-gradient-to-r from-red-500 to-red-700 shadow-xl shadow-red-600/30 disabled:opacity-60">
+        <i data-lucide="check-circle" class="w-5 h-5"></i>
+        <span x-text="receiptUploading ? 'Uploading…' : 'Submit Receipt'"></span>
+      </button>
+      <button @click="checkoutStep = 2"
+              class="btn-pill w-full mt-2 inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-bold border border-slate-200 dark:border-white/10 hover:border-red-500 transition text-sm">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to payment
+      </button>
+    </div>
+
+    <!-- ============ STEP 4 — success ============ -->
+    <div x-show="checkoutStep === 4" x-cloak class="mt-6 text-center">
+      <span class="inline-grid place-items-center w-20 h-20 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-700 text-white shadow-xl shadow-emerald-500/30">
+        <i data-lucide="check" class="w-10 h-10"></i>
+      </span>
+      <h3 class="font-display font-extrabold text-2xl mt-5">Order received 🎉</h3>
+      <p class="text-sm text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">
+        Thank you! Your order <span class="font-extrabold text-red-500" x-text="currentOrder ? currentOrder.id : ''"></span>
+        and receipt have been sent to our team. We will confirm your payment and dispatch within 48 hours.
+      </p>
+      <div class="mt-5 rounded-2xl bg-slate-100 dark:bg-white/5 p-4 text-left text-sm space-y-1.5">
+        <div class="flex justify-between"><span class="text-slate-500 dark:text-slate-400 font-semibold">Total paid</span><span class="font-extrabold" x-text="currentOrder ? money(currentOrder.total) : ''"></span></div>
+        <div class="flex justify-between"><span class="text-slate-500 dark:text-slate-400 font-semibold">Status</span><span class="font-extrabold text-cyan-500">Receipt under review</span></div>
+      </div>
+      <a :href="waOrderLink()" target="_blank" rel="noopener"
+         class="btn-pill w-full mt-5 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full font-extrabold text-white bg-gradient-to-r from-emerald-500 to-emerald-600 shadow-lg shadow-emerald-500/25">
+        <i data-lucide="message-circle" class="w-4 h-4"></i> Notify us on WhatsApp
+      </a>
+      <button @click="closeCheckout()"
+              class="btn-pill w-full mt-2 inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-bold border border-slate-200 dark:border-white/10 hover:border-red-500 transition text-sm">
+        Continue shopping
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SIZE GUIDE ============ -->
+<div x-show="showSizeGuide" x-cloak class="fixed inset-0 z-[86] flex items-end sm:items-center justify-center p-0 sm:p-6"
+     role="dialog" aria-modal="true" aria-label="Size guide">
+  <div class="absolute inset-0 bg-slate-950/70 backdrop-blur-sm"
+       x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+       x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+       @click="showSizeGuide = false"></div>
+
+  <div class="relative w-full sm:max-w-2xl max-h-[93vh] overflow-y-auto bg-white dark:bg-[#0b0e15] rounded-t-3xl sm:rounded-3xl border border-slate-200 dark:border-white/10 shadow-2xl p-5 sm:p-7"
+       x-transition:enter="transition ease-out duration-400" x-transition:enter-start="opacity-0 translate-y-8 sm:scale-95" x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+       x-transition:leave="transition ease-in duration-250" x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" x-transition:leave-end="opacity-0 translate-y-8 sm:scale-95">
+
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <span class="grid place-items-center w-10 h-10 rounded-2xl bg-gradient-to-br from-red-500 to-red-700 text-white">
+          <i data-lucide="ruler" class="w-5 h-5"></i>
+        </span>
+        <h3 class="font-display font-extrabold text-xl">Size Guide</h3>
+      </div>
+      <button @click="showSizeGuide = false" class="grid place-items-center w-9 h-9 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition" aria-label="Close size guide">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <p class="text-sm text-slate-600 dark:text-slate-400 mt-3">All measurements in centimetres. If you are between sizes, size up for an oversized fit.</p>
+
+    <div class="mt-5 overflow-x-auto no-sb rounded-2xl border border-slate-200 dark:border-white/10">
+      <table class="w-full text-sm">
+        <thead class="bg-slate-100 dark:bg-white/5">
+          <tr class="text-left">
+            <th class="px-4 py-3 font-extrabold">Size</th>
+            <th class="px-4 py-3 font-extrabold">Chest</th>
+            <th class="px-4 py-3 font-extrabold">Waist</th>
+            <th class="px-4 py-3 font-extrabold">Length</th>
+            <th class="px-4 py-3 font-extrabold">Shoulder</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-200 dark:divide-white/10">
+          <tr><td class="px-4 py-3 font-extrabold text-red-500">S</td><td class="px-4 py-3">92</td><td class="px-4 py-3">76</td><td class="px-4 py-3">68</td><td class="px-4 py-3">42</td></tr>
+          <tr><td class="px-4 py-3 font-extrabold text-red-500">M</td><td class="px-4 py-3">98</td><td class="px-4 py-3">82</td><td class="px-4 py-3">70</td><td class="px-4 py-3">44</td></tr>
+          <tr><td class="px-4 py-3 font-extrabold text-red-500">L</td><td class="px-4 py-3">104</td><td class="px-4 py-3">88</td><td class="px-4 py-3">72</td><td class="px-4 py-3">46</td></tr>
+          <tr><td class="px-4 py-3 font-extrabold text-red-500">XL</td><td class="px-4 py-3">110</td><td class="px-4 py-3">94</td><td class="px-4 py-3">74</td><td class="px-4 py-3">48</td></tr>
+          <tr><td class="px-4 py-3 font-extrabold text-red-500">XXL</td><td class="px-4 py-3">116</td><td class="px-4 py-3">100</td><td class="px-4 py-3">76</td><td class="px-4 py-3">50</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="mt-5 grid sm:grid-cols-2 gap-3">
+      <div class="rounded-2xl bg-slate-100 dark:bg-white/5 p-4">
+        <p class="font-extrabold text-sm flex items-center gap-2"><i data-lucide="info" class="w-4 h-4 text-cyan-500"></i> How to measure</p>
+        <p class="text-xs text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">Chest: around the fullest part, arms relaxed. Waist: at your natural waistline. Length: from high point of shoulder to hem.</p>
+      </div>
+      <div class="rounded-2xl bg-slate-100 dark:bg-white/5 p-4">
+        <p class="font-extrabold text-sm flex items-center gap-2"><i data-lucide="message-circle" class="w-4 h-4 text-emerald-500"></i> Still unsure?</p>
+        <p class="text-xs text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">Send us your measurements on WhatsApp and our team will recommend the perfect size.</p>
+        <a :href="waGeneral()" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-xs font-extrabold text-emerald-500 mt-2.5 hover:text-emerald-400 transition">
+          Ask a stylist <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ CUSTOMER CARE CHAT ============ -->
+<div x-show="showChat" x-cloak class="fixed inset-0 z-[90]">
+  <div class="absolute inset-0 bg-slate-950/50 backdrop-blur-sm sm:bg-transparent sm:backdrop-blur-0"
+       @click="showChat = false"></div>
+
+  <div class="absolute bottom-0 left-0 right-0 sm:left-auto sm:right-6 sm:bottom-24 sm:w-[390px] h-[85vh] sm:h-[560px] flex flex-col bg-white dark:bg-[#0b0e15] rounded-t-3xl sm:rounded-3xl border border-slate-200 dark:border-white/10 shadow-2xl overflow-hidden"
+       x-transition:enter="transition ease-out duration-400" x-transition:enter-start="opacity-0 translate-y-10 sm:scale-95" x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+       x-transition:leave="transition ease-in duration-250" x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" x-transition:leave-end="opacity-0 translate-y-10 sm:scale-95"
+       role="dialog" aria-label="Customer care chat">
+
+    <div class="flex items-center gap-3 px-4 h-16 shrink-0 bg-gradient-to-r from-slate-900 to-slate-800 dark:from-[#12161f] dark:to-[#0b0e15] border-b border-slate-200 dark:border-white/10">
+      <span class="relative grid place-items-center w-10 h-10 rounded-full bg-gradient-to-br from-red-500 to-red-700 text-white">
+        <i data-lucide="headset" class="w-5 h-5"></i>
+        <span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-emerald-400 border-2 border-slate-900 dark:border-[#12161f]"></span>
+      </span>
+      <div class="min-w-0 flex-1">
+        <p class="font-display font-extrabold text-sm text-white">Swaguu Customer Care</p>
+        <p class="text-[11px] text-emerald-400 font-semibold">Online · replies instantly</p>
+      </div>
+      <button @click="showChat = false" class="grid place-items-center w-9 h-9 rounded-xl text-white/70 hover:text-white hover:bg-white/10 transition" aria-label="Close chat">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <div class="flex-1 overflow-y-auto px-4 py-4 space-y-3 bg-slate-50 dark:bg-[#07090e]">
+      <template x-for="(m, i) in chatMessages" :key="'msg-'+i">
+        <div class="flex" :class="m.me ? 'justify-end' : 'justify-start'">
+          <div class="bubble max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed whitespace-pre-line"
+               :class="m.me
+                 ? 'bg-gradient-to-br from-red-500 to-red-700 text-white rounded-br-md font-semibold'
+                 : 'bg-white dark:bg-[#12161f] border border-slate-200 dark:border-white/10 rounded-bl-md'">
+            <span x-text="m.text"></span>
+            <a x-show="m.wa" x-cloak :href="waGeneral()" target="_blank" rel="noopener"
+               class="mt-3 inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-xs font-extrabold text-white bg-gradient-to-r from-emerald-500 to-emerald-600">
+              <i data-lucide="message-circle" class="w-3.5 h-3.5"></i> Chat with an admin on WhatsApp
+            </a>
+          </div>
+        </div>
+      </template>
+
+      <div x-show="chatTyping" x-cloak class="flex justify-start">
+        <div class="bg-white dark:bg-[#12161f] border border-slate-200 dark:border-white/10 rounded-2xl rounded-bl-md px-4 py-3">
+          <span class="flex gap-1">
+            <span class="w-2 h-2 rounded-full bg-red-500 animate-bounce" style="animation-delay:0ms"></span>
+            <span class="w-2 h-2 rounded-full bg-red-500 animate-bounce" style="animation-delay:150ms"></span>
+            <span class="w-2 h-2 rounded-full bg-red-500 animate-bounce" style="animation-delay:300ms"></span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="px-3 py-2.5 border-t border-slate-200 dark:border-white/10 bg-white dark:bg-[#0b0e15] shrink-0">
+      <div class="flex gap-2 overflow-x-auto no-sb pb-1">
+        <template x-for="q in quickReplies" :key="'q-'+q">
+          <button @click="sendChat(q)"
+                  class="shrink-0 px-3.5 py-2 rounded-full text-[11px] font-extrabold border border-slate-200 dark:border-white/10 hover:border-red-500 hover:text-red-500 transition">
+            <span x-text="q"></span>
+          </button>
+        </template>
+      </div>
+    </div>
+
+    <form @submit.prevent="sendChat(chatInput)" class="flex items-center gap-2 p-3 border-t border-slate-200 dark:border-white/10 bg-white dark:bg-[#0b0e15] shrink-0 safe-b">
+      <input type="text" x-model="chatInput" placeholder="Type your question…"
+             class="flex-1 px-4 py-3 rounded-full bg-slate-100 dark:bg-[#07090e] border border-transparent focus:border-red-500 outline-none transition font-medium">
+      <button type="submit" class="btn-pill grid place-items-center w-11 h-11 shrink-0 rounded-full bg-gradient-to-br from-red-500 to-red-700 text-white" aria-label="Send message">
+        <i data-lucide="send" class="w-4 h-4"></i>
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- ============ TOASTS ============ -->
+<div class="fixed top-20 left-1/2 -translate-x-1/2 z-[95] w-[calc(100%-2rem)] max-w-sm space-y-2 pointer-events-none">
+  <template x-for="t in toasts" :key="t.id">
+    <div class="bubble pointer-events-auto flex items-start gap-3 px-4 py-3 rounded-2xl border shadow-2xl glass bg-white/95 dark:bg-[#12161f]/95"
+         :class="t.type === 'error' ? 'border-rose-400/50' : (t.type === 'success' ? 'border-emerald-400/50' : 'border-red-500/50')">
+      <i :data-lucide="t.type === 'error' ? 'alert-circle' : (t.type === 'success' ? 'check-circle-2' : 'info')"
+         class="w-4 h-4 mt-0.5 shrink-0"
+         :class="t.type === 'error' ? 'text-rose-500' : (t.type === 'success' ? 'text-emerald-500' : 'text-red-500')"></i>
+      <p class="text-sm font-semibold leading-snug" x-text="t.text"></p>
+    </div>
+  </template>
+</div>
+
+<script>
+/* ================================================================
+   SWAGUU × SEYI VIBEZ — NSNV STOREFRONT
+   ================================================================ */
+const BRAND      = 'Swaguu';
+const WHATSAPP   = '2348012345678';   // ← REPLACE with your WhatsApp number (country code, no +)
+const INSTAGRAM  = '@swaguu';         // ← REPLACE with your Instagram handle
+
+const K = {
+  products:  'cloth_products',
+  cart:      'cloth_cart',
+  wish:      'cloth_wishlist',
+  theme:     'cloth_theme',
+  cats:      'cloth_categories',
+  analytics: 'cloth_analytics',
+  orders:    'cloth_orders',
+  settings:  'cloth_settings'
+};
+
+const DEFAULT_CATS = [
+  { id:'shirts',      label:'Shirts' },
+  { id:'tshirts',     label:'T-Shirts' },
+  { id:'hoodies',     label:'Hoodies' },
+  { id:'pants',       label:'Pants' },
+  { id:'dresses',     label:'Dresses' },
+  { id:'skirts',      label:'Skirts' },
+  { id:'jackets',     label:'Jackets' },
+  { id:'accessories', label:'Accessories' }
+];
+
+const DEFAULT_SETTINGS = {
+  bankName: 'GTBank',
+  accountName: 'Swaguu Apparel Ltd',
+  accountNumber: '0123456789',
+  instructions: 'Transfer the exact total to the account above.\nUse your order reference as the transfer narration.\nThen upload your receipt so we can confirm quickly.',
+  deliveryFee: 3500,
+  freeDeliveryThreshold: 100000
+};
+
+const U = (id) => 'https://images.unsplash.com/photo-' + id + '?auto=format&fit=crop&w=900&q=70';
+
+const DEMO_PRODUCTS = [
+  {
+    id:'swg-001', name:'NSNV Oversized Linen Shirt — Ivory', category:'shirts', gender:'unisex',
+    price:45000, oldPrice:55000, currency:'₦',
+    description:'Relaxed, breathable and built for Lagos heat. Cut to match the NSNV energy — a wardrobe anchor that works over denim, under a jacket, or on its own.',
+    fabric:'100% European Linen', fit:'Oversized',
+    careInstructions:'Machine wash cold. Do not bleach. Iron on low heat.',
+    sizes:['S','M','L','XL','XXL'],
+    colors:[{name:'Ivory',hex:'#f5f5dc'},{name:'Black',hex:'#0a0a0a'},{name:'Sage',hex:'#9caf88'}],
+    stock:12, badge:'NSNV Drop', badgeColor:'#dc2626', featured:true,
+    images:[U('1596755094514-f87e34085b2c'), U('1602810318383-e386cc2a3ccf')],
+    rating:4.8, reviews:24,
+    createdAt:'2025-01-15T09:00:00.000Z', updatedAt:'2025-01-15T09:00:00.000Z'
+  },
+  {
+    id:'swg-002', name:'Seyi Vibez Heavyweight Tee — Onyx', category:'tshirts', gender:'unisex',
+    price:18500, oldPrice:0, currency:'₦',
+    description:'240gsm cotton tee with a structured boxy cut and the NSNV emblem on the chest. Pre-shrunk so it keeps its shape wash after wash.',
+    fabric:'240gsm 100% Combed Cotton', fit:'Oversized',
+    careInstructions:'Machine wash cold, inside out. Tumble dry low.',
+    sizes:['S','M','L','XL','XXL'],
+    colors:[{name:'Onyx',hex:'#0a0a0a'},{name:'Bone',hex:'#efe9dd'},{name:'Blood',hex:'#8a0f1a'}],
+    stock:40, badge:'Best Seller', badgeColor:'#22d3ee', featured:true,
+    images:[U('1521572163474-6864f9cf17ab'), U('1576566588028-4147f3842f27')],
+    rating:4.9, reviews:61,
+    createdAt:'2025-01-12T09:00:00.000Z', updatedAt:'2025-01-12T09:00:00.000Z'
+  },
+  {
+    id:'swg-003', name:'Lagos Nights Hoodie — Charcoal', category:'hoodies', gender:'unisex',
+    price:52000, oldPrice:62000, currency:'₦',
+    description:'Brushed-back fleece with a double-lined hood and NSNV embroidery. Warm without the bulk — built for the after-party.',
+    fabric:'80% Cotton / 20% Poly Fleece', fit:'Relaxed',
+    careInstructions:'Machine wash cold. Do not iron print. Do not bleach.',
+    sizes:['S','M','L','XL','XXL'],
+    colors:[{name:'Charcoal',hex:'#2b2b2b'},{name:'Sand',hex:'#d8cbb6'},{name:'Deep Red',hex:'#7a0a12'}],
+    stock:8, badge:'Sale', badgeColor:'#f43f5e', featured:true,
+    images:[U('1620799140408-edc6dcb6d633'), U('1556821840-3a63f95609a7')],
+    rating:4.7, reviews:33,
+    createdAt:'2025-01-10T09:00:00.000Z', updatedAt:'2025-01-10T09:00:00.000Z'
+  },
+  {
+    id:'swg-004', name:'Wide-Leg Tailored Pants — Sand', category:'pants', gender:'women',
+    price:39000, oldPrice:0, currency:'₦',
+    description:'Fluid wide-leg trousers with a clean front crease and hidden hook closure. Office-to-stage, effortlessly.',
+    fabric:'Poly-Viscose Twill', fit:'Relaxed',
+    careInstructions:'Dry clean recommended. Cool iron on reverse.',
+    sizes:['S','M','L','XL'],
+    colors:[{name:'Sand',hex:'#d8cbb6'},{name:'Black',hex:'#0a0a0a'}],
+    stock:15, badge:"Editor's Pick", badgeColor:'#22d3ee', featured:false,
+    images:[U('1473966968600-fa801b869a1a'), U('1542272604-787c3835535d')],
+    rating:4.6, reviews:18,
+    createdAt:'2025-01-09T09:00:00.000Z', updatedAt:'2025-01-09T09:00:00.000Z'
+  },
+  {
+    id:'swg-005', name:'Utility Cargo Pants — Olive', category:'pants', gender:'men',
+    price:42000, oldPrice:0, currency:'₦',
+    description:'Six-pocket ripstop cargos with adjustable ankle tabs. Built to carry everything and crease nowhere.',
+    fabric:'Cotton Ripstop', fit:'Regular',
+    careInstructions:'Machine wash warm. Tumble dry low.',
+    sizes:['M','L','XL','XXL'],
+    colors:[{name:'Olive',hex:'#556b2f'},{name:'Black',hex:'#0a0a0a'}],
+    stock:0, badge:'NSNV Drop', badgeColor:'#dc2626', featured:false,
+    images:[U('1542272604-787c3835535d'), U('1473966968600-fa801b869a1a')],
+    rating:4.5, reviews:12,
+    createdAt:'2025-01-08T09:00:00.000Z', updatedAt:'2025-01-08T09:00:00.000Z'
+  },
+  {
+    id:'swg-006', name:'Satin Slip Dress — Wine', category:'dresses', gender:'women',
+    price:58000, oldPrice:70000, currency:'₦',
+    description:'Bias-cut satin with adjustable straps and a soft cowl drape. Dinner, show night, or Tuesday — it works.',
+    fabric:'Matte Satin', fit:'Bodycon',
+    careInstructions:'Hand wash cold or dry clean. Do not tumble dry.',
+    sizes:['S','M','L','XL'],
+    colors:[{name:'Wine',hex:'#5b1e2d'},{name:'Champagne',hex:'#e6d2b5'},{name:'Black',hex:'#0a0a0a'}],
+    stock:6, badge:'Limited', badgeColor:'#f43f5e', featured:true,
+    images:[U('1595777457583-95e059d581b8'), U('1594633312681-425c7b97ccd1')],
+    rating:4.9, reviews:27,
+    createdAt:'2025-01-07T09:00:00.000Z', updatedAt:'2025-01-07T09:00:00.000Z'
+  },
+  {
+    id:'swg-007', name:'Pleated Midi Skirt — Black', category:'skirts', gender:'women',
+    price:34000, oldPrice:0, currency:'₦',
+    description:'Knife-pleated midi with an elasticated waistband that keeps its shape all day. Pairs with everything.',
+    fabric:'Recycled Poly Crepe', fit:'Regular',
+    careInstructions:'Machine wash cold on gentle. Hang dry.',
+    sizes:['S','M','L','XL'],
+    colors:[{name:'Black',hex:'#0a0a0a'},{name:'Sage',hex:'#9caf88'}],
+    stock:19, badge:'New In', badgeColor:'#dc2626', featured:false,
+    images:[U('1583496661160-fb5886a0aaaa'), U('1594633312681-425c7b97ccd1')],
+    rating:4.6, reviews:14,
+    createdAt:'2025-01-06T09:00:00.000Z', updatedAt:'2025-01-06T09:00:00.000Z'
+  },
+  {
+    id:'swg-008', name:'NSNV Bomber Jacket — Cobalt', category:'jackets', gender:'unisex',
+    price:76000, oldPrice:0, currency:'₦',
+    description:'Water-resistant shell, ribbed cuffs and quilted lining. The statement layer your outfits were missing.',
+    fabric:'Poly Shell / Quilted Lining', fit:'Regular',
+    careInstructions:'Wipe clean. Do not machine wash. Do not bleach.',
+    sizes:['S','M','L','XL','XXL'],
+    colors:[{name:'Cobalt',hex:'#1e40af'},{name:'Black',hex:'#0a0a0a'}],
+    stock:9, badge:'Best Seller', badgeColor:'#22d3ee', featured:false,
+    images:[U('1551028719-00167b16eac5'), U('1591047139829-d91aecb6caea')],
+    rating:4.8, reviews:21,
+    createdAt:'2025-01-05T09:00:00.000Z', updatedAt:'2025-01-05T09:00:00.000Z'
+  },
+  {
+    id:'swg-009', name:'Cropped Denim Jacket — Indigo', category:'jackets', gender:'women',
+    price:64000, oldPrice:79000, currency:'₦',
+    description:'Rigid indigo denim, cropped at the waist, with antique brass hardware. Ages beautifully.',
+    fabric:'100% Cotton Denim', fit:'Slim',
+    careInstructions:'Machine wash cold, inside out. Wash with like colours.',
+    sizes:['S','M','L','XL'],
+    colors:[{name:'Indigo',hex:'#2f4f6f'},{name:'Washed Blue',hex:'#7aa0c4'}],
+    stock:7, badge:'Sale', badgeColor:'#f43f5e', featured:false,
+    images:[U('1591047139829-d91aecb6caea'), U('1551028719-00167b16eac5')],
+    rating:4.7, reviews:16,
+    createdAt:'2025-01-04T09:00:00.000Z', updatedAt:'2025-01-04T09:00:00.000Z'
+  },
+  {
+    id:'swg-010', name:'Ribbed Knit Top — Cream', category:'tshirts', gender:'women',
+    price:26000, oldPrice:0, currency:'₦',
+    description:'Soft ribbed knit with a square neckline and a body-skimming fit. Layer it or wear it solo.',
+    fabric:'Cotton-Elastane Rib', fit:'Slim',
+    careInstructions:'Hand wash cold. Dry flat. Do not wring.',
+    sizes:['S','M','L'],
+    colors:[{name:'Cream',hex:'#f2e8d5'},{name:'Black',hex:'#0a0a0a'},{name:'Rust',hex:'#a3542c'}],
+    stock:22, badge:'New In', badgeColor:'#dc2626', featured:false,
+    images:[U('1483985988355-763728e1935b'), U('1521572163474-6864f9cf17ab')],
+    rating:4.6, reviews:19,
+    createdAt:'2025-01-03T09:00:00.000Z', updatedAt:'2025-01-03T09:00:00.000Z'
+  },
+  {
+    id:'swg-011', name:'NSNV Canvas Tote — Ecru', category:'accessories', gender:'unisex',
+    price:15000, oldPrice:0, currency:'₦',
+    description:'16oz heavyweight canvas tote with an internal zip pocket and reinforced handles. NSNV print on the front.',
+    fabric:'16oz Cotton Canvas', fit:'Regular',
+    careInstructions:'Spot clean only. Do not machine wash.',
+    sizes:['One Size'],
+    colors:[{name:'Ecru',hex:'#e8dfc9'},{name:'Black',hex:'#0a0a0a'}],
+    stock:35, badge:'Best Seller', badgeColor:'#22d3ee', featured:false,
+    images:[U('1553062407-98eeb64c6a62'), U('1523170335258-f5ed11844a49')],
+    rating:4.8, reviews:42,
+    createdAt:'2025-01-02T09:00:00.000Z', updatedAt:'2025-01-02T09:00:00.000Z'
+  },
+  {
+    id:'swg-012', name:'Suede Cap — Camel', category:'accessories', gender:'unisex',
+    price:12000, oldPrice:16000, currency:'₦',
+    description:'Six-panel suede cap with a brass buckle strap and tonal NSNV embroidery. The finishing touch.',
+    fabric:'Faux Suede', fit:'Regular',
+    careInstructions:'Spot clean with a soft brush. Keep away from water.',
+    sizes:['One Size'],
+    colors:[{name:'Camel',hex:'#c19a6b'},{name:'Black',hex:'#0a0a0a'}],
+    stock:28, badge:'Sale', badgeColor:'#f43f5e', featured:false,
+    images:[U('1588850561407-ed78c282e89b'), U('1523170335258-f5ed11844a49')],
+    rating:4.5, reviews:11,
+    createdAt:'2025-01-01T09:00:00.000Z', updatedAt:'2025-01-01T09:00:00.000Z'
+  }
+];
+
+const NIGERIA_STATES = ['Abia','Adamawa','Akwa Ibom','Anambra','Bauchi','Bayelsa','Benue','Borno','Cross River','Delta','Ebonyi','Edo','Ekiti','Enugu','FCT - Abuja','Gombe','Imo','Jigawa','Kaduna','Kano','Katsina','Kebbi','Kogi','Kwara','Lagos','Nasarawa','Niger','Ogun','Ondo','Osun','Oyo','Plateau','Rivers','Sokoto','Taraba','Yobe','Zamfara'];
+
+/* Lucide auto-refresh */
+(function () {
+  let t = null;
+  const obs = new MutationObserver(() => {
+    clearTimeout(t);
+    t = setTimeout(() => {
+      obs.disconnect();
+      try { if (window.lucide && window.lucide.createIcons) window.lucide.createIcons(); } catch (e) {}
+      obs.observe(document.body, { childList: true, subtree: true });
+    }, 55);
+  });
+  document.addEventListener('DOMContentLoaded', () => {
+    try { if (window.lucide && window.lucide.createIcons) window.lucide.createIcons(); } catch (e) {}
+    obs.observe(document.body, { childList: true, subtree: true });
+  });
+})();
+
+function app() {
+  return {
+    year: new Date().getFullYear(),
+    INSTAGRAM: INSTAGRAM,
+    nigeriaStates: NIGERIA_STATES,
+    quickReplies: ['Delivery time?', 'Sizes & fit', 'Returns policy', 'Payment methods', 'Talk to a human'],
+
+    products: [],
+    categories: [],
+    cart: [],
+    wishlist: [],
+    theme: 'dark',
+    settings: Object.assign({}, DEFAULT_SETTINGS),
+
+    activeCategory: 'all',
+    gender: 'all',
+    sizeFilter: 'all',
+    search: '',
+    sort: 'newest',
+    saleOnly: false,
+    priceMin: 0,
+    priceMax: 300000,
+    priceCeiling: 300000,
+
+    showMenu: false,
+    showCart: false,
+    showWish: false,
+    showProduct: false,
+    showCheckout: false,
+    showSizeGuide: false,
+    showChat: false,
+    showWelcome: false,
+    chatSeen: false,
+    waBadge: true,
+
+    currentProduct: null,
+    galleryIndex: 0,
+    selectedSize: '',
+    selectedColor: null,
+    qty: 1,
+    newsletterEmail: '',
+
+    checkoutStep: 1,
+    currentOrder: null,
+    receiptPreview: '',
+    receiptUploading: false,
+    form: { name:'', email:'', whatsapp:'', calling:'', state:'', city:'', address:'', notes:'' },
+
+    chatMessages: [],
+    chatInput: '',
+    chatTyping: false,
+
+    toasts: [],
+    toastId: 0,
+
+    /* ================= LIFECYCLE ================= */
+    init() {
+      this.theme = localStorage.getItem(K.theme) || 'dark';
+      document.documentElement.classList.toggle('dark', this.theme === 'dark');
+
+      this.products = this.loadProducts();
+      this.categories = this.loadCats();
+      this.settings = this.loadSettings();
+      this.cart = this.loadJSON(K.cart, []);
+      this.wishlist = this.loadJSON(K.wish, []);
+
+      this.priceCeiling = Math.max(100000, Math.ceil(Math.max.apply(null, this.products.map(p => Number(p.price) || 0)) / 10000) * 10000);
+      this.priceMax = this.priceCeiling;
+      this.priceMin = 0;
+
+      this.trackVisit();
+      this.refreshIcons();
+
+      this.$watch('priceMin', (v) => { if (Number(v) > Number(this.priceMax)) this.priceMax = Number(v); });
+      this.$watch('priceMax', (v) => { if (Number(v) < Number(this.priceMin)) this.priceMin = Number(v); });
+
+      window.addEventListener('storage', (e) => this.onStorage(e));
+
+      setTimeout(() => { this.showWelcome = true; }, 700);
+      setTimeout(() => { this.showWelcome = false; }, 10000);
+
+      setTimeout(() => {
+        this.chatMessages.push({
+          me: false,
+          text: 'Hi 👋 I am Ada from ' + BRAND + ' customer care.\nAsk me about sizing, delivery, payment or returns — or tap "Talk to a human" any time.'
+        });
+      }, 2600);
+    },
+
+    refreshIcons() {
+      setTimeout(function () {
+        try { if (window.lucide && window.lucide.createIcons) window.lucide.createIcons(); } catch (e) {}
+      }, 60);
+    },
+
+    loadJSON(key, fallback) {
+      try {
+        const raw = localStorage.getItem(key);
+        if (!raw) return fallback;
+        const parsed = JSON.parse(raw);
+        return parsed == null ? fallback : parsed;
+      } catch (e) { return fallback; }
+    },
+
+    loadProducts() {
+      try {
+        const raw = localStorage.getItem(K.products);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed) && parsed.length) return parsed;
+        }
+      } catch (e) {}
+      try { localStorage.setItem(K.products, JSON.stringify(DEMO_PRODUCTS)); } catch (e) {}
+      return JSON.parse(JSON.stringify(DEMO_PRODUCTS));
+    },
+
+    loadCats() {
+      try {
+        const raw = localStorage.getItem(K.cats);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed) && parsed.length) return parsed;
+        }
+      } catch (e) {}
+      return DEFAULT_CATS.slice();
+    },
+
+    loadSettings() {
+      try {
+        const raw = localStorage.getItem(K.settings);
+        if (raw) return Object.assign({}, DEFAULT_SETTINGS, JSON.parse(raw));
+      } catch (e) {}
+      return Object.assign({}, DEFAULT_SETTINGS);
+    },
+
+    onStorage(e) {
+      if (e.key === K.products) {
+        this.products = this.loadProducts();
+        this.priceCeiling = Math.max(100000, Math.ceil(Math.max.apply(null, this.products.map(p => Number(p.price) || 0)) / 10000) * 10000);
+        if (Number(this.priceMax) > this.priceCeiling) this.priceMax = this.priceCeiling;
+        this.toast('Catalogue updated — new pieces just landed');
+      }
+      if (e.key === K.cats) this.categories = this.loadCats();
+      if (e.key === K.settings) {
+        this.settings = this.loadSettings();
+        this.toast('Payment details updated');
+      }
+      if (e.key === K.theme) {
+        this.theme = localStorage.getItem(K.theme) || 'dark';
+        document.documentElement.classList.toggle('dark', this.theme === 'dark');
+      }
+    },
+
+    trackVisit() {
+      try {
+        let a = JSON.parse(localStorage.getItem(K.analytics) || 'null');
+        if (!a || typeof a !== 'object') {
+          a = { views: 0, visitors: 0, sessions: 0, visitorIds: [], daily: {}, lastVisit: null, firstVisit: null };
+        }
+        if (!Array.isArray(a.visitorIds)) a.visitorIds = [];
+        if (!a.daily || typeof a.daily !== 'object') a.daily = {};
+
+        a.views = (Number(a.views) || 0) + 1;
+
+        let vid = null;
+        try { vid = localStorage.getItem('cloth_visitor_id'); } catch (e) {}
+        if (!vid) {
+          vid = 'v_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
+          try { localStorage.setItem('cloth_visitor_id', vid); } catch (e) {}
+        }
+        if (a.visitorIds.indexOf(vid) === -1) {
+          a.visitorIds.push(vid);
+          if (a.visitorIds.length > 500) a.visitorIds.shift();
+          a.visitors = (Number(a.visitors) || 0) + 1;
+        }
+
+        const now = Date.now();
+        const last = a.lastVisit ? new Date(a.lastVisit).getTime() : 0;
+        if (!last || (now - last) > 30 * 60 * 1000) a.sessions = (Number(a.sessions) || 0) + 1;
+
+        const iso = new Date().toISOString();
+        a.lastVisit = iso;
+        if (!a.firstVisit) a.firstVisit = iso;
+
+        const day = iso.slice(0, 10);
+        a.daily[day] = (Number(a.daily[day]) || 0) + 1;
+
+        const keys = Object.keys(a.daily).sort();
+        while (keys.length > 60) { delete a.daily[keys.shift()]; }
+
+        localStorage.setItem(K.analytics, JSON.stringify(a));
+      } catch (e) {}
+    },
+
+    /* ================= THEME ================= */
+    setTheme(t) {
+      this.theme = t;
+      try { localStorage.setItem(K.theme, t); } catch (e) {}
+      document.documentElement.classList.toggle('dark', t === 'dark');
+    },
+    toggleTheme() { this.setTheme(this.theme === 'dark' ? 'light' : 'dark'); },
+
+    /* ================= HELPERS ================= */
+    money(n) {
+      const num = Number(n) || 0;
+      return '₦' + num.toLocaleString('en-NG', { maximumFractionDigits: 0 });
+    },
+    get freeThreshold() { return Number(this.settings.freeDeliveryThreshold) || 100000; },
+
+    placeholder(name) {
+      const initials = String(name || 'S').replace(/[^A-Za-z ]/g, '').split(' ')
+        .filter(Boolean).slice(0, 2).map(w => w[0].toUpperCase()).join('') || 'S';
+      const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000">' +
+        '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">' +
+        '<stop offset="0" stop-color="#12161f"/><stop offset="1" stop-color="#07090e"/></linearGradient></defs>' +
+        '<rect width="800" height="1000" fill="url(#g)"/>' +
+        '<text x="400" y="470" font-family="Sora,Arial,sans-serif" font-size="130" font-weight="800" fill="#dc2626" text-anchor="middle">' + initials + '</text>' +
+        '<text x="400" y="560" font-family="Arial,sans-serif" font-size="30" letter-spacing="8" fill="#64748b" text-anchor="middle">SWAGUU × NSNV</text></svg>';
+      return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+    },
+
+    imgErr(e, p) {
+      e.target.onerror = null;
+      e.target.src = this.placeholder(p && p.name ? p.name : 'Swaguu');
+    },
+
+    toast(text, type) {
+      const id = ++this.toastId;
+      this.toasts.push({ id: id, text: text, type: type || 'info' });
+      this.refreshIcons();
+      setTimeout(() => { this.toasts = this.toasts.filter(t => t.id !== id); }, 4200);
+    },
+
+    lockScroll() {
+      const open = this.showCart || this.showProduct || this.showCheckout || this.showSizeGuide || this.showWish || this.showChat;
+      document.body.style.overflow = open ? 'hidden' : '';
+    },
+
+    closeAll() {
+      if (this.showProduct)      { this.showProduct = false; return; }
+      if (this.showSizeGuide)    { this.showSizeGuide = false; return; }
+      if (this.showCheckout)     { this.closeCheckout(); return; }
+      if (this.showCart)         { this.showCart = false; return; }
+      if (this.showWish)         { this.showWish = false; return; }
+      if (this.showChat)         { this.showChat = false; return; }
+      if (this.showMenu)         { this.showMenu = false; return; }
+    },
+
+    scrollTo(id) {
+      setTimeout(() => {
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 120);
+    },
+
+    showSale() {
+      this.saleOnly = true;
+      this.activeCategory = 'all';
+      this.gender = 'all';
+      this.sizeFilter = 'all';
+      this.search = '';
+      this.scrollTo('shop');
+    },
+
+    countFor(catId) {
+      return this.products.filter(p => p.category === catId).length;
+    },
+
+    /* ================= WHATSAPP ================= */
+    waGeneral() {
+      const msg = 'Hello ' + BRAND + '! 👋 I would like to know more about the NSNV collection.';
+      return 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(msg);
+    },
+
+    waProductLink(p, size, color, qty) {
+      if (!p) return this.waGeneral();
+      const msg =
+        'Hello ' + BRAND + '! 👋\n\n' +
+        'I am interested in:\n' +
+        '*' + p.name + '*\n' +
+        'Size: ' + (size || 'not selected') + '\n' +
+        'Colour: ' + (color || 'not selected') + '\n' +
+        'Qty: ' + (qty || 1) + '\n' +
+        'Price: ' + this.money(p.price) + '\n\n' +
+        'Is it available?';
+      return 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(msg);
+    },
+
+    waOrderLink() {
+      const src = (this.currentOrder && this.currentOrder.items) ? this.currentOrder.items : this.cart;
+      const lines = src.map((i, n) =>
+        (n + 1) + '. ' + i.name + ' — Size ' + i.size + (i.color ? ' / ' + i.color : '') +
+        ' × ' + i.qty + ' = ' + this.money(i.price * i.qty)
+      );
+      const sub = src.reduce((s, i) => s + Number(i.price) * Number(i.qty), 0);
+      const del = (sub === 0 || sub >= this.freeThreshold) ? 0 : Number(this.settings.deliveryFee || 3500);
+      const tot = sub + del;
+      const ref = this.currentOrder ? this.currentOrder.id : '';
+      const cust = this.currentOrder ? this.currentOrder.customer : null;
+
+      const msg =
+        'Hello ' + BRAND + '! 👋\n\n' +
+        (ref ? 'Order ref: *' + ref + '*\n\n' : '') +
+        'My order:\n\n' + lines.join('\n') + '\n\n' +
+        'Subtotal: ' + this.money(sub) + '\n' +
+        'Delivery: ' + (del === 0 ? 'FREE' : this.money(del)) + '\n' +
+        '*Total: ' + this.money(tot) + '*\n\n' +
+        (cust ? 'Name: ' + cust.name + '\nWhatsApp: ' + cust.whatsapp + '\nAddress: ' + cust.address + ', ' + cust.city + ', ' + cust.state + '\n\n' : '') +
+        'I have sent my payment and uploaded my receipt. Please confirm.';
+      return 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(msg);
+    },
+
+    /* ================= WISHLIST ================= */
+    isWished(id) { return this.wishlist.indexOf(id) !== -1; },
+
+    toggleWish(id) {
+      const i = this.wishlist.indexOf(id);
+      if (i === -1) { this.wishlist.push(id); this.toast('Saved to your wishlist', 'success'); }
+      else { this.wishlist.splice(i, 1); this.toast('Removed from wishlist'); }
+      try { localStorage.setItem(K.wish, JSON.stringify(this.wishlist)); } catch (e) {}
+      this.refreshIcons();
+    },
+
+    get wishProducts() { return this.products.filter(p => this.wishlist.indexOf(p.id) !== -1); },
+
+    /* ================= CART ================= */
+    saveCart() {
+      try { localStorage.setItem(K.cart, JSON.stringify(this.cart)); } catch (e) {}
+    },
+
+    quickAdd(p) {
+      if (Number(p.stock) <= 0) { this.toast('That piece is sold out', 'error'); return; }
+      const size = (p.sizes && p.sizes.length) ? p.sizes[0] : 'One Size';
+      const color = (p.colors && p.colors.length) ? p.colors[0] : null;
+      this.addToCart(p, size, color, 1);
+    },
+
+    addToCart(p, size, color, q) {
+      const quantity = Math.max(1, Number(q) || 1);
+      const key = p.id + '|' + size + '|' + (color ? color.name : '');
+      const found = this.cart.find(i => i.key === key);
+      if (found) { found.qty += quantity; }
+      else {
+        this.cart.push({
+          key: key,
+          id: p.id,
+          name: p.name,
+          price: Number(p.price) || 0,
+          image: (p.images && p.images[0]) || this.placeholder(p.name),
+          size: size,
+          color: color ? color.name : '',
+          qty: quantity
+        });
+      }
+      this.saveCart();
+      this.toast('Added to your bag', 'success');
+      this.refreshIcons();
+    },
+
+    incQty(item) { item.qty += 1; this.saveCart(); },
+    decQty(item) {
+      item.qty -= 1;
+      if (item.qty <= 0) this.cart = this.cart.filter(i => i.key !== item.key);
+      this.saveCart();
+    },
+    removeItem(key) {
+      this.cart = this.cart.filter(i => i.key !== key);
+      this.saveCart();
+      this.toast('Item removed');
+    },
+    clearCart() {
+      this.cart = [];
+      this.saveCart();
+      this.toast('Bag cleared');
+    },
+
+    get cartCount() { return this.cart.reduce((s, i) => s + (Number(i.qty) || 0), 0); },
+    get subtotal()  { return this.cart.reduce((s, i) => s + (Number(i.price) || 0) * (Number(i.qty) || 0), 0); },
+    get delivery()  { return (this.subtotal === 0 || this.subtotal >= this.freeThreshold) ? 0 : Number(this.settings.deliveryFee || 3500); },
+    get total()     { return this.subtotal + this.delivery; },
+    get shippingProgress() {
+      const pct = (this.subtotal / this.freeThreshold) * 100;
+      return pct > 100 ? 100 : (pct < 0 ? 0 : pct);
+    },
+
+    /* ================= PRODUCTS / FILTERS ================= */
+    get featured() {
+      return this.products.filter(p => p.featured).slice(0, 8);
+    },
+
+    get heroProduct() {
+      if (this.featured.length) return this.featured[0];
+      return this.products.length ? this.products[0] : null;
+    },
+
+    get filtered() {
+      let out = this.products.slice();
+
+      if (this.activeCategory !== 'all') out = out.filter(p => p.category === this.activeCategory);
+      if (this.gender !== 'all')         out = out.filter(p => p.gender === this.gender);
+      if (this.sizeFilter !== 'all')     out = out.filter(p => (p.sizes || []).indexOf(this.sizeFilter) !== -1);
+      if (this.saleOnly)                 out = out.filter(p => Number(p.oldPrice) > Number(p.price));
+
+      const q = this.search.trim().toLowerCase();
+      if (q) {
+        out = out.filter(p => {
+          const hay = (p.name + ' ' + p.category + ' ' + (p.fabric || '') + ' ' + (p.fit || '') + ' ' + (p.description || '')).toLowerCase();
+          return hay.indexOf(q) !== -1;
+        });
+      }
+
+      const lo = Math.min(Number(this.priceMin) || 0, Number(this.priceMax) || 0);
+      const hi = Math.max(Number(this.priceMin) || 0, Number(this.priceMax) || 0);
+      out = out.filter(p => Number(p.price) >= lo && Number(p.price) <= hi);
+
+      switch (this.sort) {
+        case 'price-asc':  out.sort((a, b) => Number(a.price) - Number(b.price)); break;
+        case 'price-desc': out.sort((a, b) => Number(b.price) - Number(a.price)); break;
+        case 'rating':     out.sort((a, b) => (Number(b.rating) || 0) - (Number(a.rating) || 0)); break;
+        case 'name':       out.sort((a, b) => String(a.name).localeCompare(String(b.name))); break;
+        default:           out.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+      }
+      return out;
+    },
+
+    resetFilters() {
+      this.activeCategory = 'all';
+      this.gender = 'all';
+      this.sizeFilter = 'all';
+      this.search = '';
+      this.sort = 'newest';
+      this.saleOnly = false;
+      this.priceMin = 0;
+      this.priceMax = this.priceCeiling;
+      this.refreshIcons();
+    },
+
+    /* ================= PRODUCT MODAL ================= */
+    openProduct(p) {
+      if (!p) return;
+      this.currentProduct = p;
+      this.galleryIndex = 0;
+      this.selectedSize = (p.sizes && p.sizes.length === 1) ? p.sizes[0] : '';
+      this.selectedColor = (p.colors && p.colors.length) ? p.colors[0] : null;
+      this.qty = 1;
+      this.showProduct = true;
+      this.refreshIcons();
+    },
+
+    addFromModal() {
+      const p = this.currentProduct;
+      if (!p) return;
+      if (Number(p.stock) <= 0) { this.toast('That piece is sold out', 'error'); return; }
+      if (p.sizes && p.sizes.length > 1 && !this.selectedSize) {
+        this.toast('Please select a size first', 'error');
+        return;
+      }
+      const size = this.selectedSize || (p.sizes && p.sizes[0]) || 'One Size';
+      this.addToCart(p, size, this.selectedColor, this.qty);
+      this.showProduct = false;
+      this.showCart = true;
+    },
+
+    /* ================= CHECKOUT ================= */
+    startCheckout() {
+      if (!this.cart.length) { this.toast('Your bag is empty', 'error'); return; }
+      this.showCart = false;
+      this.checkoutStep = 1;
+      this.currentOrder = null;
+      this.receiptPreview = '';
+      this.form = { name:'', email:'', whatsapp:'', calling:'', state:'', city:'', address:'', notes:'' };
+      this.showCheckout = true;
+      this.refreshIcons();
+    },
+
+    closeCheckout() {
+      this.showCheckout = false;
+      this.checkoutStep = 1;
+      this.receiptPreview = '';
+    },
+
+    validateForm() {
+      if (!this.form.name.trim())      return 'Full name is required';
+      if (!/^\S+@\S+\.\S+$/.test(this.form.email.trim())) return 'Enter a valid email';
+      if (!this.form.whatsapp.trim())  return 'WhatsApp number is required';
+      if (!this.form.state)            return 'Select your state';
+      if (!this.form.city.trim())      return 'City is required';
+      if (!this.form.address.trim())   return 'Delivery address is required';
+      return null;
+    },
+
+    placeOrder() {
+      const err = this.validateForm();
+      if (err) { this.toast(err, 'error'); return; }
+      if (!this.cart.length) { this.toast('Your bag is empty', 'error'); return; }
+
+      const id = 'SWG-' + Date.now().toString().slice(-8);
+      const order = {
+        id: id,
+        createdAt: new Date().toISOString(),
+        status: 'pending',
+        customer: {
+          name: this.form.name.trim(),
+          email: this.form.email.trim(),
+          whatsapp: this.form.whatsapp.trim(),
+          calling: this.form.calling.trim() || this.form.whatsapp.trim(),
+          address: this.form.address.trim(),
+          city: this.form.city.trim(),
+          state: this.form.state,
+          notes: this.form.notes.trim()
+        },
+        items: this.cart.map(i => ({
+          id: i.id,
+          name: i.name,
+          price: Number(i.price),
+          qty: Number(i.qty),
+          size: i.size,
+          color: i.color,
+          image: i.image
+        })),
+        subtotal: this.subtotal,
+        delivery: this.delivery,
+        total: this.total,
+        receipt: null,
+        paidAt: null,
+        confirmedAt: null
+      };
+
+      this.currentOrder = order;
+      this.saveOrder(order);
+      this.checkoutStep = 2;
+      this.refreshIcons();
+      this.toast('Order created — please complete payment', 'success');
+    },
+
+    saveOrder(order) {
+      try {
+        const list = JSON.parse(localStorage.getItem(K.orders) || '[]');
+        const idx = list.findIndex(o => o.id === order.id);
+        if (idx === -1) list.unshift(order); else list[idx] = order;
+        localStorage.setItem(K.orders, JSON.stringify(list));
+      } catch (e) {}
+    },
+
+    updateCurrentOrder(patch) {
+      if (!this.currentOrder) return;
+      Object.assign(this.currentOrder, patch);
+      this.saveOrder(this.currentOrder);
+    },
+
+    copyAccount() {
+      const num = (this.settings.accountNumber || '').toString();
+      if (!num) { this.toast('No account number set', 'error'); return; }
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(num)
+            .then(() => this.toast('Account number copied', 'success'))
+            .catch(() => this.toast('Copy failed — select manually', 'error'));
+        } else {
+          this.toast('Copy not supported — select manually');
+        }
+      } catch (e) { this.toast('Copy failed — select manually', 'error'); }
+    },
+
+    handleReceiptUpload(ev) {
+      const file = ev.target.files && ev.target.files[0];
+      if (!file) return;
+      if (!/^image\//.test(file.type)) { this.toast('Please upload an image file', 'error'); return; }
+      if (file.size > 5 * 1024 * 1024) { this.toast('Image is over 5MB — please compress', 'error'); return; }
+      this.receiptUploading = true;
+      const self = this;
+      this.compressImage(file, 1000, 0.72)
+        .then(dataUrl => { self.receiptPreview = dataUrl; self.receiptUploading = false; self.refreshIcons(); })
+        .catch(() => { self.receiptUploading = false; self.toast('Could not read that image', 'error'); });
+    },
+
+    compressImage(file, maxWidth, quality) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            let w = img.width, h = img.height;
+            if (w > maxWidth) { h = Math.round(h * maxWidth / w); w = maxWidth; }
+            const c = document.createElement('canvas');
+            c.width = w; c.height = h;
+            const ctx = c.getContext('2d');
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, w, h);
+            ctx.drawImage(img, 0, 0, w, h);
+            try { resolve(c.toDataURL('image/jpeg', quality)); } catch (err) { reject(err); }
+          };
+          img.onerror = reject;
+          img.src = e.target.result;
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    },
+
+    submitReceipt() {
+      if (!this.currentOrder) { this.toast('Order not found', 'error'); return; }
+      if (!this.receiptPreview) { this.toast('Please upload your receipt first', 'error'); return; }
+      this.receiptUploading = true;
+      this.updateCurrentOrder({
+        receipt: this.receiptPreview,
+        paidAt: new Date().toISOString(),
+        status: 'paid'
+      });
+      this.receiptUploading = false;
+      this.checkoutStep = 4;
+      this.cart = [];
+      this.saveCart();
+      this.refreshIcons();
+      this.toast('Receipt submitted — thank you!', 'success');
+    },
+
+    subscribe() {
+      if (!/^\S+@\S+\.\S+$/.test((this.newsletterEmail || '').trim())) {
+        this.toast('Enter a valid email address', 'error');
+        return;
+      }
+      this.toast('You are on the list — welcome to ' + BRAND + ' 🎉', 'success');
+      this.newsletterEmail = '';
+    },
+
+    /* ================= CUSTOMER CARE BOT ================= */
+    openChat() {
+      this.showChat = true;
+      this.chatSeen = true;
+      this.refreshIcons();
+    },
+
+    sendChat(text) {
+      const msg = String(text || '').trim();
+      if (!msg) return;
+      this.chatMessages.push({ me: true, text: msg });
+      this.chatInput = '';
+      this.chatTyping = true;
+      this.refreshIcons();
+
+      const self = this;
+      setTimeout(() => {
+        const reply = self.botReply(msg);
+        self.chatTyping = false;
+        self.chatMessages.push(reply);
+        self.refreshIcons();
+      }, 700);
+    },
+
+    botReply(text) {
+      const q = text.toLowerCase().trim();
+      const self = this;
+      const has = function () {
+        const words = Array.prototype.slice.call(arguments);
+        return words.some(function (w) { return q.indexOf(w) !== -1; });
+      };
+
+      if (has('human','agent','admin','person','someone','manager','representative','talk to')) {
+        return { me: false, text: 'No problem — I am connecting you to a real human 🙋🏽‍♀️\nTap the button below and an admin will reply on WhatsApp within minutes.', wa: true };
+      }
+      if (has('hello','hi ','hey','good morning','good afternoon','good evening','how are you') || q === 'hi' || q === 'hey') {
+        return { me: false, text: 'Hey there 👋 Welcome to ' + BRAND + '.\nI can help with sizing, delivery, prices, returns and payments. What would you like to know?' };
+      }
+      if (has('delivery','deliver','shipping','ship','how long','when will','courier')) {
+        return { me: false, text: '🚚 Delivery details:\n• Lagos metro: 24–48 hours\n• Other states: 2–4 working days\n• Free delivery on orders from ' + self.money(self.freeThreshold) + '\n• Below that, flat fee of ' + self.money(self.settings.deliveryFee || 3500) + ' nationwide' };
+      }
+      if (has('return','refund','exchange','swap','send back')) {
+        return { me: false, text: '↩️ Returns & exchanges:\nYou have 7 days from delivery. Items must be unworn with tags attached.\nExchanges are free; refunds are processed within 5 working days.\nMessage us on WhatsApp to start a return.' };
+      }
+      if (has('pay','payment','transfer','bank','account','receipt','confirm')) {
+        return { me: false, text: '💳 Payment is by direct bank transfer.\nAt checkout you will see the account details. Make the transfer, then click "I have paid" and upload your receipt. Our team confirms your order within a few hours.' };
+      }
+      if (has('size','sizing','fit','measurement','chest','waist','too small','too big')) {
+        return { me: false, text: '📏 Sizes run S – XXL.\nS: chest 92cm · M: 98cm · L: 104cm · XL: 110cm · XXL: 116cm.\nIf you are between sizes, go up for an oversized look. Open the Size Guide in the footer for the full chart.' };
+      }
+      if (has('where','location','address','store','shop near','lagos','based')) {
+        return { me: false, text: '📍 We are based in Lagos, Nigeria — 12 Adeola Odeku Street, Victoria Island.\nWe are online-first, so every order is delivered straight to your door nationwide.' };
+      }
+      if (has('open','hours','time','available','when do you')) {
+        return { me: false, text: '🕘 Our team is online Monday to Saturday, 9:00am – 7:00pm WAT.\nMessages sent after hours get answered first thing the next morning.' };
+      }
+      if (has('discount','promo','coupon','code','cheap','sale','offer')) {
+        return { me: false, text: '🏷️ Join the newsletter at the bottom of this page for subscriber-only discounts, and check the "Sale" filter in the shop for reduced pieces.' };
+      }
+      if (has('track','order status','where is my order','my order')) {
+        return { me: false, text: '📦 To check an order, I need your order reference (it starts with SWG-). Send it to our team on WhatsApp below and they will track it instantly.', wa: true };
+      }
+      if (has('quality','fabric','material','cotton','linen','wash','care')) {
+        return { me: false, text: '🧵 We work with breathable natural fabrics — linen, combed cotton, ripstop and satin — chosen to survive Lagos heat and repeated washing.\nEvery product page lists the exact fabric and care instructions.' };
+      }
+      if (has('album','nsnv','seyi','vibez','music')) {
+        return { me: false, text: '🎵 NSNV is the new Seyi Vibez album, and this collection is the official merch drop.\nEvery piece is limited — once a size sells out, it is gone.' };
+      }
+      if (has('price','cost','how much','budget')) {
+        const cheapest = self.products.slice().sort(function (a, b) { return Number(a.price) - Number(b.price); })[0];
+        const dearest = self.products.slice().sort(function (a, b) { return Number(b.price) - Number(a.price); })[0];
+        if (cheapest && dearest) {
+          return { me: false, text: '💰 Our pieces range from ' + self.money(cheapest.price) + ' to ' + self.money(dearest.price) + '.\nBrowse the shop and filter by price to find your range.' };
+        }
+        return { me: false, text: '💰 Browse the shop and use the price slider to find your range.' };
+      }
+
+      const catHit = self.categories.find(function (c) {
+        return q.indexOf(c.id) !== -1 || q.indexOf(c.label.toLowerCase()) !== -1 ||
+          q.indexOf(c.label.toLowerCase().replace(/s$/, '')) !== -1;
+      });
+
+      const words = q.split(/\s+/).filter(function (w) { return w.length > 3; });
+      const found = self.products.filter(function (p) {
+        const name = String(p.name).toLowerCase();
+        const cat = String(p.category).toLowerCase();
+        if (catHit && cat === catHit.id) return true;
+        return words.some(function (w) { return name.indexOf(w) !== -1 || cat.indexOf(w) !== -1; });
+      });
+
+      if (found.length) {
+        const list = found.slice(0, 4).map(function (p) { return '• ' + p.name + ' — ' + self.money(p.price); }).join('\n');
+        return { me: false, text: 'Here is what we have:\n\n' + list + '\n\nTap any product on the page to see sizes, photos and full details.' };
+      }
+
+      return {
+        me: false,
+        text: 'Hmm, I do not have a confident answer for that one 🙈\nBut our human team definitely does. Tap below to chat with an admin on WhatsApp — they usually reply within minutes during business hours.',
+        wa: true
+      };
+    }
+  };
+}
+</script>
+</body>
+</html>
